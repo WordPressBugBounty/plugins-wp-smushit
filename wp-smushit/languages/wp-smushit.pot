@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Smush Pro 3.17.0\n"
+"Project-Id-Version: Smush Pro 3.17.1\n"
 "Report-Msgid-Bugs-To: https://wpmudev.com\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-03T13:34:39+00:00\n"
+"POT-Creation-Date: 2025-02-10T12:26:41+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: wp-smushit\n"
@@ -489,8 +489,8 @@ msgstr ""
 #: core/modules/class-dir.php:262
 #: core/modules/class-dir.php:549
 #: core/modules/class-dir.php:560
-#: core/modules/class-dir.php:812
-#: core/modules/class-dir.php:929
+#: core/modules/class-dir.php:816
+#: core/modules/class-dir.php:933
 msgid "Unauthorized"
 msgstr ""
 
@@ -4036,20 +4036,20 @@ msgstr ""
 msgid "There was a problem getting the selected directories"
 msgstr ""
 
-#: core/modules/class-dir.php:937
+#: core/modules/class-dir.php:941
 msgid "Empty Directory Path"
 msgstr ""
 
-#: core/modules/class-dir.php:952
+#: core/modules/class-dir.php:956
 msgid "We could not find any images in the selected directory."
 msgstr ""
 
 #. translators: %s: total number of images
-#: core/modules/class-dir.php:1257
+#: core/modules/class-dir.php:1261
 msgid "You've smushed %d images in total."
 msgstr ""
 
-#: core/modules/class-dir.php:1334
+#: core/modules/class-dir.php:1338
 msgid "Directory smushing requires custom tables and it seems there was an error creating tables. For help, please contact our team on the support forums."
 msgstr ""
 
