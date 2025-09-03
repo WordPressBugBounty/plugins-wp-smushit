@@ -25,6 +25,7 @@
 		.sui-dashboard-directory .sui-box-title { @include icon(before, 'folder'); }
 		.sui-dashboard-integrations .sui-box-title { @include icon(before, 'plugin-2'); }
 		.sui-dashboard-lazy-preload .sui-box-title { @include icon(before, 'update'); }
+		.sui-dashboard-next-gen .sui-box-title { @include icon(before, 'photo-picture'); }
 		.sui-dashboard-cdn .sui-box-title { @include icon(before, 'web-globe-world'); }
 		.sui-dashboard-webp .sui-box-title { @include icon(before, 'photo-picture'); }
 		.sui-dashboard-tools .sui-box-title { @include icon(before, 'wrench-tool'); }
@@ -79,6 +80,70 @@
 	}
 
 	.sui-wrap {
+		.smush-upsell-link {
+			pointer-events: auto!important;
+		}
+		.sui-button.smush-sui-button-outline {
+			background-color: transparent;
+			border-width: 2px;
+			border-style: solid;
+			&.smush-sui-button-outline-blue {
+				border-color: #E1F6FF;
+				color: $main-color;
+				&:hover,&:focus {
+					background-color: $main_color;
+					border-color: $main-color;
+					color: #fff;
+				}
+			}
+		}
+
+		.smush-advanced-settings.sui-accordion-block {
+			position: relative;
+			margin-top: 30px;
+			&:before {
+				content: "";
+				display: block;
+				position: relative;
+				border-top:1px solid #E6E6E6;
+				margin-left:-30px;
+				margin-right: -30px;
+				@media screen and (max-width: 782px ) {
+					margin-left: -20px;
+					margin-right: -20px;
+				}
+			}
+			.sui-accordion-item-body {
+				padding: 0;
+				.sui-box-settings-row:first-child {
+					padding-top: 30px;
+				}
+			}
+			.sui-accordion-item {
+				box-shadow: none;
+				.sui-accordion-item-header {
+					min-height: 0;
+					.sui-accordion-item-title {
+						font-size: 15px;
+						padding-left: 0;
+					}
+
+					.sui-accordion-col-auto {
+						padding-right: 0;
+						justify-content: flex-end;
+						margin-top: 0;
+						flex: 1;
+					}
+				}
+				&:not( .sui-accordion-item--open ) {
+					margin-bottom: -30px;
+					@media screen and (max-width:782px) {
+						margin-bottom: -20px;
+					}
+				}
+			}
+		}
+
 		.sui-box-upsell-row .sui-toggle input[disabled] ~ .sui-description {
 			pointer-events: auto !important;
 		}
@@ -1439,10 +1504,42 @@
 		}
 	}
 
+	.sui-modal-list {
+		h3 {
+			color: #666;
+			font-weight: 700;
+			font-size: 13px;
+			line-height: 22px;
+			text-align: left;
+			letter-spacing: -0.25px;
+		}
+		span {
+			margin-right: 5px;
+		}
+
+	}
+
+	.wp-smush-upgrade-modal-cta {
+		span {
+			&.sui-icon-open-new-window:before {
+				margin-left: 5px;
+			}
+		}
+	}
+
 	#smush-resize-settings-wrap {
 		.sui-form-field-warning {
 			.wp-smush-resize-input {
 				border-color: $yellow;
+			}
+		}
+	}
+
+	#smush-box-settings-general {
+		.sui-box-settings-row {
+			.sui-box-settings-col-1 {
+				max-width: 225px;
+				flex: 0 1 225px;
 			}
 		}
 	}

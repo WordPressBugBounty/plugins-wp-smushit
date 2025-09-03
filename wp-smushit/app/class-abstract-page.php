@@ -453,12 +453,11 @@ abstract class Abstract_Page {
 		$whitelabel_hide_doc_link = apply_filters( 'wpmudev_branding_hide_doc_link', false );
 		$hide_upgrade_modal       = empty( get_site_option( 'wp-smush-show_upgrade_modal' ) );
 		$is_on_subsite_screen     = ! is_network_admin();
-		$has_lazy_preload_page    = $this->settings->has_lazy_preload_page();
 		if (
 			$this->has_onload_modal()
 			|| $hide_upgrade_modal
 			|| $whitelabel_hide_doc_link
-			|| ( $is_on_subsite_screen && ! $has_lazy_preload_page )
+            || ( $is_on_subsite_screen && ! $this->settings->has_lazy_preload_page() )
 		) {
 			$should_ignore_upgrade_modal = $whitelabel_hide_doc_link || $this->has_onload_modal( 'onboarding' );
 			if ( $should_ignore_upgrade_modal ) {
@@ -467,15 +466,14 @@ abstract class Abstract_Page {
 			return;
 		}
 
-		if ( $has_lazy_preload_page ) {
-			$cta_url = Helper::get_page_url( 'smush-lazy-preload' );
-		} else {
-			$cta_url = '';
-		}
+		$cta_url = WP_Smush::is_pro()
+			? Helper::get_page_url( 'smush-lazy-preload#lazyload-image-resizing-settings-row' )
+			: $this->get_utm_link( array( 'utm_campaign' => 'smush_welcome_modal_auto-resize' ), 'https://wpmudev.com/project/wp-smush-pro/' );
 
 		// Load new feature modal.
 		$this->modals['updated'] = array(
-			'cta_url' => $cta_url,
+			'cta_url'         => $cta_url,
+			'show_cta_button' => $this->settings->has_lazy_preload_page(),
 		);
 	}
 
@@ -1046,11 +1044,11 @@ abstract class Abstract_Page {
 	}
 
 	public static function should_show_new_feature_hotspot() {
-		return (bool) get_site_option( 'wp-smush-show-new-feature-hotspot' );
+		return (bool) get_option( 'wp-smush-show-new-feature-hotspot' );
 	}
 
 	public static function hide_new_feature_hotspot() {
 		// Hide the new feature hotspot.
-		delete_site_option( 'wp-smush-show-new-feature-hotspot' );
+		delete_option( 'wp-smush-show-new-feature-hotspot' );
 	}
 }

@@ -235,8 +235,7 @@ class Admin {
 			$using_free_version = 'wp-smush-pro/wp-smush.php' !== WP_SMUSH_BASENAME;
 			if ( $using_free_version ) {
 				$label = __( 'Upgrade to Smush Pro', 'wp-smushit' );
-				/* translators: %s: Discount percent */
-				$text = sprintf( __( 'Upgrade For %s Off!', 'wp-smushit' ), $this->get_plugin_discount() );
+				$text = __( 'SALE - Limited Offer', 'wp-smushit' );
 			} else {
 				$label = __( 'Renew Membership', 'wp-smushit' );
 				$text  = __( 'Renew Membership', 'wp-smushit' );
@@ -353,7 +352,7 @@ class Admin {
 			}
 
 			if ( ! WP_Smush::is_pro() ) {
-				new Pages\Upgrade( 'smush_submenu_upsell', __( 'Upgrade for 80% Off!', 'wp-smushit' ), 'smush', true );
+				new Pages\Upgrade( 'smush_submenu_upsell', __( 'SALE - Limited Offer', 'wp-smushit' ), 'smush', true );
 			}
 		}
 
@@ -651,17 +650,12 @@ class Admin {
 			),
 			'https://wpmudev.com/project/wp-smush-pro/'
 		);
-		$batches     = ceil( $remaining_count / Core::MAX_FREE_BULK );
-		/* translators: %s: Discount */
-		$discount_text = '<strong>' . sprintf( esc_html__( '%s off welcome discount available.', 'wp-smushit' ), $this->get_plugin_discount() ) . '</strong>';
 		return sprintf(
-		/* translators: 1: max free bulk limit, 2: Total batches to smush, 3: opening a tag, 4: closing a tag. */
-			esc_html__( 'Free users can only Bulk Smush %1$d images at one time. Smush in %2$d batches or %3$sBulk Smush unlimited images with Pro%4$s. %5$s', 'wp-smushit' ),
+			/* translators: 1: max free bulk limit, 2: opening a tag, 3: closing a tag. */
+			esc_html__( 'Free users can only Bulk Smush %1$d images at one time. Skip limits, save time. Bulk Smush unlimited images with Pro — %2$sOn Sale Now!%3$s', 'wp-smushit' ),
 			Core::MAX_FREE_BULK,
-			$batches,
 			'<a class="smush-upsell-link" target="_blank" href="' . $upgrade_url . '">',
-			'</a>',
-			$discount_text
+			'</a>'
 		);
 	}
 

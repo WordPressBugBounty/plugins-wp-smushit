@@ -319,16 +319,6 @@ class Core extends Stats {
 				'<a href="' . esc_url( $upgrade_url ) . '" target="_blank">',
 				'</a>'
 			),
-			'processing_cdn_for_free'     => sprintf(
-			/* translators: %d: Number of CDN PoP locations */
-				esc_html__( 'Want to serve images even faster? Get up to 2x more speed with Smush Pro’s CDN, which spans %d servers worldwide.', 'wp-smushit' ),
-				Admin::CDN_POP_LOCATIONS
-			),
-			'processed_cdn_for_free'      => sprintf(
-			/* translators: %d: Number of CDN PoP locations */
-				esc_html__( 'Let images reach your audience faster no matter where your hosting servers are. Smush Pro’s global CDN serves images closer to site visitors via %d worldwide server locations.', 'wp-smushit' ),
-				Admin::CDN_POP_LOCATIONS
-			),
 			'restore'                     => esc_html__( 'Restoring image...', 'wp-smushit' ),
 			'smushing'                    => esc_html__( 'Smushing image...', 'wp-smushit' ),
 			'btn_ignore'                  => esc_html__( 'Ignore', 'wp-smushit' ),

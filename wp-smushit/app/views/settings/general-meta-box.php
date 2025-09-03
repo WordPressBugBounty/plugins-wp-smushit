@@ -9,6 +9,7 @@
  * @var string $site_language     Site language.
  * @var bool   $tracking          Tracking status.
  * @var string $translation_link  Link to plugin translation page.
+ * @var $image_dimensions
  */
 
 if ( ! defined( 'WPINC' ) ) {

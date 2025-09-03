@@ -68,6 +68,7 @@ class Product_Analytics_Controller {
 		add_action( 'wp_smush_settings_deleted', array( $this, 'intercept_reset' ) );
 		add_action( 'wp_smush_settings_updated', array( $this, 'track_integrations_saved' ), 10, 2 );
 		add_action( 'wp_smush_settings_updated', array( $this, 'track_toggle_next_gen_fallback' ), 10, 2 );
+		add_action( 'wp_smush_settings_updated', array( $this, 'track_resizing_setting_update' ), 10, 2 );
 
 		add_action( 'wp_ajax_smush_track_deactivate', array( $this, 'ajax_track_deactivation_survey' ) );
 		add_action( 'wp_ajax_smush_analytics_track_event', array( $this, 'ajax_handle_track_request' ) );
@@ -163,13 +164,14 @@ class Product_Analytics_Controller {
 
 	public function get_bulk_properties() {
 		$bulk_property_labels = array(
-			'auto'       => 'Automatic Compression',
-			'strip_exif' => 'Metadata',
-			'resize'     => 'Resize Original Images',
-			'original'   => 'Compress original images',
-			'backup'     => 'Backup original images',
-			'png_to_jpg' => 'Auto-convert PNGs to JPEGs (lossy)',
-			'no_scale'   => 'Disable scaled images',
+			'auto'             => 'Automatic Compression',
+			'strip_exif'       => 'Metadata',
+			'resize'           => 'Resize Original Images',
+			'original'         => 'Compress original images',
+			'backup'           => 'Backup original images',
+			'png_to_jpg'       => 'Auto-convert PNGs to JPEGs (lossy)',
+			'no_scale'         => 'Disable scaled images',
+			'background_email' => 'Email notification',
 		);
 
 		$image_sizes     = Settings::get_instance()->get_setting( 'wp-smush-image_sizes' );
@@ -355,7 +357,7 @@ class Product_Analytics_Controller {
 	private function cdn_property_labels() {
 		return array(
 			'background_images' => 'Background Images',
-			'auto_resize'       => 'Automatic Resizing',
+			'cdn_dynamic_sizes' => 'Dynamic Image Sizing',
 			'rest_api_support'  => 'Rest API',
 		);
 	}
@@ -1200,16 +1202,52 @@ class Product_Analytics_Controller {
 		);
 	}
 
+	public function track_resizing_setting_update( $old_settings, $settings ) {
+		if ( empty( $settings['usage'] ) ) {
+			return;
+		}
+
+		$changed_settings  = $this->remove_unchanged_settings( $old_settings, $settings );
+		if ( 'Lazy Load' !== $this->identify_referrer() ) {
+			return;
+		}
+
+		$modified_settings = 'na';
+
+		if ( ! empty( $changed_settings ) ) {
+			$modified_settings_map = array(
+				'auto_resizing'    => 'auto_resizing',
+				'image_dimensions' => 'image_dimensions',
+			);
+
+			$modified_settings = array_intersect_key( $modified_settings_map, $changed_settings );
+			$modified_settings = ! empty( $modified_settings ) ? array_values( $modified_settings ) : 'na';
+		}
+
+		$properties = array(
+			'update_type'             => 'modify',
+			'modified_settings'        => $modified_settings,
+			'auto_resizing_status'    => $settings['auto_resizing'] ? 'Enabled' : 'Disabled',
+			'image_dimensions_status' => $settings['image_dimensions'] ? 'Enabled' : 'Disabled',
+		);
+		$this->track_lazy_load_updated(
+			$properties,
+			$this->settings->get_setting( 'wp-smush-lazy_load' )
+		);
+	}
+
 	private function track_lazy_load_updated( $properties, $settings ) {
 		$exclusion_enabled         = $this->is_lazy_load_exclusion_enabled( $settings );
 		$native_lazyload_enabled   = ! empty( $settings['native'] );
 		$noscript_fallback_enabled = ! empty( $settings['noscript_fallback'] );
 		$properties                = array_merge(
 			array(
-				'Location'           => $this->identify_referrer(),
-				'exclusions'         => $exclusion_enabled ? 'Enabled' : 'Disabled',
-				'native_lazy_status' => $native_lazyload_enabled ? 'Enabled' : 'Disabled',
-				'noscript_status'    => $noscript_fallback_enabled ? 'Enabled' : 'Disabled',
+				'Location'                => $this->identify_referrer(),
+				'exclusions'              => $exclusion_enabled ? 'Enabled' : 'Disabled',
+				'native_lazy_status'      => $native_lazyload_enabled ? 'Enabled' : 'Disabled',
+				'noscript_status'         => $noscript_fallback_enabled ? 'Enabled' : 'Disabled',
+				'auto_resizing_status'    => $this->settings->get( 'auto_resizing' ) ? 'Enabled' : 'Disabled',
+				'image_dimensions_status' => $this->settings->get( 'image_dimensions' ) ? 'Enabled' : 'Disabled',
 			),
 			$properties
 		);

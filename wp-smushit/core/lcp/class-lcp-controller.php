@@ -9,7 +9,7 @@ use Smush\Core\Settings;
 use WP_Error;
 
 class LCP_Controller extends Controller {
-	const LCP_TRANSFORM_PRIORITY = 25;
+	const LCP_TRANSFORM_PRIORITY = 30;
 	/**
 	 * @var Settings
 	 */

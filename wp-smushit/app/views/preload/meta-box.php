@@ -49,7 +49,6 @@ if ( ! defined( 'WPINC' ) ) {
 			</label>
 			<?php
 			if ( ! WP_Smush::is_pro() ) :
-				$discount    = WP_Smush::get_instance()->admin()->get_plugin_discount();
 				$upgrade_url = $this->get_utm_link(
 					array(
 						'utm_campaign' => 'smush_lazyload-preload_preload-critical-images',
@@ -60,8 +59,7 @@ if ( ! defined( 'WPINC' ) ) {
 				<a style="margin-left:44px;" class="smush-upsell-link" href="<?php echo esc_url( $upgrade_url ); ?>" target="_blank">
 				<strong>
 					<?php
-						/* translators: %s: Discount */
-						printf( esc_html__( 'Get %s OFF when you upgrade to Pro️', 'wp-smushit' ), $discount );
+						esc_html_e( 'Go Pro for Faster Load Times & Optimized LCP – On Sale Now!', 'wp-smushit' );
 					?>
 				</strong>
 				<span class="sui-icon-open-new-window" aria-hidden="true"></span>

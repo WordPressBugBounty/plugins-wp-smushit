@@ -814,7 +814,7 @@ class Smusher {
 				$original_code,
 				$original_message,
 				array(
-					'Smush Type'   => $this->get_type_label(),
+					'Smush Type'   => $this->get_type_label() == 'Avif' ? 'AVIF' : $this->get_type_label(),
 					'Time Elapsed' => $time_elapsed,
 				)
 			);

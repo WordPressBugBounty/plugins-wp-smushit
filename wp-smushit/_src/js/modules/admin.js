@@ -467,6 +467,24 @@ jQuery(function ($) {
 	$('#all-image-sizes').on('change', function () {
 		$('input[name^="wp-smush-image_sizes"]').prop('checked', true);
 	});
+	
+	/**
+	 * When 'All' is selected for the Media type, select all available media type.
+	 *
+	 * @since 3.21.0
+	 */
+	$('#all-media-type').on('change', function () {
+		$('.lazyload-media-type-input').prop('checked', true);
+	});
+	
+	/**
+	 * When 'All' is selected for the Output location, select all available location.
+	 *
+	 * @since 3.21.0
+	 */
+	$('#all-output-location').on('change', function () {
+		$('input[name^="output"]').prop('checked', true);
+	});
 
 	/**
 	 * Handles the tabs navigation on mobile.
