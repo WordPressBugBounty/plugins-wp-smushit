@@ -129,6 +129,10 @@ function SmushFetcher() {
 				});
 			},
 
+			remindReviewPrompt: () => {
+				return request( 'wp_smush_review_prompts_remind_later' );
+			},
+
 			/**
 			 * Hide the new features modal.
 			 *
@@ -180,6 +184,12 @@ function SmushFetcher() {
 			switchMethod: ( method ) => {
 				return request( 'webp_switch_method', { method } );
 			},
+		},
+
+		settings: {
+			disconnectSite: () => {
+				return request( 'wp_smush_disconnect_site' );
+			}
 		}
 	};
 

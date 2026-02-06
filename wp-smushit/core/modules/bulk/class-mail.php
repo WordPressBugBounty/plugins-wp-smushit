@@ -21,7 +21,7 @@ class Mail extends Helpers\Mail {
 	/**
 	 * Plugin id.
 	 */
-	const PLUGIN_ID = 912164;
+	private static $plugin_id = 912164;
 
 	/**
 	 * View class.
@@ -57,7 +57,7 @@ class Mail extends Helpers\Mail {
 	 */
 	protected function get_sender_name() {
 		if ( WP_Smush::is_pro() && $this->whitelabel->enabled() ) {
-			$plugin_label = $this->whitelabel->get_plugin_name( self::PLUGIN_ID );
+			$plugin_label = $this->whitelabel->get_plugin_name( self::$plugin_id );
 			if ( empty( $plugin_label ) ) {
 				$plugin_label = __( 'Bulk Compression', 'wp-smushit' );
 			}

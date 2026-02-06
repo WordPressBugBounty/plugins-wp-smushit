@@ -8,14 +8,14 @@ use Smush\Core\Settings;
 
 $next_gen_cdn_setting = $this->settings->get_cdn_next_gen_conversion_mode();
 $field_settings       = array(
-	'none' => Settings::NONE_CDN_MODE,
-	'webp' => Settings::WEBP_CDN_MODE,
-	'avif' => Settings::AVIF_CDN_MODE,
+	'none' => Settings::get_none_cdn_mode(),
+	'webp' => Settings::get_webp_cdn_mode(),
+	'avif' => Settings::get_avif_cdn_mode(),
 );
 $field_descriptions   = array(
-	Settings::NONE_CDN_MODE => __( 'When enabled, we’ll detect and serve next-gen images to browsers that will accept them by checking Accept Headers, and gracefully fall back to normal PNGs or JPEGs for non-compatible browsers.', 'wp-smushit' ),
-	Settings::WEBP_CDN_MODE => __( 'WebP: a modern image format that offers better compatibility across browsers. If a browser doesn’t support WebP, it will show the original image.', 'wp-smushit' ),
-	Settings::AVIF_CDN_MODE => __( 'AVIF: a newer image format that provides better compression, reducing file sizes while maintaining quality. If a browser doesn’t support AVIF, it will fall back to the original image.', 'wp-smushit' ),
+	Settings::get_none_cdn_mode() => __( 'When enabled, we’ll detect and serve next-gen images to browsers that will accept them by checking Accept Headers, and gracefully fall back to normal PNGs or JPEGs for non-compatible browsers.', 'wp-smushit' ),
+	Settings::get_webp_cdn_mode() => __( 'WebP: a modern image format that offers better compatibility across browsers. If a browser doesn’t support WebP, it will show the original image.', 'wp-smushit' ),
+	Settings::get_avif_cdn_mode() => __( 'AVIF: a newer image format that provides better compression, reducing file sizes while maintaining quality. If a browser doesn’t support AVIF, it will fall back to the original image.', 'wp-smushit' ),
 );
 
 ?>

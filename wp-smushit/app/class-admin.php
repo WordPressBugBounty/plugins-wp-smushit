@@ -13,6 +13,7 @@ use Smush\Core\Helper;
 use Smush\Core\Next_Gen\Next_Gen_Manager;
 use Smush\Core\Settings;
 use Smush\Core\Stats\Global_Stats;
+use Smush\Core\Membership\Membership;
 use WP_Smush;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -23,8 +24,12 @@ if ( ! defined( 'WPINC' ) ) {
  * Class Admin
  */
 class Admin {
-	const PLUGIN_DISCOUNT_PERCENT = 80;
-	const CDN_POP_LOCATIONS       = 123;
+	private static $plugin_discount_percent = 80;
+	private static $cdn_pop_locations = 123;
+	private static $review_prompts_option_key = 'wp-smush-review_prompt_next_show';
+	private static $review_prompts_min_images = 10;
+	private static $review_prompts_optimized_images_threshold = 100;
+	private static $review_prompts_optimization_failed_percent_threshold = 10;
 
 	/**
 	 * Plugin pages.
@@ -57,7 +62,7 @@ class Admin {
 	 *
 	 * @param Media_Library $media_lib  Media uploads library.
 	 */
-	public function __construct( Media_Library $media_lib ) {
+	public function __construct( $media_lib ) {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
 		add_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
@@ -95,6 +100,21 @@ class Admin {
 
 		// Deactivation survey.
 		add_action( 'admin_footer-plugins.php', array( $this, 'load_deactivation_survey_modal' ) );
+
+		add_action( 'all_admin_notices', array( $this, 'maybe_show_review_prompts' ) );
+	}
+
+	public static function get_cdn_pop_locations() {
+		return self::$cdn_pop_locations;
+	}
+
+	/**
+	 * Get review_prompts_option_key.
+	 *
+	 * @return mixed
+	 */
+	public static function get_review_prompts_option_key() {
+		return self::$review_prompts_option_key;
 	}
 
 	/**
@@ -235,7 +255,7 @@ class Admin {
 			$using_free_version = 'wp-smush-pro/wp-smush.php' !== WP_SMUSH_BASENAME;
 			if ( $using_free_version ) {
 				$label = __( 'Upgrade to Smush Pro', 'wp-smushit' );
-				$text = __( 'SALE - Limited Offer', 'wp-smushit' );
+				$text = __( 'Get Smush Pro', 'wp-smushit' );
 			} else {
 				$label = __( 'Renew Membership', 'wp-smushit' );
 				$text  = __( 'Renew Membership', 'wp-smushit' );
@@ -282,7 +302,7 @@ class Admin {
 		}
 
 		if ( 'wp-smush-pro/wp-smush.php' !== WP_SMUSH_BASENAME ) {
-			$links[] = '<a href="https://wordpress.org/support/plugin/wp-smushit/reviews/#new-post" target="_blank" title="' . esc_attr__( 'Rate Smush', 'wp-smushit' ) . '">' . esc_html__( 'Rate Smush', 'wp-smushit' ) . '</a>';
+			$links[] = '<a href="https://wordpress.org/support/plugin/wp-smushit/reviews/?filter=5#new-post" target="_blank" title="' . esc_attr__( 'Rate Smush', 'wp-smushit' ) . '">' . esc_html__( 'Rate Smush', 'wp-smushit' ) . '</a>';
 			$links[] = '<a href="https://wordpress.org/support/plugin/wp-smushit/" target="_blank" title="' . esc_attr__( 'Support', 'wp-smushit' ) . '">' . esc_html__( 'Support', 'wp-smushit' ) . '</a>';
 		} else {
 			if ( isset( $links[2] ) && false !== strpos( $links[2], 'project/wp-smush-pro' ) ) {
@@ -303,7 +323,7 @@ class Admin {
 		);
 		$links[]      = '<a href="' . esc_url( $roadmap_link ) . '" target="_blank" title="' . esc_attr__( 'Roadmap', 'wp-smushit' ) . '">' . esc_html__( 'Roadmap', 'wp-smushit' ) . '</a>';
 
-		$links[] = '<a class="wp-smush-review" href="https://wordpress.org/support/plugin/wp-smushit/reviews#new-post" target="_blank" rel="noopener noreferrer" title="' . esc_attr__( 'Rate our plugin', 'wp-smushit' ) . '">
+		$links[] = '<a class="wp-smush-review" href="https://wordpress.org/support/plugin/wp-smushit/reviews/?filter=5#new-post" target="_blank" rel="noopener noreferrer" title="' . esc_attr__( 'Rate our plugin', 'wp-smushit' ) . '">
 					<span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>
 					</a>';
 
@@ -326,11 +346,7 @@ class Admin {
 				$this->pages['bulk'] = new Pages\Bulk( 'smush-bulk', __( 'Bulk Smush', 'wp-smushit' ), 'smush' );
 			}
 
-			if ( Abstract_Page::should_render( 'directory' ) ) {
-				$this->pages['directory'] = new Pages\Directory( 'smush-directory', __( 'Directory Smush', 'wp-smushit' ), 'smush' );
-			}
-
-			if ( Abstract_Page::should_render( Settings::LAZY_PRELOAD_MODULE_NAME ) ) {
+			if ( Abstract_Page::should_render( Settings::get_lazy_preload_module_name() ) ) {
 				$pro_feature_ripple_effect   = Abstract_Page::should_show_new_feature_hotspot() ? '<span class="smush-new-feature-dot"></span>' : '';
 				$this->pages['lazy-preload'] = new Pages\Lazy_Preload( 'smush-lazy-preload', __( 'Lazy Load & Preload', 'wp-smushit' ) . $pro_feature_ripple_effect, 'smush' );
 			}
@@ -352,7 +368,7 @@ class Admin {
 			}
 
 			if ( ! WP_Smush::is_pro() ) {
-				new Pages\Upgrade( 'smush_submenu_upsell', __( 'SALE - Limited Offer', 'wp-smushit' ), 'smush', true );
+				new Pages\Upgrade( 'smush_submenu_upsell', __( 'Get Smush Pro', 'wp-smushit' ), 'smush', true );
 			}
 		}
 
@@ -638,7 +654,7 @@ class Admin {
 
 	private function generate_bulk_limit_message_for_free( $remaining_count ) {
 		$dont_limit = WP_Smush::get_instance()->core()->mod->bg_optimization->can_use_background();
-		if ( $dont_limit || $remaining_count < Core::MAX_FREE_BULK ) {
+		if ( $dont_limit || $remaining_count < Core::get_max_free_bulk() ) {
 			return '';
 		}
 
@@ -652,8 +668,8 @@ class Admin {
 		);
 		return sprintf(
 			/* translators: 1: max free bulk limit, 2: opening a tag, 3: closing a tag. */
-			esc_html__( 'Free users can only Bulk Smush %1$d images at one time. Skip limits, save time. Bulk Smush unlimited images with Pro — %2$sOn Sale Now!%3$s', 'wp-smushit' ),
-			Core::MAX_FREE_BULK,
+			esc_html__( 'Free users can only Bulk Smush %1$d images at one time. Skip limits, save time. Bulk Smush unlimited images — %2$sGet Smush Pro%3$s', 'wp-smushit' ),
+			Core::get_max_free_bulk(),
 			'<a class="smush-upsell-link" target="_blank" href="' . $upgrade_url . '">',
 			'</a>'
 		);
@@ -811,7 +827,7 @@ class Admin {
 	}
 
 	public function get_plugin_discount() {
-		return self::PLUGIN_DISCOUNT_PERCENT . '%';
+		return self::$plugin_discount_percent . '%';
 	}
 
 	public function load_deactivation_survey_modal() {
@@ -824,5 +840,204 @@ class Admin {
 		include $deactivation_survey_template_file;
 		// Everything escaped in all template files.
 		echo ob_get_clean(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * Get the notice for reminding later.
+	 */
+	public function maybe_show_review_prompts() {
+		$current_screen = get_current_screen();
+		$is_smush_page  = strpos( $current_screen->id, 'page_smush' ) !== false || strpos( $current_screen->id, 'smush_page' ) !== false;
+		if ( ! $is_smush_page ) {
+			return false;
+		}
+
+		if ( ! $this->should_show_review_prompts() ) {
+			return;
+		}
+
+		?>
+		<style>
+			#smush-review-prompts-notice{min-width:320px;padding:6px 20px 6px 12px;display:flex;gap:15px;align-items:center;}#smush-review-prompts-notice #smush-review-prompts-actions{margin-left:2px;margin-top:6px;display:flex;gap:10px;align-items:center;}#smush-review-prompts-notice h3{font-size:15px;margin:0 0 5px 0;}#smush-review-prompts-notice a{text-decoration:none;}#smush-review-prompts-notice a#smush-review-prompts-already-did{border:none;}#smush-review-prompts-notice p{letter-spacing:-0.25px;}#smush-review-prompts-notice .notice-dismiss{display: none;}@media screen and (min-width:1792px) {#smush-review-prompts-notice[data-notice-type="smushed_hundred_images"] .smush-review-prompts-notice-logo img{max-width:95px}}@media screen and (max-width: 600px) {#smush-review-prompts-notice{ display:block; }#smush-review-prompts-notice img{display:none;}#smush-review-prompts-notice .button{font-size:12px;min-height: 32px;padding: 0 10px;}}@media screen and (max-width:860px) { #smush-review-prompts-notice p br{ display:none; } }
+		</style>
+		<?php
+
+		$next_review_prompt = get_option( self::$review_prompts_option_key, array() );
+		if ( ! empty( $next_review_prompt['type'] ) ) {
+			return 'all_optimized' === $next_review_prompt['type'] ? $this->get_all_optimized_images_notice() : $this->get_remind_later_notice();
+		}
+
+		$global_stats = Global_Stats::get();
+
+		$optimized_count = $global_stats->get_total_optimizable_items_count() - $global_stats->get_remaining_count();
+		if ( $optimized_count >= self::$review_prompts_optimized_images_threshold ) {
+			return $this->get_optimized_images_notice( $optimized_count );
+		}
+
+		// Store the prompt state to continue showing the notice when new images are uploaded on small sites.
+		update_option(
+			self::$review_prompts_option_key,
+			array(
+				'time' => time() - 1,
+				'type' => 'all_optimized',
+			)
+		);
+
+		return $this->get_all_optimized_images_notice();
+	}
+
+	/**
+	 * Check if the review prompts should be shown.
+	 *
+	 * @return bool
+	 */
+	private function should_show_review_prompts() {
+		$membership = Membership::get_instance();
+		if ( $membership->is_pro() || $membership->is_api_hub_access_required() ) {
+			return false;
+		}
+
+		if ( $this->is_notice_dismissed( 'review-prompts' ) ) {
+			return false;
+		}
+		$global_stats = Global_Stats::get();
+
+		$image_count = $global_stats->get_image_attachment_count();
+		if ( $image_count < self::$review_prompts_min_images ) {
+			return false;
+		}
+
+		$percent_failed = $global_stats->get_optimization_failed_percent();
+		if ( $percent_failed >= self::$review_prompts_optimization_failed_percent_threshold ) {
+			return false;
+		}
+
+		$next_review_prompt = get_option( self::$review_prompts_option_key, array() );
+		$current_time       = isset( $_GET['smush-current-time'] ) ? (int) $_GET['smush-current-time'] : time();
+		if ( ! empty( $next_review_prompt['time'] ) ) {
+			return $current_time >= (int) $next_review_prompt['time'];
+		}
+
+		$percent_optimized   = $global_stats->get_percent_optimized();
+		$all_image_optimized = $percent_optimized >= 100;
+		if ( $all_image_optimized ) {
+			return true;
+		}
+
+		$optimized_count = $global_stats->get_total_optimizable_items_count() - $global_stats->get_remaining_count();
+
+		return $optimized_count >= self::$review_prompts_optimized_images_threshold;
+	}
+
+	/**
+	 * Get the notice for optimized images.
+	 *
+	 * @param int $optimized_count Number of optimized images.
+	 * @return void
+	 */
+	private function get_optimized_images_notice( $optimized_count ) {
+		?>
+		<div id="smush-review-prompts-notice" class="notice notice-info is-dismissible" data-notice-type="smushed_hundred_images">
+			<div class="smush-review-prompts-notice-logo">
+				<img
+					style="margin-top:-2px;margin-bottom:-3px"
+					src="<?php echo esc_url( WP_SMUSH_URL . 'app/assets/images/notices/review-prompts-icon.png' ); ?>"
+					srcset="<?php echo esc_url( WP_SMUSH_URL . 'app/assets/images/notices/review-prompts-icon@2x.png' ); ?> 2x"
+					alt="<?php esc_html_e( 'Smush review prompts icon', 'wp-smushit' ); ?>"
+				>
+			</div>
+			<div class="smush-review-prompts-notice-message">
+				<h3>
+				<?php
+					/* translators: %d: optimized images count */
+					printf( esc_html__( 'You’ve optimized %d images! 🎉', 'wp-smushit' ), (int) $optimized_count );
+				?>
+				</h3>
+				<p><?php esc_html_e( 'Seeing faster speeds? We’d really appreciate a quick review. It keeps us growing and helps more WordPress users discover Smush.', 'wp-smushit' ); ?></p>
+				<div id="smush-review-prompts-actions">
+					<a target="_blank" href="https://wordpress.org/support/plugin/wp-smushit/reviews/?filter=5#new-post"
+					class="button button-small button-primary"><?php esc_html_e( 'Rate Smush', 'wp-smushit' ); ?></a>
+					<span id="smush-review-prompts-remind-later" class="button button-small" style="background-color: transparent;"><?php esc_html_e( 'Remind me later', 'wp-smushit' ); ?></span>
+					<span id="smush-review-prompts-already-did" class="button button-small" style="box-shadow:unset!important;background-color: transparent;" href="#"><?php esc_html_e( 'I already did', 'wp-smushit' ); ?></span>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Get the notice for all optimized images.
+	 *
+	 * @return void
+	 */
+	private function get_all_optimized_images_notice() {
+		?>
+		<div id="smush-review-prompts-notice"
+			class="notice notice-info is-dismissible"
+			style="padding-top:12px;padding-bottom:12px;"
+			data-notice-type="all_images_optimized">
+			<div class="smush-review-prompts-notice-logo">
+				<img
+					style="margin-top:-2px;margin-bottom:-3px"
+					src="<?php echo esc_url( WP_SMUSH_URL . 'app/assets/images/notices/review-prompts-icon.png' ); ?>"
+					srcset="<?php echo esc_url( WP_SMUSH_URL . 'app/assets/images/notices/review-prompts-icon@2x.png' ); ?> 2x"
+					alt="<?php esc_html_e( 'Smush review prompts icon', 'wp-smushit' ); ?>"
+				>
+			</div>
+			<div class="smush-review-prompts-notice-message">
+				<h3><?php esc_html_e( '100% of your images are now optimized! 🎉', 'wp-smushit' ); ?></h3>
+				<p>
+					<?php
+					printf(
+						/* translators: 1: <br>, 2: Open the link <a>, 3: Close the link </a> */
+						esc_html__( 'Your site’s faster and lighter than ever. Plus, Smush will keep every new image optimized, free for life. %1$sHappy with the results? Share the love with a 5-star review on %2$sWordPress.org%3$s.', 'wp-smushit' ),
+						'<br>',
+						'<a href="https://wordpress.org/support/plugin/wp-smushit/reviews/?filter=5#new-post" target="_blank">',
+						'</a>'
+					);
+					?>
+				</p>
+				<div id="smush-review-prompts-actions">
+					<a target="_blank" href="https://wordpress.org/support/plugin/wp-smushit/reviews/?filter=5#new-post"
+					class="button button-small button-primary"><?php esc_html_e( 'Rate Smush', 'wp-smushit' ); ?></a>
+					<span id="smush-review-prompts-remind-later" class="button button-small" style="background-color: transparent;"><?php esc_html_e( 'Remind me later', 'wp-smushit' ); ?></span>
+					<span id="smush-review-prompts-already-did" class="button button-small" style="box-shadow:unset!important;background-color: transparent;"><?php esc_html_e( 'I already did', 'wp-smushit' ); ?></span>
+				</div>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Get the notice for reminding later.
+	 *
+	 * @return void
+	 */
+	private function get_remind_later_notice() {
+		?>
+		<div id="smush-review-prompts-notice"
+			class="notice notice-info is-dismissible"
+			style="padding-top:8px;padding-bottom:10px;"
+			data-notice-type="seven_days">
+			<div class="smush-review-prompts-notice-logo">
+				<img
+					style="margin-top:-2px;margin-bottom:-3px"
+					src="<?php echo esc_url( WP_SMUSH_URL . 'app/assets/images/notices/review-prompts-icon.png' ); ?>"
+					srcset="<?php echo esc_url( WP_SMUSH_URL . 'app/assets/images/notices/review-prompts-icon@2x.png' ); ?> 2x"
+					alt="<?php esc_html_e( 'Smush review prompts icon', 'wp-smushit' ); ?>"
+				>
+			</div>
+			<div class="smush-review-prompts-notice-message">
+				<h3><?php esc_html_e( 'Thanks for choosing Smush! 💙', 'wp-smushit' ); ?></h3>
+				<p><?php esc_html_e( 'If your site’s feeling faster, we’d be so grateful for a quick 5-star review. It really helps us out!', 'wp-smushit' ); ?></p>
+				<div id="smush-review-prompts-actions">
+					<a target="_blank" href="https://wordpress.org/support/plugin/wp-smushit/reviews/?filter=5#new-post"
+					class="button button-small button-primary"><?php esc_html_e( 'Rate Smush', 'wp-smushit' ); ?></a>
+					<span id="smush-review-prompts-remind-later" class="button button-small" style="background-color: transparent;"><?php esc_html_e( 'Remind me later', 'wp-smushit' ); ?></span>
+					<span id="smush-review-prompts-already-did" class="button button-small" style="box-shadow:unset!important;background-color: transparent;"><?php esc_html_e( 'I already did', 'wp-smushit' ); ?></span>
+				</div>
+			</div>
+		</div>
+		<?php
 	}
 }

@@ -30,7 +30,7 @@
 <?php
 $bg_optimization        = WP_Smush::get_instance()->core()->mod->bg_optimization;
 $show_bulk_limit_notice = ! $bg_optimization->can_use_background();
-if ( $show_bulk_limit_notice && $uncompressed > \Smush\Core\Core::MAX_FREE_BULK ) : ?>
+if ( $show_bulk_limit_notice && $uncompressed > \Smush\Core\Core::get_max_free_bulk() ) : ?>
     <div class="sui-notice sui-notice-upsell">
         <div class="sui-notice-content">
             <div class="sui-notice-message">
@@ -41,7 +41,7 @@ if ( $show_bulk_limit_notice && $uncompressed > \Smush\Core\Core::MAX_FREE_BULK 
                         esc_html__( '%1$sUpgrade to Pro%2$s to bulk smush all images in one click. Free users can smush %3$s images per batch.', 'wp-smushit' ),
                         '<a href="' . esc_url( $upsell_url ) . '" target="_blank" class="smush-upsell-link">',
                         '</a>',
-                        (int) \Smush\Core\Core::MAX_FREE_BULK
+                        (int) \Smush\Core\Core::get_max_free_bulk()
                     );
                     ?>
                 </p>

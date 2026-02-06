@@ -5,9 +5,9 @@ namespace Smush\Core\Modules\Bulk;
 use Smush\Core\Modules\Background\Mutex;
 
 class Background_Process_Manager {
-	const ACTIVE_PROCESSES_EXPIRATION = DAY_IN_SECONDS;
-	const ACTIVE_PROCESSES_KEY = 'wp_smush_bulk_smush_active_processes';
-	const MAX_TASKS_PER_REQUEST = 8;
+	private static $active_processes_expiration = DAY_IN_SECONDS;
+	private static $active_processes_key = 'wp_smush_bulk_smush_active_processes';
+	private static $max_tasks_per_request = 8;
 
 	private $is_multisite;
 	private $current_site_id;
@@ -54,7 +54,7 @@ class Background_Process_Manager {
 	}
 
 	private function get_active_processes() {
-		$active_processes = get_site_transient( self::ACTIVE_PROCESSES_KEY );
+		$active_processes = get_site_transient( self::$active_processes_key );
 
 		return empty( $active_processes ) || ! is_array( $active_processes )
 			? array()
@@ -62,7 +62,7 @@ class Background_Process_Manager {
 	}
 
 	private function mutex( $operation ) {
-		$mutex = new Mutex( self::ACTIVE_PROCESSES_KEY );
+		$mutex = new Mutex( self::$active_processes_key );
 		$mutex->execute( $operation );
 	}
 
@@ -84,9 +84,9 @@ class Background_Process_Manager {
 
 	private function set_active_processes( $active_processes ) {
 		set_site_transient(
-			self::ACTIVE_PROCESSES_KEY,
+			self::$active_processes_key,
 			array_unique( $active_processes ),
-			self::ACTIVE_PROCESSES_EXPIRATION
+			self::$active_processes_expiration
 		);
 	}
 
@@ -98,7 +98,7 @@ class Background_Process_Manager {
 		}
 
 		// Divide the available slots between the active processes
-		$tasks_per_request = intval( floor( self::MAX_TASKS_PER_REQUEST / $active_processes_count ) );
+		$tasks_per_request = intval( floor( self::$max_tasks_per_request / $active_processes_count ) );
 
 		// At least 1 task per request
 		return max( $tasks_per_request, 1 );

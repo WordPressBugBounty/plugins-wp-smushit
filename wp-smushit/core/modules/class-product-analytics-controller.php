@@ -5,12 +5,14 @@ namespace Smush\Core\Modules;
 use Smush\Core\Array_Utils;
 use Smush\Core\CDN\CDN_Helper;
 use Smush\Core\Helper;
+use Smush\Core\Hub_Connector;
 use Smush\Core\Media\Media_Item_Cache;
 use Smush\Core\Media\Media_Item_Query;
 use Smush\Core\Media_Library\Background_Media_Library_Scanner;
 use Smush\Core\Media_Library\Media_Library_Last_Process;
 use Smush\Core\Media_Library\Media_Library_Scan_Background_Process;
 use Smush\Core\Media_Library\Media_Library_Scanner;
+use Smush\Core\Membership\Membership;
 use Smush\Core\Modules\Background\Background_Pre_Flight_Controller;
 use Smush\Core\Modules\Background\Background_Process;
 use Smush\Core\Next_Gen\Next_Gen_Manager;
@@ -51,12 +53,18 @@ class Product_Analytics_Controller {
 	 */
 	private $next_gen_manager;
 
+	/**
+	 * @var Array_Utils
+	 */
+	private $array_utils;
+
 	public function __construct() {
 		$this->settings                   = Settings::get_instance();
 		$this->scan_background_process    = Background_Media_Library_Scanner::get_instance()->get_background_process();
 		$this->media_library_last_process = Media_Library_Last_Process::get_instance();
 		$this->product_analytics          = Product_Analytics::get_instance();
 		$this->next_gen_manager           = Next_Gen_Manager::get_instance();
+		$this->array_utils                = new Array_Utils();
 
 		$this->hook_actions();
 	}
@@ -115,6 +123,8 @@ class Product_Analytics_Controller {
 		add_action( 'wp_smush_bulk_smush_stuck', array( $this, 'track_bulk_smush_progress_stuck' ) );
 
 		add_action( 'wp_smush_lazy_load_updated', array( $this, 'track_lazy_load_settings_updated' ), 10, 2 );
+
+		add_action( 'wp_smush_bulk_restore_completed', array( $this, 'track_bulk_restore_completed' ) );
 	}
 
 	private function track( $event, $properties = array() ) {
@@ -135,7 +145,7 @@ class Product_Analytics_Controller {
 		}
 	}
 
-	private function maybe_track_feature_toggle( array $settings ) {
+	private function maybe_track_feature_toggle( $settings ) {
 		$has_tracked = false;
 		foreach ( $settings as $setting_key => $setting_value ) {
 			$handler = "track_{$setting_key}_feature_toggle";
@@ -150,10 +160,20 @@ class Product_Analytics_Controller {
 	}
 
 	private function remove_unchanged_settings( $old_settings, $settings ) {
+		$default_settings  = $this->settings->get_defaults();
+		$not_null_callback = function ( $value ) {
+			return ! is_null( $value );
+		};
+
+		$old_settings = array_filter( $old_settings, $not_null_callback );
+		$old_settings = array_merge( $default_settings, $old_settings );
+
+		$settings = array_filter( $settings, $not_null_callback );
+		$settings = array_merge( $default_settings, $settings );
+
 		$changed = array();
 		foreach ( $settings as $setting_key => $setting_value ) {
 			$old_setting_value = isset( $old_settings[ $setting_key ] ) ? $old_settings[ $setting_key ] : '';
-			$setting_value     = isset( $setting_value ) ? $setting_value : '';
 			if ( $old_setting_value !== $setting_value ) {
 				$changed[ $setting_key ] = $setting_value;
 			}
@@ -196,7 +216,7 @@ class Product_Analytics_Controller {
 		return defined( 'WP_SMUSH_PARALLEL' ) && WP_SMUSH_PARALLEL ? 'Enabled' : 'Disabled';
 	}
 
-	private function get_smush_type(): string {
+	private function get_smush_type() {
 		if ( $this->settings->is_webp_module_active() ) {
 			return 'WebP';
 		}
@@ -211,12 +231,12 @@ class Product_Analytics_Controller {
 	private function get_current_lossy_level_label() {
 		$lossy_level = $this->settings->get_lossy_level_setting();
 		$smush_modes = array(
-			Settings::LEVEL_LOSSLESS    => 'Basic',
-			Settings::LEVEL_SUPER_LOSSY => 'Super',
-			Settings::LEVEL_ULTRA_LOSSY => 'Ultra',
+			Settings::get_level_lossless()    => 'Basic',
+			Settings::get_level_super_lossy() => 'Super',
+			Settings::get_level_ultra_lossy() => 'Ultra',
 		);
 		if ( ! isset( $smush_modes[ $lossy_level ] ) ) {
-			$lossy_level = Settings::LEVEL_LOSSLESS;
+			$lossy_level = Settings::get_level_lossless();
 		}
 
 		return $smush_modes[ $lossy_level ];
@@ -298,7 +318,8 @@ class Product_Analytics_Controller {
 	}
 
 	private function identify_referrer() {
-		$onboarding_request = ! empty( $_REQUEST['action'] ) && 'smush_setup' === $_REQUEST['action'];
+		$wizard_setup_actions = array( 'smush_setup', 'smush_free_setup' );
+		$onboarding_request   = ! empty( $_REQUEST['action'] ) && in_array( $_REQUEST['action'], $wizard_setup_actions, true );
 		if ( $onboarding_request ) {
 			return 'Wizard';
 		}
@@ -307,7 +328,6 @@ class Product_Analytics_Controller {
 		$triggered_from = array(
 			'smush'              => 'Dashboard',
 			'smush-bulk'         => 'Bulk Smush',
-			'smush-directory'    => 'Directory Smush',
 			'smush-lazy-preload' => 'Lazy Load',
 			'smush-cdn'          => 'CDN',
 			'smush-next-gen'     => 'Next-Gen Formats',
@@ -331,15 +351,15 @@ class Product_Analytics_Controller {
 			}
 		}
 
-		if ( isset( $settings[ Settings::NEXT_GEN_CDN_KEY ] ) ) {
-			$cdn_next_gen_conversions_mode = $this->settings->sanitize_cdn_next_gen_conversion_mode( $settings[ Settings::NEXT_GEN_CDN_KEY ] );
+		if ( isset( $settings[ Settings::get_next_gen_cdn_key() ] ) ) {
+			$cdn_next_gen_conversions_mode = $this->settings->sanitize_cdn_next_gen_conversion_mode( $settings[ Settings::get_next_gen_cdn_key() ] );
 			$cdn_next_gen_conversions      = array(
-				Settings::NONE_CDN_MODE => 'None',
-				Settings::WEBP_CDN_MODE => 'WebP',
-				Settings::AVIF_CDN_MODE => 'AVIF',
+				Settings::get_none_cdn_mode() => 'None',
+				Settings::get_webp_cdn_mode() => 'WebP',
+				Settings::get_avif_cdn_mode() => 'AVIF',
 			);
 			if ( ! isset( $cdn_next_gen_conversions[ $cdn_next_gen_conversions_mode ] ) ) {
-				$cdn_next_gen_conversions_mode = Settings::NONE_CDN_MODE;
+				$cdn_next_gen_conversions_mode = Settings::get_none_cdn_mode();
 			}
 
 			$cdn_properties['Next-Gen Conversions'] = $cdn_next_gen_conversions[ $cdn_next_gen_conversions_mode ];
@@ -428,15 +448,14 @@ class Product_Analytics_Controller {
 
 	private function get_bulk_smush_stats() {
 		$global_stats = WP_Smush::get_instance()->core()->get_global_stats();
-		$array_util   = new Array_Utils();
 
 		return array(
-			'Total Savings'                 => $this->convert_to_megabytes( (int) $array_util->get_array_value( $global_stats, 'savings_bytes' ) ),
-			'Total Images'                  => (int) $array_util->get_array_value( $global_stats, 'count_images' ),
-			'Media Optimization Percentage' => (float) $array_util->get_array_value( $global_stats, 'percent_optimized' ),
-			'Percentage of Savings'         => (float) $array_util->get_array_value( $global_stats, 'savings_percent' ),
-			'Images Resized'                => (int) $array_util->get_array_value( $global_stats, 'count_resize' ),
-			'Resize Savings'                => $this->convert_to_megabytes( (int) $array_util->get_array_value( $global_stats, 'savings_resize' ) ),
+			'Total Savings'                 => $this->convert_to_megabytes( (int) $this->array_utils->get_array_value( $global_stats, 'savings_bytes' ) ),
+			'Total Images'                  => (int) $this->array_utils->get_array_value( $global_stats, 'count_images' ),
+			'Media Optimization Percentage' => (float) $this->array_utils->get_array_value( $global_stats, 'percent_optimized' ),
+			'Percentage of Savings'         => (float) $this->array_utils->get_array_value( $global_stats, 'savings_percent' ),
+			'Images Resized'                => (int) $this->array_utils->get_array_value( $global_stats, 'count_resize' ),
+			'Resize Savings'                => $this->convert_to_megabytes( (int) $this->array_utils->get_array_value( $global_stats, 'savings_resize' ) ),
 		);
 	}
 
@@ -828,7 +847,7 @@ class Product_Analytics_Controller {
 		$active_format_configuration = $this->next_gen_manager->get_active_format_configuration();
 		$next_gen_status_notice      = $this->get_next_gen_status_notice();
 		$next_gen_method             = 'avif_direct';
-		if ( Webp_Configuration::FORMAT_KEY === $active_format_configuration->get_format_key() ) {
+		if ( Webp_Configuration::get_format_key() === $active_format_configuration->get_format_key() ) {
 			// Directly check webp_direct_conversion option to identify webp method even webp module is disabled.
 			$direct_conversion_enabled = $this->settings->get( 'webp_direct_conversion' );
 			$next_gen_method           = $direct_conversion_enabled ? 'webp_direct' : 'webp_server';
@@ -989,7 +1008,9 @@ class Product_Analytics_Controller {
 	private function allow_to_track( $event_name, $properties ) {
 		$trackable_events   = array(
 			'Setup Wizard'     => true,
+			'Setup Wizard New' => true,
 			'smush_pro_upsell' => isset( $properties['Location'] ) && 'wizard' === $properties['Location'],
+			'Disconnect Site'  => true,
 		);
 		$is_trackable_event = ! empty( $trackable_events[ $event_name ] );
 
@@ -1108,8 +1129,9 @@ class Product_Analytics_Controller {
 		$properties = array_merge(
 			$properties,
 			array(
-				'active_features' => $this->get_active_features(),
-				'active_plugins'  => $this->get_active_plugins(),
+				'active_features'      => $this->get_active_features(),
+				'active_plugins'       => $this->get_active_plugins(),
+				'Smush API Connection' => $this->get_api_connection_status(),
 			)
 		);
 
@@ -1119,6 +1141,18 @@ class Product_Analytics_Controller {
 		);
 
 		wp_send_json_success();
+	}
+
+	private function get_api_connection_status() {
+		if ( Hub_Connector::is_logged_in() ) {
+			return 'connected';
+		}
+
+		if ( Membership::get_instance()->is_api_hub_access_required() ) {
+			return 'disconnected';
+		}
+
+		return 'na';
 	}
 
 	private function get_active_features() {
@@ -1135,9 +1169,9 @@ class Product_Analytics_Controller {
 			'avif'             => $avif_module_activated,
 			'webp_direct'      => $webp_direct_activated,
 			'webp_server'      => $webp_server_activated,
-			'smush_basic'      => Settings::LEVEL_LOSSLESS === $lossy_level,
-			'smush_super'      => Settings::LEVEL_SUPER_LOSSY === $lossy_level,
-			'smush_ultra'      => Settings::LEVEL_ULTRA_LOSSY === $lossy_level,
+			'smush_basic'      => Settings::get_level_lossless() === $lossy_level,
+			'smush_super'      => Settings::get_level_super_lossy() === $lossy_level,
+			'smush_ultra'      => Settings::get_level_ultra_lossy() === $lossy_level,
 			's3_offload'       => $this->settings->is_s3_active(),
 			'wp_bakery'        => $this->settings->get( 'js_builder' ),
 			'gravity_forms'    => $this->settings->get( 'gform' ),
@@ -1240,9 +1274,13 @@ class Product_Analytics_Controller {
 		$exclusion_enabled         = $this->is_lazy_load_exclusion_enabled( $settings );
 		$native_lazyload_enabled   = ! empty( $settings['native'] );
 		$noscript_fallback_enabled = ! empty( $settings['noscript_fallback'] );
+		$embed_content             = empty( $settings['format']['iframe'] )
+			? 'Disabled'
+			: ( empty( $settings['format']['embed_video'] ) ? 'Enabled' : 'Preview Images' );
 		$properties                = array_merge(
 			array(
 				'Location'                => $this->identify_referrer(),
+				'embed_content'           => $embed_content,
 				'exclusions'              => $exclusion_enabled ? 'Enabled' : 'Disabled',
 				'native_lazy_status'      => $native_lazyload_enabled ? 'Enabled' : 'Disabled',
 				'noscript_status'         => $noscript_fallback_enabled ? 'Enabled' : 'Disabled',
@@ -1268,5 +1306,40 @@ class Product_Analytics_Controller {
 
 		// By default, we activated for all post types, so this option is changed when any post type is unchecked.
 		return in_array( false, $included_post_types, true );
+	}
+
+	/**
+	 * Track the completion of a bulk restore process.
+	 *
+	 * @param array $args Restore arguments.
+	 */
+	public function track_bulk_restore_completed( $args ) {
+		$this->track(
+			'Bulk Restore Triggered',
+			$this->filter_bulk_restore_triggered_properties(
+				array(
+					'Type'                  => 'Bulk',
+					'Total images restored' => (int) $this->array_utils->get_array_value( $args, 'restored_count', 0 ),
+					'Total images'          => (int) $this->array_utils->get_array_value( $args, 'total_count', 0 ),
+					'Backup not found'      => (int) $this->array_utils->get_array_value( $args, 'missing_backup_count', 0 ),
+				)
+			)
+		);
+	}
+
+	/**
+	 * Filter the properties for the bulk restore triggered event.
+	 *
+	 * @param mixed $properties Properties.
+	 *
+	 * @return array
+	 */
+	public function filter_bulk_restore_triggered_properties( $properties ) {
+		return array_merge(
+			$properties,
+			array(
+				'Backup Status' => $this->settings->is_backup_active() ? 'Enabled' : 'Disabled',
+			)
+		);
 	}
 }

@@ -107,7 +107,7 @@ class Configs {
 				'configs' => array(
 					'settings' => array(
 						'auto'              => true,
-						'lossy'             => Settings::LEVEL_SUPER_LOSSY,
+						'lossy'             => Settings::get_level_super_lossy(),
 						'strip_exif'        => true,
 						'resize'            => false,
 						'detection'         => false,
@@ -483,8 +483,8 @@ class Configs {
 				$sanitized['settings']['lossy'] = $this->settings->sanitize_lossy_level( $config['settings']['lossy'] );
 			}
 
-			if ( isset( $config['settings'][ Settings::NEXT_GEN_CDN_KEY ] ) ) {
-				$sanitized['settings'][ Settings::NEXT_GEN_CDN_KEY ] = $this->settings->sanitize_cdn_next_gen_conversion_mode( $config['settings'][ Settings::NEXT_GEN_CDN_KEY ] );
+			if ( isset( $config['settings'][ Settings::get_next_gen_cdn_key() ] ) ) {
+				$sanitized['settings'][ Settings::get_next_gen_cdn_key() ] = $this->settings->sanitize_cdn_next_gen_conversion_mode( $config['settings'][ Settings::get_next_gen_cdn_key() ] );
 			}
 		}
 
@@ -556,7 +556,7 @@ class Configs {
 		$lazy_load_fields    = Settings::get_instance()->get_lazy_load_fields();
 		$preload_fields      = Settings::get_instance()->get_preload_fields();
 		$lazy_preload_fields = array_merge( $lazy_load_fields, $preload_fields );
-		$lazy_preload_module = Settings::LAZY_PRELOAD_MODULE_NAME;
+		$lazy_preload_module = Settings::get_lazy_preload_module_name();
 		$settings_data       = array(
 			'bulk_smush'         => Settings::get_instance()->get_bulk_fields(),
 			$lazy_preload_module => $lazy_preload_fields,
@@ -688,7 +688,7 @@ class Configs {
 					continue;
 				}
 
-				if ( Settings::NEXT_GEN_CDN_KEY === $name ) {
+				if ( Settings::get_next_gen_cdn_key() === $name ) {
 					$formatted_rows[] = $label . ' - ' . $this->settings->get_cdn_next_gen_conversion_label( $config['settings'][ $name ] );
 					continue;
 				}

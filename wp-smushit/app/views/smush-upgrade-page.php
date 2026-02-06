@@ -30,7 +30,7 @@ $can_use_background = $bg_optimization->can_use_background();
 				printf(
 					/* translators: %d: Number of CDN PoP locations */
 					esc_html__( "Get Smush Pro and bulk optimize every image you've ever added to your site with one click. Smush images in the background and serve them in stunning high quality from %d locations around the globe with our blazing-fast CDN.", 'wp-smushit' ),
-					Admin::CDN_POP_LOCATIONS
+					Admin::get_cdn_pop_locations()
 				);
 				?>
 				</p>
@@ -151,7 +151,7 @@ $can_use_background = $bg_optimization->can_use_background();
 				printf(
 					/* translators: %d: Number of CDN PoP locations */
 					esc_html__( 'Use the blazing-fast Smush image CDN to automatically resize your files to the perfect size and serve WebP files (25%% smaller than PNG and JPG) from %d locations around the globe.', 'wp-smushit' ),
-					Admin::CDN_POP_LOCATIONS
+					Admin::get_cdn_pop_locations()
 				);
 				?>
 					</p>
@@ -183,7 +183,7 @@ $can_use_background = $bg_optimization->can_use_background();
 				printf(
 					/* translators: %d: Number of CDN PoP locations */
 					esc_html__( 'Optimize the performance of your site and ace that Google PageSpeed score with a full caching suite, automatic asset optimization, and our blazing-fast %d-point CDN.', 'wp-smushit' ),
-					Admin::CDN_POP_LOCATIONS
+					Admin::get_cdn_pop_locations()
 				);
 				?>
 					</p>

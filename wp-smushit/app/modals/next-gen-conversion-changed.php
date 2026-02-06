@@ -15,7 +15,7 @@ if ( ! defined( 'WPINC' ) ) {
 $next_gen_manager           = Next_Gen_Manager::get_instance();
 $old_next_gen_configuration = $next_gen_manager->get_previously_active_format_configuration();
 $next_gen_configuration     = $next_gen_manager->get_active_format_configuration();
-$old_image_retention_days   = Next_Gen_Controller::OLD_IMAGES_RETENTION_DAYS;
+$old_image_retention_days   = Next_Gen_Controller::get_old_images_retention_days();
 
 ?>
 

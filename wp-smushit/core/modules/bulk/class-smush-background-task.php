@@ -3,9 +3,9 @@
 namespace Smush\Core\Modules\Bulk;
 
 class Smush_Background_Task implements \Serializable {
-	const TASK_TYPE_SMUSH = 'SMUSH';
-	const TASK_TYPE_RESMUSH = 'RESMUSH';
-	const TASK_TYPE_ERROR = 'ERROR';
+	private static $task_type_smush = 'SMUSH';
+	private static $task_type_resmush = 'RESMUSH';
+	private static $task_type_error = 'ERROR';
 
 	private $type;
 
@@ -22,7 +22,7 @@ class Smush_Background_Task implements \Serializable {
 	}
 
 	private function is_type_valid( $type ) {
-		$valid_types = array( self::TASK_TYPE_SMUSH, self::TASK_TYPE_RESMUSH );
+		$valid_types = array( self::$task_type_smush, self::$task_type_resmush );
 
 		return in_array( $type, $valid_types );
 	}
@@ -91,4 +91,34 @@ class Smush_Background_Task implements \Serializable {
 	public function __toString() {
 		return json_encode( $this->__serialize() );
 	}
+
+	/**
+	 * Get task_type_error.
+	 *
+	 * @return string
+	 */
+	public static function get_task_type_error() {
+		return self::$task_type_error;
+	}
+
+
+	/**
+	 * Get task_type_resmush.
+	 *
+	 * @return string
+	 */
+	public static function get_task_type_resmush() {
+		return self::$task_type_resmush;
+	}
+
+
+	/**
+	 * Get task_type_smush.
+	 *
+	 * @return string
+	 */
+	public static function get_task_type_smush() {
+		return self::$task_type_smush;
+	}
+
 }

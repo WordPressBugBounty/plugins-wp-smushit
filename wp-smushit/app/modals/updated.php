@@ -88,7 +88,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 			if ( ! WP_Smush::is_pro() ) {
 				$cta_config['target']    = '_blank';
-				$cta_config['label']     = __( ' UNLOCK PRO – ON SALE ', 'wp-smushit' );
+				$cta_config['label']     = __( 'Get Smush Pro ', 'wp-smushit' );
 				$cta_config['classes'][] = 'sui-button-purple';
 				$cta_config['show_icon'] = true;
 			}

@@ -1,8 +1,16 @@
-/* global ajaxurl */
+/* global ajaxurl, WP_Smush, wp_smush_msgs */
 
 import Smush from '../smush/smush';
 import {GlobalStats} from "../common/globalStats";
 import SmushProgress from "../common/progressbar";
+import disconnectSite from './disconnect-site';
+import '../modules/review-prompts';
+
+WP_Smush.adminAjax = {
+	disconnectSite: ( btn ) => {
+		return disconnectSite.disconnect( btn );
+	},
+};
 
 const remove_element = function (el, timeout) {
 	if (typeof timeout === 'undefined') {
@@ -14,6 +22,21 @@ const remove_element = function (el, timeout) {
 		});
 	});
 };
+
+/**
+ * Show disconnected site success message.
+ */
+document.addEventListener(
+	'on-smush-site-disconnected-notice',
+	() => {
+		WP_Smush.helpers.showNotice(
+			wp_smush_msgs.site_disconnected_success,
+			{
+				type: 'success',
+			}
+		);
+	}
+);
 
 jQuery(function ($) {
 	'use strict';
@@ -108,12 +131,12 @@ jQuery(function ($) {
 			// Reset all functionality.
 			enable_links(currentButton);
 
+			// Use params here instead of this.data (ajax request params).
+			const isNextgen = params.action && params.action.includes( 'nextgen' );
+
 			if (r.success && 'undefined' !== typeof r.data) {
 				// Replace in immediate parent for NextGEN.
-				if (
-					'undefined' !== typeof this.data &&
-					this.data.indexOf('nextgen') > -1
-				) {
+				if ( isNextgen ) {
 					// Show the smush button, and remove stats and restore option.
 					currentButton.parents().eq(1).html(r.data.stats);
 				} else if ('restore' === action) {
@@ -135,10 +158,12 @@ jQuery(function ($) {
 					Smush.updateImageStats(r.data.new_size);
 				}
 			} else if (r.data && r.data.error_msg) {
-				if (
-					-1 === this.data.indexOf('nextgen')
-				) {
-					currentButton.closest( '.smushit' ).find('.smush-status').addClass('smush-warning').html(r.data.error_msg);
+				if ( ! isNextgen ) {
+					if ( r.data.html_stats ) {
+						currentButton.closest( '.smush-status-links' ).parent().html( r.data.html_stats );
+					} else {
+						currentButton.closest( '.smush-status-links' ).prev('.smush-status').addClass('smush-warning').html(r.data.error_msg);
+					}
 				} else {
 					// Show error.
 					currentButton.parent().append(r.data.error_msg);
@@ -576,6 +601,7 @@ jQuery(function ($) {
 	/** Restore: Media Library **/
 	$('body').on('click', '.wp-smush-action.wp-smush-restore', function (e) {
 		const current_button = $(this);
+		current_button.removeClass('sui-tooltip');
 		process_smush_action(
 			e,
 			current_button,
@@ -724,9 +750,9 @@ jQuery(function ($) {
 		const settings_wrap = $('#smush-resize-settings-wrap');
 
 		if (self.is(':checked')) {
-			settings_wrap.show();
+			settings_wrap.removeClass('sui-hidden');
 		} else {
-			settings_wrap.hide();
+			settings_wrap.addClass('sui-hidden');
 		}
 	});
 
@@ -863,6 +889,25 @@ jQuery(function ($) {
 			}
 		}
 	});
+	
+	$( '#smush-bulk-form input#backup' ).on( 'change', function () {
+		const $toggle = $( this );
+		
+		// If user tries to turn OFF backup
+		if ( !$toggle.is( ':checked' ) ) {
+			
+			// Revert it back to ON immediately
+			$toggle.prop( 'checked', true );
+			
+			// Show modal
+			window.SUI.openModal(
+				'smush-backup-original-images-dialog',
+				'wpbody-content',
+				undefined,
+				false
+			);
+		}
+	} );
 
 	// Update Smush mode on lossy level change.
 	const updateLossyLevelInSummaryBox = () => {
@@ -890,7 +935,24 @@ jQuery(function ($) {
 			return;
 		}
 		updateLossyLevelInSummaryBox();
+		updatePreloadImageInSummaryBox();
 	} );
+	
+	// Update preload image status in the summary box.
+	const updatePreloadImageInSummaryBox = () => {
+		const summaryBox            = document.querySelector( '.wp-smush-preload-images-status' );
+		const preloadImagesCheckbox = document.getElementById( 'preload-images' );
+		
+		if ( ! summaryBox || ! preloadImagesCheckbox ) {
+			return;
+		}
+		
+		const isActive = preloadImagesCheckbox.checked;
+		
+		summaryBox.innerText = isActive ? 'Active' : 'Inactive';
+		
+		summaryBox.classList.toggle('sui-tag-green', isActive);
+	};
 
 
 	const toggleNoscriptFallbackOnNativeLazyloadChange = () => {
@@ -916,18 +978,80 @@ jQuery(function ($) {
 	toggleNoscriptFallbackOnNativeLazyloadChange();
 	
 	const togglePreloadChange = () => {
-		const preloadInput = document.querySelector( '#preload-images-settings-row #preload-images' );
-		const excludeRow   = document.getElementById( 'preload-exclude-settings-row' );
+		const preloadInput     = document.querySelector( '#preload-images-settings-row #preload-images' );
+		const excludeRow       = document.getElementById( 'preload-exclude-settings-row' );
+		const fetchpriorityRow = document.getElementById( 'preload-images-fetchpriority-settings-row' );
 		
-		if ( ! preloadInput || ! excludeRow ) {
+		if ( ! preloadInput || ( ! excludeRow && ! fetchpriorityRow ) ) {
 			return;
 		}
 		
 		preloadInput.addEventListener( 'change', ( e ) => {
-			const isChecked = e.target.checked;
-			excludeRow.style.display = isChecked ? 'flex' : 'none';
+			const isChecked                = e.target.checked;
+			excludeRow.style.display       = isChecked ? 'flex' : 'none';
+			fetchpriorityRow.style.display = isChecked ? 'flex' : 'none';
 		} );
 	};
 	
 	togglePreloadChange();
+
+	const cleanUrlParams = () => {
+		const url = new URL( window.location.href );
+		const params = url.searchParams;
+		const hash = url.hash;
+
+		const hashesToRemove = [ '#directory_smush-settings-row' ];
+
+		// Remove all params that start with 'smush__'.
+		for ( const [ key ] of params ) {
+			if ( key.startsWith( 'smush__' ) ) {
+				params.delete( key );
+			}
+		}
+
+		// Remove specific hashes.
+		hashesToRemove.forEach( ( hashToRemove ) => {
+			if ( hash === hashToRemove ) {
+				url.hash = '';
+			}
+		} );
+
+		// Update the URL without reloading the page.
+		window.history.replaceState( {}, '', url.toString() );
+	}
+
+	cleanUrlParams();
+
+	/**
+	 * Scroll to the anchor under the Bulk Smush Advanced Settings section.
+	 */
+	const goToAnchorUnderAdvancedSettings = () => {
+		const bulkSmushAdvancedSettings = document.querySelector( '#bulk-smush-advanced-settings' );
+		if ( ! bulkSmushAdvancedSettings ) {
+			return;
+		}
+
+		const accordionItem = bulkSmushAdvancedSettings.querySelector( '.sui-accordion-item' );
+		if ( accordionItem.classList.contains( 'sui-accordion-item--open' ) ) {
+			return;
+		}
+
+		const url = new URL( window.location.href );
+		const hash = url.hash;
+		const advancedSettingsHashes = ['#original', '#backup'];
+
+		if ( advancedSettingsHashes.includes( hash ) ) {
+			accordionItem.classList.add( 'sui-accordion-item--open' );
+			goToByScroll( hash );
+
+			// Remove hash.
+			url.hash = '';
+			// Update the URL without reloading the page.
+			window.history.replaceState( {}, '', url.toString() );
+		}
+	};
+
+	goToAnchorUnderAdvancedSettings();
+	window.addEventListener('hashchange', goToAnchorUnderAdvancedSettings);
+
 });

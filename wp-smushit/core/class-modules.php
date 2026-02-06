@@ -42,6 +42,7 @@ use Smush\Core\Transform\Transformation_Controller;
 use Smush\Core\Webp\Webp_Controller;
 use Smush\Core\Webp\Webp_Retrospective_Stats_Generator;
 use Smush\Core\Image_Dimensions\Image_Dimensions_Controller;
+use Smush\Core\Membership\Membership_Controller;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -257,5 +258,11 @@ class Modules {
 
 		$auto_resizing_controller = new Auto_Resizing_Controller();
 		$auto_resizing_controller->init();
+
+		$hub_connector = new Hub_Connector();
+		$hub_connector->init();
+
+		$membership_controller = new Membership_Controller();
+		$membership_controller->init();
 	}
 }

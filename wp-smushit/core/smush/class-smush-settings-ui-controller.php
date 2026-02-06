@@ -8,8 +8,9 @@ use Smush\Core\Settings;
 use WP_Smush;
 
 class Smush_Settings_UI_Controller extends Controller {
-	const ADVANCED_FIELDS = array(
+	private static $advanced_fields = array(
 		'resize',
+		'original',
 		'png_to_jpg',
 		'background_email',
 		'bulk_restore',
@@ -43,38 +44,73 @@ class Smush_Settings_UI_Controller extends Controller {
 	public function settings_desc( $setting_key = '' ) {
 		if ( empty( $setting_key ) || ! in_array(
 			$setting_key,
-			array( 'resize', 'original', 'strip_exif', 'png_to_jpg', 'background_email' ),
+			array( 'original', 'strip_exif', 'png_to_jpg', 'background_email' ),
 			true
 		) ) {
 			return;
 		}
 
 		if ( 'png_to_jpg' === $setting_key ) {
-			?>
-			<div class="sui-toggle-content">
-				<div class="sui-notice sui-notice-info" style="margin-top: 10px">
-					<div class="sui-notice-content">
-						<div class="sui-notice-message smush-png2jpg-setting-note">
-							<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
-							<p>
-								<?php
-									/* translators: 1: <strong> 2: </strong> */
-									printf( esc_html__( 'Note: Any PNGs with transparency will be ignored. Smush will only convert PNGs if it results in a smaller file size. The original PNG file will be deleted, and the resulting file will have a new filename and extension (JPEG). %1$sAny hard-coded URLs on your site that contain the original PNG filename will need to be updated manually.%2$s', 'wp-smushit' ), '<strong>', '</strong>' );
-								?>
-								<br/>
-								<span>
+			$upgrade_url = Helper::get_utm_link(
+				array(
+					'utm_campaign' => 'smush_bulk_smush_advanced_settings_pngtojpg',
+				)
+			);
+
+			if ( WP_Smush::is_pro() ) {
+				?>
+				<div class="sui-toggle-content">
+					<div class="sui-notice sui-notice-info" style="margin-top: 10px">
+						<div class="sui-notice-content">
+							<div class="sui-notice-message smush-png2jpg-setting-note">
+								<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+								<p>
 									<?php
-										/* translators: 1: <strong> 2: </strong> */
-										printf( esc_html__( '%1$sBackup original images%2$s must be enabled if you wish to retain the original PNG image as a backup.', 'wp-smushit' ), '<strong>', '</strong>' );
+									printf(
+									/* translators: 1: <strong> tag, 2: </strong> tag */
+										esc_html__(
+											'Note: Any PNGs with transparency will be ignored. Smush will only convert PNGs if it results in a smaller file size. The original PNG file will be deleted, and the resulting file will have a new filename and extension (JPEG). %1$sAny hard-coded URLs on your site that contain the original PNG filename will need to be updated manually.%2$s',
+											'wp-smushit'
+										),
+										'<strong>',
+										'</strong>'
+									);
 									?>
-								</span>
-							</p>
+									<br/>
+									<span>
+										<?php
+										printf(
+										/* translators: 1: <strong> tag, 2: </strong> tag */
+											esc_html__( '%1$sBackup original images%2$s must be enabled if you wish to retain the original PNG image as a backup.', 'wp-smushit' ),
+											'<strong>',
+											'</strong>'
+										);
+										?>
+									</span>
+								</p>
+							</div>
 						</div>
 					</div>
 				</div>
-			</div>
+				<?php
+				return;
+			}
+
+			// Pro upsell description.
+			$desc = sprintf(
+			/* translators: 1: Open link tag <a>, 2: Close link tag </a> */
+				esc_html__(
+					'Enable this feature in Smush to convert non-transparent PNG files to JPEGs, but only if it results in a smaller file size. %1$sUnlock now with Pro%2$s',
+					'wp-smushit'
+				),
+				'<a href="' . esc_url( $upgrade_url ) . '" class="smush-upsell-link" target="_blank">',
+				'</a>'
+			);
+			?>
+			<span class="sui-description sui-toggle-description" id="<?php echo esc_attr( $setting_key . '-desc' ); ?>">
+				<?php echo wp_kses_post( $desc ); ?>
+			</span>
 			<?php
-			return;
 		}
 
 		global $wp_version;
@@ -83,15 +119,8 @@ class Smush_Settings_UI_Controller extends Controller {
 		<span class="sui-description sui-toggle-description" id="<?php echo esc_attr( $setting_key . '-desc' ); ?>">
 			<?php
 			switch ( $setting_key ) {
-				case 'resize':
-					if ( version_compare( $wp_version, '5.2.999', '>' ) ) {
-						esc_html_e( 'As of WordPress 5.3, large image uploads are resized down to a specified max width and height. If you require images larger than 2560px, you can override this setting here.', 'wp-smushit' );
-					} else {
-						esc_html_e( 'Save a ton of space by not storing over-sized images on your server. Set a maximum height and width for all images uploaded to your site so that any unnecessarily large images are automatically resized before they are added to the media gallery. This setting does not apply to images smushed using Directory Smush feature.', 'wp-smushit' );
-					}
-					break;
 				case 'original':
-					esc_html_e( 'By default, WordPress will only optimize the generated attachments when you upload images, not the original ones. Enable this feature to optimize the original images.', 'wp-smushit' );
+					esc_html_e( 'By default, WordPress only optimizes resized versions of your images, not the originals. Enable this to optimize original files too.', 'wp-smushit' );
 					break;
 				case 'strip_exif':
 					esc_html_e(
@@ -249,27 +278,26 @@ class Smush_Settings_UI_Controller extends Controller {
 		$setting_status = $this->settings->get( 'resize' );
 		?>
 		<div tabindex="0" class="sui-toggle-content">
-			<div class="sui-border-frame<?php echo $setting_status ? '' : ' sui-hidden'; ?>" id="smush-resize-settings-wrap" style="margin-bottom: 10px;">
-				<div class="sui-row">
-					<div class="sui-col-md-6">
+			<span class="sui-description"><?php esc_html_e( 'Large image uploads are resized to the max width and height set here. Adjust these values if you need images smaller than 2560px.', 'wp-smushit' ); ?></span>
+			<div id="smush-resize-settings-wrap" class="<?php echo $setting_status ? '' : 'sui-hidden'; ?>">
+				<div style="margin-bottom: 10px;">
+					<div class="smush-group-fields">
 						<div class="sui-form-field">
-							<label aria-labelledby="wp-smush-label-max-width" for="<?php echo 'wp-smush-' . esc_attr( $name ) . '_width'; ?>" class="sui-label">
+							<label aria-labelledby="wp-smush-label-max-width" for="<?php echo 'wp-smush-' . esc_attr( $name ) . '_width'; ?>" class="sui-label sui-field-prefix">
 								<?php esc_html_e( 'Max width', 'wp-smushit' ); ?>
 							</label>
-							<input aria-required="true" type="number" class="sui-form-control wp-smush-resize-input"
+							<input aria-required="true" type="number" class="sui-form-control wp-smush-resize-input sui-field-has-prefix"
 								aria-describedby="wp-smush-resize-note"
 								id="<?php echo 'wp-smush-' . esc_attr( $name ) . '_width'; ?>"
 								name="<?php echo 'wp-smush-' . esc_attr( $name ) . '_width'; ?>"
 								min="0"
 								value="<?php echo isset( $resize_sizes['width'] ) && ! empty( $resize_sizes['width'] ) ? absint( $resize_sizes['width'] ) : $this->settings->get_default_size_threshold(); ?>">
 						</div>
-					</div>
-					<div class="sui-col-md-6">
 						<div class="sui-form-field">
-							<label aria-labelledby="wp-smush-label-max-height" for="<?php echo 'wp-smush-' . esc_attr( $name ) . '_height'; ?>" class="sui-label">
+							<label aria-labelledby="wp-smush-label-max-height" for="<?php echo 'wp-smush-' . esc_attr( $name ) . '_height'; ?>" class="sui-label sui-field-prefix">
 								<?php esc_html_e( 'Max height', 'wp-smushit' ); ?>
 							</label>
-							<input aria-required="true" type="number" class="sui-form-control wp-smush-resize-input"
+							<input aria-required="true" type="number" class="sui-form-control wp-smush-resize-input sui-field-has-prefix"
 								aria-describedby="wp-smush-resize-note"
 								id="<?php echo 'wp-smush-' . esc_attr( $name ) . '_height'; ?>"
 								name="<?php echo 'wp-smush-' . esc_attr( $name ) . '_height'; ?>"
@@ -277,39 +305,39 @@ class Smush_Settings_UI_Controller extends Controller {
 								value="<?php echo isset( $resize_sizes['height'] ) && ! empty( $resize_sizes['height'] ) ? absint( $resize_sizes['height'] ) : $this->settings->get_default_size_threshold(); ?>">
 						</div>
 					</div>
-				</div>
-				<div class="sui-description" id="wp-smush-resize-note">
-					<?php
-					printf( /* translators: %1$s: strong tag, %2$d: max width size, %3$s: tag, %4$d: max height size, %5$s: closing strong tag  */
-						esc_html__( 'Currently, your largest image size is set at %1$s%2$dpx wide %3$s %4$dpx high%5$s.', 'wp-smushit' ),
-						'<strong>',
-						esc_html( $max_sizes['width'] ),
-						'&times;',
-						esc_html( $max_sizes['height'] ),
-						'</strong>'
-					);
-					?>
-					<div class="sui-notice sui-notice-warning wp-smush-update-dimensions sui-no-margin-bottom sui-hidden" style="margin-top:5px">
-						<div class="sui-notice-content">
-							<div class="sui-notice-message">
-								<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
-								<p><?php esc_html_e( "Just to let you know, the dimensions you've entered are less than your largest image and may result in pixelation.", 'wp-smushit' ); ?></p>
+					<div class="sui-description" id="wp-smush-resize-note">
+						<?php
+						printf( /* translators: %1$s: strong tag, %2$d: max width size, %3$s: tag, %4$d: max height size, %5$s: closing strong tag  */
+							esc_html__( 'Currently, your largest image size is set at %1$s%2$dpx wide %3$s %4$dpx high%5$s.', 'wp-smushit' ),
+							'<strong>',
+							esc_html( $max_sizes['width'] ),
+							'&times;',
+							esc_html( $max_sizes['height'] ),
+							'</strong>'
+						);
+						?>
+						<div class="sui-notice sui-notice-warning wp-smush-update-dimensions sui-no-margin-bottom sui-hidden" style="margin-top:5px">
+							<div class="sui-notice-content">
+								<div class="sui-notice-message">
+									<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
+									<p><?php esc_html_e( "Just to let you know, the dimensions you've entered are less than your largest image and may result in pixelation.", 'wp-smushit' ); ?></p>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<span class="sui-description">
+			<div class="sui-description" style="margin-top: 10px">
 				<?php
 				printf( /* translators: %s: link to gifgifs.com */
 					esc_html__(
-						'Note: Image resizing happens automatically when you upload attachments. To support retina devices, we recommend using 2x the dimensions of your image size. Animated GIFs will not be resized as they will lose their animation, please use a tool such as %s to resize then re-upload.',
+						'Note: Images are resized automatically when you upload them. For retina devices, we recommend using images at twice their intended display dimensions. Animated GIFs aren’t resized to preserve animation, so use a tool like %s to resize them before uploading.',
 						'wp-smushit'
 					),
 					'<a href="https://gifgifs.com/resizer/" target="_blank">https://gifgifs.com/resizer/</a>'
 				);
 				?>
-			</span>
+			</div>
 		</div>
 		<?php
 	}
@@ -432,7 +460,10 @@ class Smush_Settings_UI_Controller extends Controller {
 	}
 
 	public function render_basic_settings( $bulk_settings ) {
-		$basic_settings = array_diff( $bulk_settings, self::ADVANCED_FIELDS );
+		$basic_settings = $this->get_basic_settings( $bulk_settings );
+		if ( empty( $basic_settings ) ) {
+			return;
+		}
 		?>
 		<div class="smush-basic-settings" id="bulk-smush-basic-settings">
 			<?php $this->render_bulk_settings( $basic_settings ); ?>
@@ -440,17 +471,20 @@ class Smush_Settings_UI_Controller extends Controller {
 		<?php
 	}
 
+	private function get_basic_settings( $bulk_settings ) {
+		return array_diff( $bulk_settings, self::$advanced_fields );
+	}
+
 	public function render_advanced_settings( $bulk_settings ) {
-		$advanced_settings = array_intersect( $bulk_settings, self::ADVANCED_FIELDS );
+		$advanced_settings = array_intersect( $bulk_settings, self::$advanced_fields );
 		if ( empty( $advanced_settings ) ) {
 			return;
 		}
-
 		?>
 		<div class="sui-accordion sui-accordion-block smush-advanced-settings" id="bulk-smush-advanced-settings">
 			<div class="sui-accordion-item">
 				<div class="sui-accordion-item-header">
-					<div class="sui-accordion-item-title sui-trim-title">Advanced Settings</div>
+					<div class="sui-accordion-item-title sui-trim-title"><?php esc_html_e( 'Advanced Settings', 'wp-smushit' ); ?></div>
 					<div class="sui-accordion-col-auto">
 						<button type="button" class="sui-button-icon sui-accordion-open-indicator" aria-label="Open Item"><span class="sui-icon-chevron-down" aria-hidden="true"></span></button>
 					</div>
@@ -493,11 +527,11 @@ class Smush_Settings_UI_Controller extends Controller {
 		<div class="sui-box-settings-row" id="bulk-restore-settings-row">
 			<div class="sui-box-settings-col-1">
 				<span class="<?php echo WP_Smush::is_pro() ? 'sui-settings-label' : 'sui-settings-label-with-tag'; ?>">
-					<?php esc_html_e( 'Bulk restore', 'wp-smushit' ); ?>
+					<?php esc_html_e( 'Restore all images', 'wp-smushit' ); ?>
 				</span>
 				<span class="sui-description">
 					<?php
-					esc_html_e( 'Made a mistake? Use this feature to restore your image thumbnails to their original state.', 'wp-smushit' );
+					esc_html_e( 'Use this feature to restore all your image thumbnails to their original non-optimized state.', 'wp-smushit' );
 					?>
 				</span>
 			</div>
@@ -505,7 +539,7 @@ class Smush_Settings_UI_Controller extends Controller {
 			<div class="sui-box-settings-col-2">
 				<button type="button" class="sui-button sui-button-ghost wp-smush-restore" onclick="WP_Smush.restore.init()" <?php disabled( ! $backup_exists ); ?>>
 					<i class="sui-icon-undo" aria-hidden="true"></i>
-					<?php esc_html_e( 'Restore Thumbnails', 'wp-smushit' ); ?>
+					<?php esc_html_e( 'Restore all thumbnails', 'wp-smushit' ); ?>
 				</button>
 				<span class="sui-description">
 					<?php
@@ -516,17 +550,6 @@ class Smush_Settings_UI_Controller extends Controller {
 					);
 					?>
 				</span>
-
-				<div class="sui-notice" style="margin-top: 10px">
-					<div class="sui-notice-content">
-						<div class="sui-notice-message">
-							<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
-							<p>
-								<?php esc_html_e( 'Note: Backup original images must be enabled in order to bulk restore your images.', 'wp-smushit' ); ?>
-							</p>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 		<?php

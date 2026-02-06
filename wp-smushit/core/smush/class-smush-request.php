@@ -69,7 +69,7 @@ abstract class Smush_Request {
 		return $this->on_complete;
 	}
 
-	public function set_on_complete( $on_complete ): Smush_Request {
+	public function set_on_complete( $on_complete ) {
 		$this->on_complete = $on_complete;
 
 		return $this;
@@ -140,7 +140,7 @@ abstract class Smush_Request {
 	 *
 	 * @return array
 	 */
-	protected function get_file_path_and_url( $file_data ): array {
+	protected function get_file_path_and_url( $file_data ) {
 		if ( is_string( $file_data ) ) {
 			$file_path = $file_data;
 			$file_url  = '';
@@ -155,7 +155,7 @@ abstract class Smush_Request {
 		return $this->extra_headers;
 	}
 
-	public function set_extra_headers( $extra_headers ): Smush_Request {
+	public function set_extra_headers( $extra_headers ) {
 		$this->extra_headers = $extra_headers;
 		return $this;
 	}
@@ -174,7 +174,7 @@ abstract class Smush_Request {
 	 *
 	 * @return mixed
 	 */
-	abstract public function do_requests( array $files_data );
+	abstract public function do_requests( $files_data );
 
 	abstract public function is_supported();
 }

@@ -20,7 +20,7 @@ class Bulk_Smush_Background_Process extends Background_Process {
 	 *
 	 * @var int
 	 */
-	const REVIVAL_LIMIT_UNIT = 5;
+	private static $revival_limit_unit = 5;
 	public function __construct( $identifier ) {
 		parent::__construct( $identifier );
 
@@ -49,13 +49,13 @@ class Bulk_Smush_Background_Process extends Background_Process {
 			return false;
 		}
 
-		$smush_optimization = $optimizer->get_optimization( Smush_Optimization::KEY );
+		$smush_optimization = $optimizer->get_optimization( Smush_Optimization::get_key() );
 		/**
 		 * @var $smush_stats Smush_Media_Item_Stats
 		 */
 		$smush_stats          = $smush_optimization->get_stats();
-		$resize_optimization  = $optimizer->get_optimization( Resize_Optimization::KEY );
-		$png2jpg_optimization = $optimizer->get_optimization( Png2Jpg_Optimization::KEY );
+		$resize_optimization  = $optimizer->get_optimization( Resize_Optimization::get_key() );
+		$png2jpg_optimization = $optimizer->get_optimization( Png2Jpg_Optimization::get_key() );
 
 		do_action(
 			'image_smushed',
@@ -132,7 +132,7 @@ class Bulk_Smush_Background_Process extends Background_Process {
 
 	private function calculate_default_revival_limit() {
 		$total_items           = $this->get_status()->get_total_items();
-		$default_revival_limit = (int) ceil( $total_items / 1000 ) * self::REVIVAL_LIMIT_UNIT;
+		$default_revival_limit = (int) ceil( $total_items / 1000 ) * self::$revival_limit_unit;
 
 		return max( $default_revival_limit, 5 );
 	}

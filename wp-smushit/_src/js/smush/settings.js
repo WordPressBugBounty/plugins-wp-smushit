@@ -19,13 +19,20 @@
 	/**
 	 * Lazy load page.
 	 */
-	$( 'form#smush-lazy-preload-form' ).on( 'submit', function( e ) {
+	const lazyLoadForm = $( 'form#smush-lazy-preload-form' );
+	lazyLoadForm.on( 'submit', function( e ) {
 		e.preventDefault();
 		const tabField = $( this ).find( '[name="tab"]' );
 		const isLazyLoadPage = tabField.length && 'lazy_load' === tabField.val();
 
 		$( '#save-settings-button' ).addClass( 'sui-button-onload-text' );
 		saveSettings( $( this ).serialize(), isLazyLoadPage ? 'lazy-load' : 'preload' );
+	} );
+
+	lazyLoadForm.on( 'keydown', function( e ) {
+		if ( e.key === 'Enter' ) {
+			lazyLoadForm.trigger( 'submit' );
+		}
 	} );
 
 	/**
@@ -161,26 +168,49 @@
 			.getElementById( otherClass )
 			.parentNode.classList.remove( 'active' );
 	} );
-
+	
+	/**
+	 * Handle highlighting notice display based on detection checkbox state.
+	 */
+	function handleHighlightingNotice( isAfterSave = false ) {
+		const detectionEnabled = $( '#detection' ).is( ':checked' );
+		const $notice          = $( '.smush-highlighting-notice' );
+		const $warning         = $( '.smush-highlighting-warning' );
+		
+		if ( ! detectionEnabled ) {
+			$notice.hide();
+			$warning.hide();
+			return;
+		}
+		
+		if ( isAfterSave ) {
+			$notice.show();
+			$warning.hide();
+		} else {
+			// Show warning only if notice isn't visible yet.
+			const noticeVisible = $notice.is( ':visible' ) || $notice.css( 'display' ) !== 'none';
+			if ( noticeVisible ) {
+				$notice.show();
+				$warning.hide();
+			} else {
+				$notice.hide();
+				$warning.show();
+			}
+		}
+	}
+	
 	/**
 	 * Handle auto-detect checkbox toggle, to show/hide highlighting notice.
 	 */
-	$( 'input#detection' ).on( 'click', function() {
-		const noticeDiv = $( '.smush-highlighting-notice' );
-		const warningDiv = $( '.smush-highlighting-warning' );
-
-		// Setting enabled.
-		if ( $( this ).is( ':checked' ) ) {
-			// Highlighting is already active and setting not saved.
-			if ( noticeDiv.length > 0 ) {
-				noticeDiv.show();
-			} else {
-				warningDiv.show();
-			}
-		} else {
-			noticeDiv.hide();
-			warningDiv.hide();
-		}
+	$( 'input#detection' ).on( 'click', function () {
+		handleHighlightingNotice( false );
+	} );
+	
+	/**
+	 * Handle settings saved event.
+	 */
+	$( document ).on( 'onSavedSmushSettings', function () {
+		handleHighlightingNotice( true );
 	} );
 
 	/**

@@ -21,7 +21,7 @@ $lossy_description                 = $is_pro ? esc_html__( 'Optimize images up t
 												: esc_html__( 'Optimize images up to 2x more than regular smush with our multi-pass lossy compression.', 'wp-smushit' );
 $lossy_action_label                = $is_pro ? __( 'Enable Ultra Smush', 'wp-smushit' ) : __( 'Enable Super Smush', 'wp-smushit' );
 // Pro features.
-$total_cdn_locations = Admin::CDN_POP_LOCATIONS;
+$total_cdn_locations = Admin::get_cdn_pop_locations();
 $upsell_url          = $this->get_utm_link(
 	array(
 		'utm_campaign' => 'smush_wizard',
@@ -200,22 +200,42 @@ $pro_features        = array(
 		<# if ( data.last ) { #>
 			<# if ( 'pro_upsell' === data.slide ) { #>
 				<div class="smush-onboarding-buttons">
-					<div class="smush-onboarding-buttons-inner">
+					<div class="smush-onboarding-buttons-group">
 						<a class="sui-button sui-button-blue smush-btn-pro-upsell" target="_blank" href="<?php echo esc_url( $upsell_url ); ?>">
 							<?php
 							/* translators: %s: plugin discount */
-							esc_html_e( 'SALE - Limited Offer', 'wp-smushit' );
+							esc_html_e( 'Get Smush Pro', 'wp-smushit' );
 							?>
 						</a>
 						<button type="submit" class="sui-button sui-button-grey sui-button-icon-left" data-modal-close="">
-							<?php esc_html_e( 'Complete Setup', 'wp-smushit' ); ?>
+							<span class="sui-button-text-default">
+								<?php esc_html_e( 'Complete Setup', 'wp-smushit' ); ?>
+							</span>
+
+							<span class="sui-button-text-onload">
+								<span
+									class="sui-icon-loader sui-loading"
+									aria-hidden="true"
+								></span>
+								<?php esc_html_e( 'Complete Setup', 'wp-smushit' ); ?>
+							</span>
 						</button>
 					</div>
 				</div>
 			<# } else { #>
 				<button type="submit" class="sui-button sui-button-blue sui-button-icon-left" data-modal-close="">
+					<span class="sui-button-text-default">
 					<i class="sui-icon-check" aria-hidden="true"> </i>
-					<?php esc_html_e( 'Finish setup wizard', 'wp-smushit' ); ?>
+						<?php esc_html_e( 'Finish setup wizard', 'wp-smushit' ); ?>
+					</span>
+
+					<span class="sui-button-text-onload">
+						<span
+							class="sui-icon-loader sui-loading"
+							aria-hidden="true"
+						></span>
+						<?php esc_html_e( 'Finish setup wizard', 'wp-smushit' ); ?>
+					</span>
 				</button>
 			<# } #>
 		<# } else if ( data.first_slide !== data.slide && ! data.last ) { #>

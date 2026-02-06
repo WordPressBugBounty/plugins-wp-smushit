@@ -11,7 +11,7 @@ use Smush\Core\Media_Library\Media_Library_Last_Process;
 use WP_Smush;
 
 class Background_Bulk_Smush {
-	const REQUIRED_MYSQL_VERSION = '5.6';
+	private static $required_mysql_version = '5.6';
 
 	/**
 	 * @var Bulk_Smush_Background_Process
@@ -167,7 +167,7 @@ class Background_Bulk_Smush {
 
 		return array_map( function ( $image_id ) {
 			return new Smush_Background_Task(
-				Smush_Background_Task::TASK_TYPE_SMUSH,
+				Smush_Background_Task::get_task_type_smush(),
 				$image_id
 			);
 		}, $to_smush );
@@ -178,7 +178,7 @@ class Background_Bulk_Smush {
 
 		return array_map( function ( $image_id ) {
 			return new Smush_Background_Task(
-				Smush_Background_Task::TASK_TYPE_RESMUSH,
+				Smush_Background_Task::get_task_type_resmush(),
 				$image_id
 			);
 		}, $to_resmush );
@@ -189,7 +189,7 @@ class Background_Bulk_Smush {
 
 		return array_map( function ( $image_id ) {
 			return new Smush_Background_Task(
-				Smush_Background_Task::TASK_TYPE_ERROR,
+				Smush_Background_Task::get_task_type_error(),
 				$image_id
 			);
 		}, $error_items_to_retry );
@@ -340,7 +340,7 @@ class Background_Bulk_Smush {
 	}
 
 	public function get_required_mysql_version() {
-		return self::REQUIRED_MYSQL_VERSION;
+		return self::$required_mysql_version;
 	}
 
 	public function get_actual_mysql_version() {

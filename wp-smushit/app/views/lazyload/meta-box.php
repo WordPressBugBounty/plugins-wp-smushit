@@ -303,7 +303,7 @@ wp_enqueue_style( 'wp-color-picker' );
 			?>
 			<a class="smush-upsell-link" href="<?php echo esc_url( $upgrade_url ); ?>" style="display:block; margin-top:-3px; font-size:13px" target="_blank">
 				<strong>
-					<?php esc_html_e( 'SALE - Limited Offer', 'wp-smushit' ); ?>
+					<?php esc_html_e( 'Get Smush Pro', 'wp-smushit' ); ?>
 				</strong>
 				<span class="sui-icon-open-new-window" aria-hidden="true"></span>
 			</a>

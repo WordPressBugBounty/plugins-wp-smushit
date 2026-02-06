@@ -10,29 +10,29 @@ use Smush\Core\Settings;
 
 $settings            = Settings::get_instance();
 $lossy_level_setting = $settings->get_lossy_level_setting();
-$level_basic         = Settings::LEVEL_LOSSLESS;
-$level_super         = Settings::LEVEL_SUPER_LOSSY;
-$level_ultra         = Settings::LEVEL_ULTRA_LOSSY;
+$level_basic         = Settings::get_level_lossless();
+$level_super         = Settings::get_level_super_lossy();
+$level_ultra         = Settings::get_level_ultra_lossy();
 $level_labels        = array(
-	Settings::LEVEL_LOSSLESS    => __( 'Basic', 'wp-smushit' ),
-	Settings::LEVEL_SUPER_LOSSY => __( 'Super', 'wp-smushit' ),
-	Settings::LEVEL_ULTRA_LOSSY => __( 'Ultra', 'wp-smushit' ),
+	Settings::get_level_lossless()    => __( 'Basic', 'wp-smushit' ),
+	Settings::get_level_super_lossy() => __( 'Super', 'wp-smushit' ),
+	Settings::get_level_ultra_lossy() => __( 'Ultra', 'wp-smushit' ),
 );
 
 $level_notices = array(
-	Settings::LEVEL_LOSSLESS    => sprintf(
+	Settings::get_level_lossless()    => sprintf(
 	/* translators: 1: opening <strong>, 2: closing </strong> */
 		__( '%1$sBasic:%2$s Achieve flawless, lossless compression for pixel-perfect images. Minimal file size reduction, negligible impact on speed.', 'wp-smushit' ),
 		'<strong>',
 		'</strong>'
 	),
-	Settings::LEVEL_SUPER_LOSSY => sprintf(
+	Settings::get_level_super_lossy() => sprintf(
 	/* translators: 1: opening <strong>, 2: closing </strong> */
 		__( '%1$sSuper:%2$s Harness the power of lossy compression for substantial file size reduction with excellent image clarity. Accelerate page loads for better performance.', 'wp-smushit' ),
 		'<strong>',
 		'</strong>'
 	),
-	Settings::LEVEL_ULTRA_LOSSY => sprintf(
+	Settings::get_level_ultra_lossy() => sprintf(
 	/* translators: 1: opening <strong>, 2: closing </strong> */
 		__( '%1$sUltra:%2$s Unlock unprecedented compression levels up to 5x greater than Super, while preserving remarkable image quality. The ultimate choice for unparalleled performance.', 'wp-smushit' ),
 		'<strong>',

@@ -12,13 +12,15 @@ use Smush\App\Abstract_Summary_Page;
 use Smush\App\Interface_Page;
 use Smush\Core\Array_Utils;
 use Smush\Core\Core;
-use Smush\Core\Settings;
-use Smush\Core\Stats\Global_Stats;
+use Smush\Core\Directory\Directory_UI_Controller;
+use Smush\Core\Hub_Connector;
+use Smush\Core\Media\Media_Item_Query;
 use Smush\Core\Media_Library\Background_Media_Library_Scanner;
+use Smush\Core\Membership\Membership;
 use Smush\Core\Modules\Background\Background_Pre_Flight_Controller;
-use WP_Smush;
-use Smush\Core\Backups\Backups;
+use Smush\Core\Settings;
 use Smush\Core\Smush\Smush_Settings_UI_Controller;
+use WP_Smush;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -43,6 +45,31 @@ class Bulk extends Abstract_Summary_Page implements Interface_Page {
 
 		$smush_settings_ui_controller = new Smush_Settings_UI_Controller();
 		$smush_settings_ui_controller->init();
+		$directory_ui_controller = new Directory_UI_Controller();
+		$directory_ui_controller->init();
+	}
+
+	/**
+	 * Render the bulk smush page.
+	 *
+	 * @return void
+	 */
+	public function render() {
+
+		if ( Hub_Connector::should_render() ) {
+			Hub_Connector::render();
+			return;
+		}
+
+		if ( Membership::get_instance()->is_api_hub_access_required() ) {
+			$this->open_page_wrapper();
+			$this->render_modals();
+			$this->render_inner_content();
+			$this->close_page_wrapper();
+			return;
+		}
+
+		parent::render();
 	}
 
 	public function enqueue_scripts( $hook ) {
@@ -65,10 +92,42 @@ class Bulk extends Abstract_Summary_Page implements Interface_Page {
 		) );
 	}
 
+
+	public function render_hub_connection_prompt() {
+		$media_item_query = new Media_Item_Query();
+		$attachment_count = (int) $media_item_query->get_image_attachment_count();
+		$smushed_count    = (int) $media_item_query->get_smushed_count();
+		$remaining_count  = $attachment_count - $smushed_count;
+
+		$this->view(
+			'bulk/hub-connect',
+			array(
+				'images_count' => $remaining_count,
+				'connect_url'  => \Smush\Core\Hub_Connector::get_connect_site_url( 'smush-bulk', 'smush_bulk_smush_connect' ),
+			)
+		);
+	}
+
 	/**
 	 * Register meta boxes.
 	 */
 	public function register_meta_boxes() {
+
+		if ( Membership::get_instance()->is_api_hub_access_required() ) {
+			$this->add_meta_box(
+				'smush-hub-connect',
+				'',
+				array( $this, 'render_hub_connection_prompt' ),
+				null,
+				null,
+				'main',
+				array(
+					'box_content_class' => false,
+				)
+			);
+			return;
+		}
+
 		if ( ! is_network_admin() ) {
 			$bg_optimization = WP_Smush::get_instance()->core()->mod->bg_optimization;
 
@@ -165,7 +224,11 @@ class Bulk extends Abstract_Summary_Page implements Interface_Page {
 			)
 		);
 
-		$this->modals['restore-images'] = array();
+		$restore_ids = WP_Smush::get_instance()->core()->mod->backup->get_attachments_with_backups();
+		$this->modals['restore-images'] = array(
+			'restore_image_count' => count( $restore_ids ),
+		);
+		$this->modals['disable-backup-original-image'] = array();
 	}
 
 	/**************************
@@ -217,7 +280,7 @@ class Bulk extends Abstract_Summary_Page implements Interface_Page {
 		} else {
 			$upsell_text = sprintf(
 				/* translators: 1: Open the link, 2: Close the link */
-				__( 'Want to close this tab? Smush Pro lets you optimize in the background — %1$sOn sale now!%2$s', 'wp-smushit' ),
+				__( 'Want to close this tab? Smush Pro lets you optimize in the background — %1$sGet Smush Pro!%2$s', 'wp-smushit' ),
 				'<a class="smush-upsell-link" target="_blank" href="' . esc_url( $in_progress_upsell_url ) . '">',
 				'</a>'
 			);

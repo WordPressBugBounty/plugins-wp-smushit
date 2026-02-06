@@ -75,7 +75,7 @@ $this->view(
 					$cdn_upsell_tooltip = sprintf(
 						/* translators: %d: Number of CDN PoP locations */
 						esc_attr__( 'Multiply the speed and savings! Serve your images from our CDN from %d blazing fast servers around the world.', 'wp-smushit' ),
-						Admin::CDN_POP_LOCATIONS
+						Admin::get_cdn_pop_locations()
 					);
 					?>
 					<a href="<?php echo esc_url( $upsell_url_cdn ); ?>" target="_blank" class="smush-upgrade-text">
