@@ -131,11 +131,6 @@ class Background_Media_Library_Scanner extends Controller {
 
 	public function background_process_completed() {
 		$this->scanner->after_scan_library();
-
-		if ( $this->enabled_optimize_on_scan_completed() ) {
-			$bg_optimization = WP_Smush::get_instance()->core()->mod->bg_optimization;
-			$bg_optimization->start_bulk_smush_direct();
-		}
 	}
 
 	public function background_process_dead() {
@@ -169,7 +164,7 @@ class Background_Media_Library_Scanner extends Controller {
 		}
 	}
 
-	private function enabled_optimize_on_scan_completed() {
+	public function enabled_optimize_on_scan_completed() {
 		if ( null === $this->optimize_on_scan_completed ) {
 			$this->optimize_on_scan_completed = get_option( self::$optimize_on_completed_option_key );
 		}
@@ -187,11 +182,6 @@ class Background_Media_Library_Scanner extends Controller {
 		// Add global stats on completed/cancelled.
 		if ( $is_completed || $is_cancelled ) {
 			$status['global_stats'] = WP_Smush::get_instance()->admin()->get_global_stats_with_bulk_smush_content_and_notice();
-		}
-
-		if ( $is_completed ) {
-			$bg_optimization                      = WP_Smush::get_instance()->core()->mod->bg_optimization;
-			$status['enabled_background_process'] = $bg_optimization->should_use_background();
 		}
 
 		return $status;

@@ -7,6 +7,10 @@ class Shim implements \Countable {
 		return self::starts_with_get( $name ) && self::ends_with_string_type( $name );
 	}
 
+	private static function is_array_type( $name ) {
+		return $name === 'to_array';
+	}
+
 	private static function starts_with_get( $name ) {
 		return str_starts_with( $name, 'get' );
 	}
@@ -26,6 +30,10 @@ class Shim implements \Countable {
 
 		if ( self::is_string_item( $name ) ) {
 			return '';
+		}
+
+		if ( self::is_array_type( $name ) ) {
+			return [];
 		}
 
 		if ( self::log_risky() ) {

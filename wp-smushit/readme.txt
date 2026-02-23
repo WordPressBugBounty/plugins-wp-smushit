@@ -1,13 +1,13 @@
 === Smush Image Optimization – Optimize Images | Compress & Lazy Load Images | Convert WebP & AVIF | Image CDN ===
 Plugin Name: Smush Image Optimization – Optimize Images | Compress & Lazy Load Images & Videos | Convert WebP & AVIF | Image CDN
-Version: 3.23.4
+Version: 3.24.0
 Author: WPMU DEV
 Author URI: https://wpmudev.com/
 Contributors: WPMUDEV, alexdunae
 Tags: optimize images, convert webp, webp, image optimization, compress images
 Requires at least: 6.4
 Tested up to: 6.9
-Stable tag: 3.23.4
+Stable tag: 3.24.0
 Requires PHP: 7.4
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -241,6 +241,9 @@ We take plugin security incredibly seriously; if you have a bug or vulnerability
 5. Make your page load faster with lazy loading.
 
 == Changelog ==
+
+= 3.24.0 ( 2026-02-23 ) =
+- Improvement: Stability improvements
 
 = 3.23.4 ( 2026-02-05 ) =
 - Fix: PHP error fixed

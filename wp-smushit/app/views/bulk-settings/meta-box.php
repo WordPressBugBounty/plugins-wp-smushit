@@ -16,27 +16,6 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
-if ( WP_Smush::is_pro() && $cdn_enabled && Settings::can_access( 'bulk' ) ) :
-	?>
-	<div class="sui-notice sui-notice-info">
-		<div class="sui-notice-content">
-			<div class="sui-notice-message">
-				<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
-				<p>
-					<?php
-					echo esc_html(
-						$this->whitelabel->whitelabel_string(
-							__( 'Your images are currently being served via the WPMU DEV CDN. Bulk smush will continue to operate as per your settings below and is treated completely separately in case you ever want to disable the CDN.', 'wp-smushit' )
-						)
-					);
-					?>
-				</p>
-			</div>
-		</div>
-	</div>
-	<?php
-endif;
-
 // Original Images Move Notice.
 $smush_admin        = WP_Smush::get_instance()->admin();
 $notice_hidden      = $smush_admin->is_notice_dismissed( 'original-images-move' );

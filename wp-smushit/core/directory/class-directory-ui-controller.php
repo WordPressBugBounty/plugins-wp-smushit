@@ -79,9 +79,7 @@ class Directory_UI_Controller extends Controller {
 		}
 
 		// Reset the bulk limit transient.
-		if ( ! WP_Smush::is_pro() ) {
-			Core::check_bulk_limit( true, 'dir_sent_count' );
-		}
+		Core::should_continue_smush( true, 'dir_sent_count' );
 		?>
 		<div class="wp-smush-scan-result">
 			<div class="sui-message-content" style="margin-bottom:10px">

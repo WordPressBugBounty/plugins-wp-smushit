@@ -30,8 +30,8 @@ class Settings {
 	protected static $settings_option_id = 'wp-smush-settings';
 	private static $next_gen_cdn_key = 'webp';
 	private static $level_lossless = 0;
-	private static $level_super_lossy = 1;
-	private static $level_ultra_lossy = 2;
+	protected static $level_super_lossy = 1;
+	protected static $level_ultra_lossy = 2;
 	private static $none_cdn_mode = 0;
 	private static $webp_cdn_mode = 1;
 	private static $avif_cdn_mode = 2;
@@ -134,7 +134,7 @@ class Settings {
 	 *
 	 * Upsell fields.
 	 */
-	private $upsell_fields = array( 'background_email','png_to_jpg' );
+	private $upsell_fields = array( 'background_email', 'png_to_jpg' );
 
 	/**
 	 * List of fields in integration form.
@@ -213,11 +213,22 @@ class Settings {
 	 * @return Settings
 	 */
 	public static function get_instance() {
-		if ( ! self::$instance ) {
-			self::$instance = new self();
+		if ( empty( self::$instance ) ) {
+			$pro_file = __DIR__ . '/class-settings-pro.php';
+			if ( ! class_exists( '\\Smush\\Core\\Settings_Pro' ) && file_exists( $pro_file ) ) {
+				require_once $pro_file;
+			}
+			if ( class_exists( '\\Smush\\Core\\Settings_Pro' ) ) {
+			self::$instance = new Settings_Pro();
+			} else {
+				self::$instance = new self();
 		}
-
+		}
 		return self::$instance;
+	}
+
+	public function __call( $method_name, $arguments ) {
+		_deprecated_function( esc_html( $method_name ), '3.24.0' );
 	}
 
 	/**
@@ -287,17 +298,13 @@ class Settings {
 	 * @return string
 	 */
 	public static function get_setting_data( $id, $type = '' ) {
-		$s3_plugin_url = esc_url( 'https://wordpress.org/plugins/amazon-s3-and-cloudfront/' );
-		$bg_optimization = WP_Smush::get_instance()->core()->mod->bg_optimization;
-		if ( $bg_optimization->can_use_background() ) {
-			$bg_email_desc = esc_html__( 'Be notified via email about the bulk smush status when the process has completed.', 'wp-smushit' );
-		} else {
-			$bg_email_desc = sprintf(
+		$s3_plugin_url  = esc_url( 'https://wordpress.org/plugins/amazon-s3-and-cloudfront/' );
+		$mail_recipient = get_option( 'admin_email' );
+		$bg_email_desc  = sprintf(
 			/* translators: %s Email address */
 				esc_html__( "Be notified via email about the bulk smush status when the process has completed. You'll receive an email at %s.", 'wp-smushit' ),
-				'<strong>' . $bg_optimization->get_mail_recipient() . '</strong>'
+			'<strong>' . $mail_recipient . '</strong>'
 			);
-		}
 		$settings = array(
 			'background_email'  => array(
 				'label'       => esc_html__( 'Enable email notification', 'wp-smushit' ),
@@ -464,12 +471,15 @@ class Settings {
 	}
 
 	public function can_access_pro_field( $field ) {
-		if ( WP_Smush::is_pro() ) {
-			return true;
-		}
+		return false;
+	}
 
-		$bg_optimization = WP_Smush::get_instance()->core()->mod->bg_optimization;
-		return 'background_email' === $field && $bg_optimization->can_use_background();
+	public function should_enforce_bulk_limit() {
+		return true;
+	}
+
+	public function get_api_key() {
+		return '';
 	}
 
 	/**
@@ -1460,25 +1470,29 @@ class Settings {
 		return self::get_instance()->get( 'image_dimensions' );
 	}
 
-	public function is_module_active( $module ) {
-		$pro_modules = array(
+	protected function get_placeholder_modules() {
+		return array(
 			'cdn',
 			'png_to_jpg',
 			'webp_mod',
 			'avif_mod',
 			's3',
+			'nextgen',
 			'ultra',
 			'preload_images',
 			'auto_resizing',
 			'image_dimensions',
 		);
+	}
 
-		$module_active = self::get_instance()->get( $module );
-		if ( in_array( $module, $pro_modules, true ) ) {
-			$module_active = $module_active && WP_Smush::is_pro();
+	public function is_module_active( $module ) {
+		$advanced_modules = $this->get_placeholder_modules();
+
+		if ( in_array( $module, $advanced_modules, true ) ) {
+			return false;
 		}
 
-		return $module_active;
+		return self::get_instance()->get( $module );
 	}
 
 	public function get_lossy_level_setting() {
@@ -1501,9 +1515,6 @@ class Settings {
 	}
 
 	public function get_highest_lossy_level() {
-		if ( WP_Smush::is_pro() ) {
-			return self::$level_ultra_lossy;
-		}
 		return self::$level_super_lossy;
 	}
 

@@ -169,11 +169,6 @@ class Ajax {
 				continue;
 			}
 
-			// Skip premium features if not a member.
-			if ( ! in_array( $name, Settings::$basic_features, true ) && 'usage' !== $name && ! WP_Smush::is_pro() ) {
-				continue;
-			}
-
 			// Update value in settings.
 			if ( 'lossy' === $name ) {
 				$settings['lossy'] = ! empty( $quick_settings->{$name} ) ? $highest_lossy_level : Settings::get_level_lossless();
@@ -218,7 +213,7 @@ class Ajax {
 		}
 
 		// Check the last settings stored in db.
-		$settings = $this->settings->get_site_settings(); 
+		$settings = $this->settings->get_site_settings();
 
 		// Available settings for free/pro version.
 		$available = array( 'auto', 'lossy', 'strip_exif', 'compress_backup', 'lazy_load', 'usage' );
@@ -361,7 +356,7 @@ class Ajax {
 		wp_send_json_success();
 	}
 
-	public function dismiss_media_hub_connect_notice(){
+	public function dismiss_media_hub_connect_notice() {
 		check_ajax_referer( 'wp-smush-ajax' );
 
 		// Check capability.
@@ -535,7 +530,7 @@ class Ajax {
 		}
 
 		// If the bulk smush needs to be stopped.
-		if ( ! WP_Smush::is_pro() && ! Core::check_bulk_limit() ) {
+		if ( ! Core::should_continue_smush() ) {
 			wp_send_json_error(
 				array(
 					'error'    => 'limit_exceeded',
@@ -627,7 +622,7 @@ class Ajax {
 		$result['dir_smush'] = $stats;
 
 		// Cumulative Stats.
-		//$result['combined_stats'] = WP_Smush::get_instance()->core()->mod->dir->combine_stats( $stats );
+		// $result['combined_stats'] = WP_Smush::get_instance()->core()->mod->dir->combine_stats( $stats );
 
 		// Store the stats in options table.
 		update_option( 'dir_smush_stats', $result, false );
@@ -740,7 +735,7 @@ class Ajax {
 		 */
 		$file = isset( $_FILES['file'] ) ? wp_unslash( $_FILES['file'] ) : false; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
-		$configs_handler = new Configs();
+		$configs_handler = Configs::get_instance();
 		$new_config      = $configs_handler->save_uploaded_config( $file );
 
 		if ( ! is_wp_error( $new_config ) ) {
@@ -764,7 +759,7 @@ class Ajax {
 			wp_send_json_error( null, 403 );
 		}
 
-		$configs_handler = new Configs();
+		$configs_handler = Configs::get_instance();
 		wp_send_json_success( $configs_handler->get_config_from_current() );
 	}
 
@@ -789,7 +784,7 @@ class Ajax {
 			);
 		}
 
-		$configs_handler = new Configs();
+		$configs_handler = Configs::get_instance();
 		$response        = $configs_handler->apply_config_by_id( $id );
 
 		if ( ! is_wp_error( $response ) ) {

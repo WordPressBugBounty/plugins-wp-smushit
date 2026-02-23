@@ -712,7 +712,7 @@ class Media_Library extends Abstract_Module {
 	 * @return string  HTML content or array of results.
 	 */
 	public function generate_markup( $id ) {
-		$media_lib_item = new Media_Library_Row( $id );
+		$media_lib_item = Media_Library_Row::get_instance( $id );
 		return $media_lib_item->generate_markup();
 	}
 

@@ -3,7 +3,6 @@
 namespace Smush\Core;
 
 use Smush\Core\Threads\Thread_Safe_Options;
-use WP_Smush;
 use WPMUDEV_Analytics;
 use WPMUDEV_Analytics_V4;
 
@@ -139,7 +138,7 @@ class Product_Analytics {
 			'mysql_version'      => $this->server_utils->get_mysql_version(),
 			'php_version'        => phpversion(),
 			'plugin'             => 'Smush',
-			'plugin_type'        => WP_Smush::is_pro() ? 'pro' : 'free',
+			'plugin_type'        => 'free',
 			'plugin_version'     => WP_SMUSH_VERSION,
 			'server_type'        => $this->server_utils->get_server_type(),
 			'memory_limit'       => $this->format_utils->convert_to_megabytes( $this->server_utils->get_memory_limit() ),

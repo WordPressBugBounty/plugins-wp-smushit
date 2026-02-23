@@ -29,7 +29,6 @@ class Smush_Settings_UI_Controller extends Controller {
 		$this->register_action( 'smush_setting_column_right_additional', array( $this, 'resize_settings' ), 20 );
 		$this->register_action( 'smush_setting_column_right_outside', array( $this, 'full_size_options' ), 20, 2 );
 		$this->register_action( 'smush_setting_column_right_outside', array( $this, 'scale_options' ), 20, 2 );
-		$this->register_action( 'wp_smush_render_setting_row', array( $this, 'set_background_email_setting_visibility' ) );
 
 		$this->register_action( 'wp_smush_bulk_smush_settings', array( $this, 'render_basic_settings' ) );
 		$this->register_action( 'wp_smush_bulk_smush_settings', array( $this, 'render_advanced_settings' ), 20 );
@@ -56,45 +55,6 @@ class Smush_Settings_UI_Controller extends Controller {
 					'utm_campaign' => 'smush_bulk_smush_advanced_settings_pngtojpg',
 				)
 			);
-
-			if ( WP_Smush::is_pro() ) {
-				?>
-				<div class="sui-toggle-content">
-					<div class="sui-notice sui-notice-info" style="margin-top: 10px">
-						<div class="sui-notice-content">
-							<div class="sui-notice-message smush-png2jpg-setting-note">
-								<i class="sui-notice-icon sui-icon-info sui-md" aria-hidden="true"></i>
-								<p>
-									<?php
-									printf(
-									/* translators: 1: <strong> tag, 2: </strong> tag */
-										esc_html__(
-											'Note: Any PNGs with transparency will be ignored. Smush will only convert PNGs if it results in a smaller file size. The original PNG file will be deleted, and the resulting file will have a new filename and extension (JPEG). %1$sAny hard-coded URLs on your site that contain the original PNG filename will need to be updated manually.%2$s',
-											'wp-smushit'
-										),
-										'<strong>',
-										'</strong>'
-									);
-									?>
-									<br/>
-									<span>
-										<?php
-										printf(
-										/* translators: 1: <strong> tag, 2: </strong> tag */
-											esc_html__( '%1$sBackup original images%2$s must be enabled if you wish to retain the original PNG image as a backup.', 'wp-smushit' ),
-											'<strong>',
-											'</strong>'
-										);
-										?>
-									</span>
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-				<?php
-				return;
-			}
 
 			// Pro upsell description.
 			$desc = sprintf(
@@ -129,23 +89,17 @@ class Smush_Settings_UI_Controller extends Controller {
 					);
 					break;
 				case 'background_email':
-					$bg_optimization = WP_Smush::get_instance()->core()->mod->bg_optimization;
-					if ( $bg_optimization->can_use_background() ) {
-						/* translators: %s: Email address. */
-						$bg_email_desc = sprintf( __( 'You will receive an email at <strong>%s</strong> when the bulk smush has completed.', 'wp-smushit' ), $bg_optimization->get_mail_recipient() );
-					} else {
-						$bulk_upgrade_url = Helper::get_utm_link(
-							array(
-								'utm_campaign' => 'smush_bulk_smush_BO_email_toggle',
-							)
-						);
-						$bg_email_desc    = sprintf(
-							/* translators: 1: Open link tag <a>, 2: Close link tag </a> */
-							esc_html__( 'Get the email notification as part of the Background Optimization feature. You don’t have to keep the bulk smush page open when it is in progress. Be notified when Background Optimization completes. %1$sUnlock now with Pro%2$s', 'wp-smushit' ),
-							'<a href="' . esc_url( $bulk_upgrade_url ) . '" class="smush-upsell-link" target="_blank">',
-							'</a>'
-						);
-					}
+					$bulk_upgrade_url = Helper::get_utm_link(
+						array(
+							'utm_campaign' => 'smush_bulk_smush_BO_email_toggle',
+						)
+					);
+					$bg_email_desc    = sprintf(
+						/* translators: 1: Open link tag <a>, 2: Close link tag </a> */
+						esc_html__( 'Get the email notification as part of the Background Optimization feature. You don’t have to keep the bulk smush page open when it is in progress. Be notified when Background Optimization completes. %1$sUnlock now with Pro%2$s', 'wp-smushit' ),
+						'<a href="' . esc_url( $bulk_upgrade_url ) . '" class="smush-upsell-link" target="_blank">',
+						'</a>'
+					);
 					echo wp_kses_post( $bg_email_desc );
 					break;
 				default:
@@ -440,25 +394,6 @@ class Smush_Settings_UI_Controller extends Controller {
 		<?php
 	}
 
-	public function set_background_email_setting_visibility( $name ) {
-		if ( 'background_email' !== $name ) {
-			return;
-		}
-
-		$bg_optimization       = WP_Smush::get_instance()->core()->mod->bg_optimization;
-		$is_background_enabled = $bg_optimization->should_use_background();
-
-		if ( ! $is_background_enabled && $bg_optimization->can_use_background() ) {
-			?>
-			<style>
-				.background_email-settings-row {
-					display: none !important;
-				}
-			</style>
-			<?php
-		}
-	}
-
 	public function render_basic_settings( $bulk_settings ) {
 		$basic_settings = $this->get_basic_settings( $bulk_settings );
 		if ( empty( $basic_settings ) ) {
@@ -526,7 +461,7 @@ class Smush_Settings_UI_Controller extends Controller {
 		?>
 		<div class="sui-box-settings-row" id="bulk-restore-settings-row">
 			<div class="sui-box-settings-col-1">
-				<span class="<?php echo WP_Smush::is_pro() ? 'sui-settings-label' : 'sui-settings-label-with-tag'; ?>">
+				<span class="sui-settings-label-with-tag">
 					<?php esc_html_e( 'Restore all images', 'wp-smushit' ); ?>
 				</span>
 				<span class="sui-description">

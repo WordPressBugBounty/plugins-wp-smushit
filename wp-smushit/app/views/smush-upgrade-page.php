@@ -15,9 +15,6 @@ $upgrade_url = add_query_arg(
 	'https://wpmudev.com/project/wp-smush-pro/'
 );
 
-$bg_optimization    = WP_Smush::get_instance()->core()->mod->bg_optimization;
-$can_use_background = $bg_optimization->can_use_background();
-
 ?>
 
 <div class="sui-upgrade-page">
@@ -127,7 +124,6 @@ $can_use_background = $bg_optimization->can_use_background();
 				<h3><?php esc_html_e( 'Serve images faster with Ultra Compression', 'wp-smushit' ); ?></h3>
 				<p><?php esc_html_e( 'Experience up to 5x better compression than Super Smush. Optimize your images even further and make your pages load faster than ever.', 'wp-smushit' ); ?></p>
 			</div>
-			<?php if( ! $can_use_background ) : ?>
 			<div class="sui-upgrade-page-features__item">
 				<i class="sui-icon-unlock" aria-hidden="true"></i>
 				<h3><?php esc_html_e( 'No limits, no restrictions', 'wp-smushit' ); ?></h3>
@@ -138,7 +134,6 @@ $can_use_background = $bg_optimization->can_use_background();
 				<h3><?php esc_html_e( 'Compress images in the background', 'wp-smushit' ); ?></h3>
 				<p><?php esc_html_e( 'Thanks to Background Optimization, you can leave the plugin interface while images are still being compressed. Smush will continue to work its magic in the background, leaving you free to do other things!', 'wp-smushit' ); ?></p>
 			</div>
-			<?php endif; ?>
 			<div class="sui-upgrade-page-features__item">
 				<i class="sui-icon-web-globe-world" aria-hidden="true"></i>
 				<h3>
@@ -168,8 +163,8 @@ $can_use_background = $bg_optimization->can_use_background();
 					$cdn_next_gen_message = __( "Prefer not to use Smush CDN? Our standalone WebP feature allows you to serve next-gen images without sacrificing quality. You can also gracefully fall back to the older image formats for browsers that aren't compatible.", 'wp-smushit' );
 					echo esc_html( $this->whitelabel->whitelabel_string( $cdn_next_gen_message ) );
 					?>
-                </p>
-            </div>
+				</p>
+			</div>
 			<div class="sui-upgrade-page-features__item">
 				<i class="sui-icon-wand-magic" aria-hidden="true"></i>
 				<h3><?php esc_html_e( 'Auto-convert PNGs to JPEGs (lossy)', 'wp-smushit' ); ?></h3>
@@ -206,12 +201,12 @@ $can_use_background = $bg_optimization->can_use_background();
 			<div class="sui-upgrade-page-features__item">
 				<i class="sui-icon-help-support" aria-hidden="true"></i>
 				<h3><?php esc_html_e( '24/7 live WordPress support', 'wp-smushit' ); ?></h3>
-				<p><?php esc_html_e( "We can’t stress this enough: Our outstanding WordPress support is available with live chat 24/7, and we’ll help you with absolutely any WordPress issue, not just our products. It’s an expert WordPress team on call whenever you need them.", 'wp-smushit' ); ?></p>
+				<p><?php esc_html_e( 'We can’t stress this enough: Our outstanding WordPress support is available with live chat 24/7, and we’ll help you with absolutely any WordPress issue, not just our products. It’s an expert WordPress team on call whenever you need them.', 'wp-smushit' ); ?></p>
 			</div>
 			<div class="sui-upgrade-page-features__item">
 				<i class="sui-icon-wpmudev-logo" aria-hidden="true"></i>
 				<h3><?php esc_html_e( 'Zero risk, 30-day money-back guarantee', 'wp-smushit' ); ?></h3>
-				<p><?php esc_html_e( "We offer a full 30-day money-back guarantee. So if Smush isn’t the best image optimizer you’ve ever used, let us know and we’ll refund all of your money immediately.", 'wp-smushit' ); ?></p>
+				<p><?php esc_html_e( 'We offer a full 30-day money-back guarantee. So if Smush isn’t the best image optimizer you’ve ever used, let us know and we’ll refund all of your money immediately.', 'wp-smushit' ); ?></p>
 			</div>
 		</div>
 	</div>

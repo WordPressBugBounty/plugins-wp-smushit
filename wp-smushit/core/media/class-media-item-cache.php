@@ -2,8 +2,6 @@
 
 namespace Smush\Core\Media;
 
-use WP_Smush;
-
 /**
  * TODO: maybe reset the media item when:
  * - a new size is added
@@ -66,9 +64,7 @@ class Media_Item_Cache {
 	}
 
 	private function make_key( $id ) {
-		$membership_type_postfix = WP_Smush::is_pro() ? 'pro' : 'free';
-
-		return "wp-smush-$membership_type_postfix-media-item-$id";
+		return "wp-smush-media-item-$id";
 	}
 
 	private function save_to_cache( $id, $media_item ) {

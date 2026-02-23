@@ -2,21 +2,16 @@
 
 namespace Smush\Core\Media_Library;
 
-use Smush\Core\Avif\Avif_Optimization;
-use Smush\Core\CDN\CDN_Helper;
 use Smush\Core\Helper;
 use Smush\Core\Media\Media_Item;
 use Smush\Core\Media\Media_Item_Cache;
 use Smush\Core\Media\Media_Item_Optimization;
 use Smush\Core\Media\Media_Item_Optimizer;
 use Smush\Core\Media\Media_Item_Stats;
-use Smush\Core\Next_Gen\Next_Gen_Manager;
-use Smush\Core\Png2Jpg\Png2Jpg_Optimization;
 use Smush\Core\Resize\Resize_Optimization;
 use Smush\Core\Settings;
 use Smush\Core\Smush\Smush_Optimization;
 use Smush\Core\Stats\Global_Stats;
-use Smush\Core\Webp\Webp_Optimization;
 use WP_Error;
 use WP_Smush;
 
@@ -24,39 +19,43 @@ class Media_Library_Row {
 	/**
 	 * @var int
 	 */
-	private $attachment_id;
+	protected $attachment_id;
 
 	/**
 	 * @var WP_Error
 	 */
-	private $errors;
+	protected $errors;
 
 	/**
 	 * @var Media_Item_Optimizer
 	 */
-	private $optimizer;
+	protected $optimizer;
 
 	/**
 	 * @var Media_Item
 	 */
-	private $media_item;
+	protected $media_item;
 	/**
 	 * @var Global_Stats
 	 */
-	private $global_stats;
+	protected $global_stats;
 	/**
 	 * @var Settings
 	 */
-	private $settings;
+	protected $settings;
 
-	private $total_stats;
+	protected $total_stats;
 
-	private $sizes_stats;
+	protected $sizes_stats;
 
 	/**
 	 * @var Media_Item_Optimization[]
 	 */
-	private $applied_optimizations;
+	protected $applied_optimizations;
+
+	public static function get_instance( $attachment_id ) {
+		return new self( $attachment_id );
+	}
 
 	public function __construct( $attachment_id ) {
 		$this->attachment_id = $attachment_id;
@@ -136,32 +135,14 @@ class Media_Library_Row {
 		return $this->get_html_markup_for_failed_item_with_utm_link( $error_message, $utm_link );
 	}
 
-	private function get_animated_html_utm_link() {
-		if ( WP_Smush::is_pro() ) {
-			return $this->get_animated_cdn_notice_with_config_link();
-		}
-
+	protected function get_animated_html_utm_link() {
 		return $this->get_html_utm_link(
 			__( 'Upgrade to Serve GIFs faster with CDN.', 'wp-smushit' ),
 			'smush_bulksmush_library_gif_cdn'
 		);
 	}
 
-	private function get_animated_cdn_notice_with_config_link() {
-		if ( CDN_Helper::get_instance()->is_cdn_active() ) {
-			return '<span class="smush-cdn-notice">' . esc_html__( 'GIFs are serving from global CDN', 'wp-smushit' ) . '</span>';
-		}
-		$cdn_link = Helper::get_page_url( 'smush-cdn' );
-
-		return '<span class="smush-cdn-notice">' . sprintf(
-			/* translators: %1$s : Open a link %2$s Close the link */
-			esc_html__( '%1$sEnable CDN%2$s to serve GIFs closer and faster to visitors', 'wp-smushit' ),
-			'<a href="' . esc_url( $cdn_link ) . '" target="_blank">',
-			'</a>'
-		) . '</span>';
-	}
-
-	private function get_html_utm_link( $utm_message, $utm_campain ) {
+	protected function get_html_utm_link( $utm_message, $utm_campain ) {
 		$upgrade_url = 'https://wpmudev.com/project/wp-smush-pro/';
 		$args        = array(
 			'utm_source'   => 'smush',
@@ -261,13 +242,7 @@ class Media_Library_Row {
 	}
 
 	private function generate_markup_for_size_limited_item() {
-		$utm_link = '';
-		if ( ! WP_Smush::is_pro() ) {
-			$utm_link = $this->get_html_utm_link(
-				__( 'Upgrade to Pro to Smush larger images.', 'wp-smushit' ),
-				'smush_bulksmush_library_filesizelimit'
-			);
-		}
+		$utm_link = $this->get_filesize_limit_utm_link();
 
 		if ( $this->media_item->is_ignored() ) {
 			$error_message = esc_html__( 'Ignored.', 'wp-smushit' );
@@ -276,6 +251,18 @@ class Media_Library_Row {
 		}
 
 		return $this->get_html_markup_for_failed_item_with_utm_link( $error_message, $utm_link );
+	}
+
+	/**
+	 * Get UTM link for file size limit upsell.
+	 *
+	 * @return string
+	 */
+	protected function get_filesize_limit_utm_link() {
+		return $this->get_html_utm_link(
+			__( 'Upgrade to Pro to Smush larger images.', 'wp-smushit' ),
+			'smush_bulksmush_library_filesizelimit'
+		);
 	}
 
 	private function generate_markup_for_ignored_item() {
@@ -489,7 +476,7 @@ class Media_Library_Row {
 
 		$size_before = max(
 			array_map(
-				function ( $optimization ) use( $size ) {
+				function ( $optimization ) use ( $size ) {
 					return $optimization->get_size_stats( $size->get_key() )->get_size_before();
 				},
 				$optimizations
@@ -498,7 +485,7 @@ class Media_Library_Row {
 
 		$size_after = min(
 			array_map(
-				function ( $optimization ) use( $size ) {
+				function ( $optimization ) use ( $size ) {
 					return $optimization->get_size_stats( $size->get_key() )->get_size_after();
 				},
 				$optimizations
@@ -552,13 +539,21 @@ class Media_Library_Row {
 	}
 
 	private function get_classic_optimizations() {
-		$ordered_optimizations = array(
-			Smush_Optimization::get_key(),
-			Resize_Optimization::get_key(),
-			Png2Jpg_Optimization::get_key(),
-		);
+		$ordered_optimizations = $this->get_ordered_optimization_keys();
 
 		return array_map( array( $this->optimizer, 'get_optimization' ), $ordered_optimizations );
+	}
+
+	/**
+	 * Get the ordered optimization keys for classic optimizations.
+	 *
+	 * @return array
+	 */
+	protected function get_ordered_optimization_keys() {
+		return array(
+			Smush_Optimization::get_key(),
+			Resize_Optimization::get_key(),
+		);
 	}
 
 	private function get_optimized_status_text() {
@@ -846,30 +841,9 @@ class Media_Library_Row {
 	}
 
 	/**
-	 * @return bool
-	 */
-	private function is_nextgen_active() {
-		if ( $this->settings->is_cdn_active() ) {
-			return false;
-		}
-
-		return Next_Gen_Manager::get_instance()->is_active();
-	}
-
-	/**
 	 * @return Media_Item_Optimization|null
 	 */
-	private function get_active_nextgen_optimization() {
-		if ( ! $this->is_nextgen_active() ) {
-			return null;
-		}
-
-		if ( $this->settings->is_avif_module_active() ) {
-			return $this->optimizer->get_optimization( Avif_Optimization::get_key() );
-		} elseif ( $this->settings->is_webp_module_active() ) {
-			return $this->optimizer->get_optimization( Webp_Optimization::get_key() );
-		}
-
+	protected function get_active_nextgen_optimization() {
 		return null;
 	}
 }

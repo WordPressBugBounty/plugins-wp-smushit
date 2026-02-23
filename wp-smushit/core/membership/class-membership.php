@@ -22,14 +22,7 @@ class Membership {
 	 */
 	public static function get_instance() {
 		if ( empty( self::$instance ) ) {
-			if (
-				file_exists( __DIR__ . '/class-membership-pro.php' )
-				&& class_exists( '\Smush\Core\Membership\Membership_Pro' )
-			) {
-				self::$instance = new Membership_Pro();
-			} else {
-				self::$instance = new self();
-			}
+			self::$instance = new self();
 		}
 
 		return self::$instance;

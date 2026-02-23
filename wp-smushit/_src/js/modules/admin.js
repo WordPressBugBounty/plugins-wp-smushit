@@ -519,22 +519,6 @@ jQuery(function ($) {
 	$('.sui-mobile-nav').on('change', (e) => {
 		window.location.assign($(e.currentTarget).val());
 	});
-
-	/**
-	 * Handle re-check api status button click (Settings)
-	 *
-	 * @since 3.2.0.2
-	 */
-	$('#update-api-status').on('click', function (e) {
-		e.preventDefault();
-
-		//$(this).prop('disabled', true);
-		$(this).addClass('sui-button-onload');
-
-		$.post(ajaxurl, { action: 'recheck_api_status' }, function () {
-			location.reload();
-		});
-	});
 	
 	/**
 	 * Handle clear LCP data button click (Settings)

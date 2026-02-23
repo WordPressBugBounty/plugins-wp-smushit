@@ -137,9 +137,7 @@ class Media_Item extends Smush_File {
 		$this->id = $id;
 
 		$this->set_settings( Settings::get_instance() );
-		$size_limit = WP_Smush::is_pro()
-			? WP_SMUSH_PREMIUM_MAX_BYTES
-			: WP_SMUSH_MAX_BYTES;
+		$size_limit = WP_SMUSH_MAX_BYTES;
 		$this->set_size_limit( $size_limit );
 		$this->array_utils = new Array_Utils();
 		$this->fs          = new File_System();

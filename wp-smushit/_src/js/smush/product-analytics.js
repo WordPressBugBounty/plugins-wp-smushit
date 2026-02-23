@@ -91,7 +91,7 @@ class ProductAnalytics {
 					// Local Next-Gen.
 					'summary_next-gen': 'dash_summary',
 					'smush-dashboard-next-gen-upsell': 'dash_widget',
-					// smush_webp_upgrade_button: 'webp_page',// Handled inside React WebP - free-content.jsx
+					'smush_next-gen_upgrade_button': 'Next-Gen Formats',// Moved from React WebP - free-content.jsx
 				};
 
 				if ( ! ( campaign in upsellLocations ) ) {

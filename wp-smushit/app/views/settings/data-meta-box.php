@@ -59,22 +59,3 @@ if ( ! defined( 'WPINC' ) ) {
 		</button>
 	</div>
 </div>
-
-<div class="sui-box-settings-row" id="api-status-settings-row">
-	<div class="sui-box-settings-col-1">
-		<span class="sui-settings-label"><?php esc_html_e( 'API Status', 'wp-smushit' ); ?></span>
-		<span class="sui-description">
-			<?php esc_html_e( "If you're having issues with enabling pro features you can force the API to update your membership status here.", 'wp-smushit' ); ?>
-		</span>
-	</div>
-
-	<div class="sui-box-settings-col-2">
-		<button type="button" class="sui-button sui-button-ghost" id="update-api-status">
-			<span class="sui-loading-text">
-				<i class="sui-icon-undo" aria-hidden="true"></i>
-				<?php esc_html_e( 'Update API status', 'wp-smushit' ); ?>
-			</span>
-			<i class="sui-icon-loader sui-loading" aria-hidden="true"></i>
-		</button>
-	</div>
-</div>

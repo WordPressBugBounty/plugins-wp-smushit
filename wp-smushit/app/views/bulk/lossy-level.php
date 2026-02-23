@@ -81,39 +81,18 @@ $level_notices = array(
 			aria-describedby="<?php echo esc_attr( $name . '-desc' ); ?>"
 			value="<?php echo (int) $level_super; ?>"
 			<?php checked( $lossy_level_setting, $level_super, true ); ?> />
-
 		<!-- Ultra -->
-		<?php if ( WP_Smush::is_pro() ) : ?>
-			<button
-				type="button"
-				role="tab"
-				id="lossy-level__ultra"
-				class="sui-tab-item<?php echo $level_ultra === $lossy_level_setting ? ' active' : ''; ?>"
-				aria-controls="lossy-level__ultra-notice"
-				tabindex="-1">
-				<?php echo esc_html( $settings->get_lossy_level_label( $level_ultra ) ); ?>
-			</button>
-			<input
-				type="radio"
-				class="sui-screen-reader-text"
-				aria-hidden="true"
-				name="<?php echo esc_attr( $name ); ?>"
-				aria-labelledby="<?php echo esc_attr( $name . '-label' ); ?>"
-				aria-describedby="<?php echo esc_attr( $name . '-desc' ); ?>"
-				value="<?php echo (int) $level_ultra; ?>"
-				<?php checked( $lossy_level_setting, $level_ultra, true ); ?> />
-		<?php else :
-			$utm_link = $this->get_utm_link(
-				array(
-					'utm_campaign' => 'smush_ultra_bulksmush_radio',
-				)
-			);
+		<?php
+		$utm_link = $this->get_utm_link(
+			array(
+				'utm_campaign' => 'smush_ultra_bulksmush_radio',
+			)
+		);
 		?>
-			<a target="_blank" href="<?php echo esc_url( $utm_link ); ?>" class="sui-tab-item wp-smush-ultra-compression-link wp-smush-upsell-ultra-compression">
-				<?php esc_html_e( '🚀 Ultra - unlock 5x more compression', 'wp-smushit' ); ?>
-				<span class="sui-icon-open-new-window" aria-hidden="true"></span>
-			</a>
-		<?php endif; ?>
+		<a target="_blank" href="<?php echo esc_url( $utm_link ); ?>" class="sui-tab-item wp-smush-ultra-compression-link wp-smush-upsell-ultra-compression">
+			<?php esc_html_e( '🚀 Ultra - unlock 5x more compression', 'wp-smushit' ); ?>
+			<span class="sui-icon-open-new-window" aria-hidden="true"></span>
+		</a>
 	</div>
 	<div class="sui-tabs-content">
 		<div role="tabpanel"
