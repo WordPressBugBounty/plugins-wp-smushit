@@ -2,7 +2,7 @@
 
 /**
  * SmushProgressBar
- * TODO: Update progressbar for free version.
+ * TODO: Remove this file and related ajax Bulk Smush scripts.
  *
  * @param  autoSyncDuration
  */
@@ -323,10 +323,6 @@ const SmushProgressBar = () => {
 			}
 			onCancelCallback = callBack;
 			return this;
-		},
-		disableExceedLimitMode() {
-			progressBar.classList.remove( 'wp-smush-exceed-limit' );
-			progressBar.querySelector( '#bulk-smush-resume-button' ).classList.add( 'sui-hidden' );
 		},
 		hideRecheckImagesNotice() {
 			const recheckImagesNoticeElement = document.querySelector( '.wp-smush-recheck-images-notice-box' );

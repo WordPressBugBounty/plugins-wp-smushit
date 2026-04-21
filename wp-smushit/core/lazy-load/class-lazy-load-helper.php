@@ -80,10 +80,19 @@ class Lazy_Load_Helper {
 		return apply_filters( 'wp_smush_should_skip_lazy_load', $skip_lazyload );
 	}
 
-	private function get_lazy_load_options() {
+	public function get_lazy_load_options() {
 		if ( ! $this->lazy_load_options ) {
 			$setting                 = $this->settings->get_setting( 'wp-smush-lazy_load' );
-			$this->lazy_load_options = $this->array_utils->ensure_array( $setting );
+			$this->lazy_load_options = array_merge(
+				Settings::get_instance()->get_lazy_load_defaults(),
+				$this->array_utils->ensure_array( $setting )
+			);
+
+			// Include the lazy_load toggle from main settings
+			$main_settings = $this->settings->get();
+			if ( isset( $main_settings['lazy_load'] ) ) {
+				$this->lazy_load_options['lazy_load'] = $main_settings['lazy_load'];
+			}
 		}
 
 		return $this->lazy_load_options;

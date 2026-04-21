@@ -4,13 +4,13 @@ namespace Smush\Core\Stats;
 
 use Smush\Core\Array_Utils;
 use Smush\Core\Attachment_Id_List;
+use Smush\Core\Background\Mutex;
 use Smush\Core\Media\Media_Item;
 use Smush\Core\Media\Media_Item_Cache;
 use Smush\Core\Media\Media_Item_Optimization_Global_Stats;
 use Smush\Core\Media\Media_Item_Optimizer;
 use Smush\Core\Media\Media_Item_Query;
 use Smush\Core\Media\Media_Item_Stats;
-use Smush\Core\Modules\Background\Mutex;
 
 class Global_Stats {
 	private static $global_stats_option_id = 'wp_smush_global_stats';

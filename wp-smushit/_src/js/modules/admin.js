@@ -596,7 +596,7 @@ jQuery(function ($) {
 
 	/** Resmush: Media Library **/
 	$('body').on('click', '.wp-smush-action.wp-smush-resmush', function (e) {
-		process_smush_action(e, $(this), 'smush_resmush_image', 'smushing');
+		process_smush_action(e, $(this), 'optimize_attachment', 'smushing');
 	});
 
 	/** Restore: NextGen Gallery **/

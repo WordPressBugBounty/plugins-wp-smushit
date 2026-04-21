@@ -10,11 +10,14 @@
 
 namespace Smush\App;
 
+use Smush\Core\Bulk\Bulk_Optimize;
 use Smush\Core\Configs;
 use Smush\Core\Core;
 use Smush\Core\Error_Handler;
 use Smush\Core\Helper;
 use Smush\Core\Media\Media_Item_Cache;
+use Smush\Core\Membership\Membership;
+use Smush\Core\Modules\CDN;
 use Smush\Core\Modules\Smush;
 use Smush\Core\Settings;
 use WP_Smush;
@@ -37,18 +40,27 @@ class Ajax {
 	 * @var Settings
 	 */
 	private $settings;
+	private $membership;
+	/**
+	 * @var Bulk_Optimize
+	 */
+	private $bulk_optimize;
 
 	/**
 	 * Ajax constructor.
 	 */
 	public function __construct() {
-		$this->settings = Settings::get_instance();
+		$this->settings      = Settings::get_instance();
+		$this->membership    = Membership::get_instance();
+		$this->bulk_optimize = new Bulk_Optimize();
 
 		/**
 		 * QUICK SETUP
 		 */
 		// Handle skip quick setup action.
 		add_action( 'wp_ajax_skip_smush_setup', array( $this, 'skip_smush_setup' ) );
+		// Handle resume quick setup action.
+		add_action( 'wp_ajax_resume_smush_setup', array( $this, 'resume_smush_setup' ) );
 		// Ajax request for quick setup.
 		add_action( 'wp_ajax_smush_setup', array( $this, 'smush_setup' ) );
 		add_action( 'wp_ajax_smush_free_setup', array( $this, 'smush_free_setup' ) );
@@ -67,16 +79,10 @@ class Ajax {
 		add_action( 'wp_ajax_smush_show_warning', array( $this, 'show_warning_ajax' ) );
 		// Detect conflicting plugins.
 		add_action( 'wp_ajax_smush_dismiss_notice', array( $this, 'dismiss_notice' ) );
-		// Hide hub connect notice from media library.
-		add_action( 'wp_ajax_dismiss_media_hub_connect_notice', array( $this, 'dismiss_media_hub_connect_notice' ) );
 
 		/**
 		 * SMUSH
 		 */
-		// Handle Smush Single Ajax.
-		add_action( 'wp_ajax_wp_smushit_manual', array( $this, 'smush_manual' ) );
-		// Handle resmush operation.
-		add_action( 'wp_ajax_smush_resmush_image', array( $this, 'resmush_image' ) );
 		// Scan images as per the latest settings.
 		add_action( 'wp_ajax_scan_for_resmush', array( $this, 'scan_images' ) );
 		// Send smush stats.
@@ -109,12 +115,6 @@ class Ajax {
 		add_action( 'wp_ajax_smush_apply_config', array( $this, 'apply_config' ) );
 
 		/**
-		 * MODALS
-		 */
-		// Hide the new features modal.
-		add_action( 'wp_ajax_hide_new_features', array( $this, 'hide_new_features_modal' ) );
-
-		/**
 		 * Review Prompts Notice.
 		 */
 		add_action( 'wp_ajax_wp_smush_review_prompts_remind_later', array( $this, 'remind_later_review_prompts' ) );
@@ -135,6 +135,20 @@ class Ajax {
 			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
 		}
 		update_option( 'skip-smush-setup', true );
+		wp_send_json_success();
+	}
+
+	/**
+	 * Process ajax action for resuming Smush setup.
+	 */
+	public function resume_smush_setup() {
+		check_ajax_referer( 'wp-smush-ajax' );
+		// Check capability.
+		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
+		}
+
+		delete_option( 'skip-smush-setup' );
 		wp_send_json_success();
 	}
 
@@ -166,6 +180,11 @@ class Ajax {
 		foreach ( $settings as $name => $values ) {
 			// Update only specified settings.
 			if ( ! in_array( $name, $available, true ) ) {
+				continue;
+			}
+
+			// Skip premium features if not a member.
+			if ( ! in_array( $name, Settings::$basic_features, true ) && 'usage' !== $name && ! $this->membership->is_pro() ) {
 				continue;
 			}
 
@@ -356,18 +375,6 @@ class Ajax {
 		wp_send_json_success();
 	}
 
-	public function dismiss_media_hub_connect_notice() {
-		check_ajax_referer( 'wp-smush-ajax' );
-
-		// Check capability.
-		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
-			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
-		}
-
-		$this->set_notice_dismissed( 'media-hub-connect-notice' );
-		wp_send_json_success();
-	}
-
 	private function set_notice_dismissed( $notice ) {
 		$option_id                    = 'wp-smush-dismissed-notices';
 		$dismissed_notices            = get_option( $option_id, array() );
@@ -379,79 +386,6 @@ class Ajax {
 	 *
 	 * SMUSH
 	 */
-
-	/**
-	 * Handle the Ajax request for smushing single image
-	 *
-	 * @uses smush_single()
-	 */
-	public function smush_manual() {
-		if ( ! check_ajax_referer( 'wp-smush-ajax', '_nonce', false ) ) {
-			wp_send_json_error(
-				array(
-					'error_msg' => esc_html__( 'Nonce verification failed', 'wp-smushit' ),
-				)
-			);
-		}
-
-		if ( ! Helper::is_user_allowed( 'upload_files' ) ) {
-			wp_send_json_error(
-				array(
-					'error_msg' => esc_html__( "You don't have permission to work with uploaded files.", 'wp-smushit' ),
-				)
-			);
-		}
-
-		if ( ! isset( $_GET['attachment_id'] ) ) {
-			wp_send_json_error(
-				array(
-					'error_msg' => esc_html__( 'No attachment ID was provided.', 'wp-smushit' ),
-				)
-			);
-		}
-
-		$attachment_id = (int) $_GET['attachment_id'];
-
-		// Pass on the attachment id to smush single function.
-		WP_Smush::get_instance()->core()->mod->smush->smush_single( $attachment_id );
-	}
-
-	/**
-	 * Resmush the image
-	 *
-	 * @uses smush_single()
-	 */
-	public function resmush_image() {
-		// Check empty fields.
-		if ( empty( $_POST['attachment_id'] ) || empty( $_POST['_nonce'] ) ) {
-			wp_send_json_error(
-				array(
-					'error_msg' => esc_html__( 'Image not smushed, fields empty.', 'wp-smushit' ),
-				)
-			);
-		}
-
-		// Check nonce.
-		if ( ! wp_verify_nonce( wp_unslash( $_POST['_nonce'] ), 'wp-smush-resmush-' . (int) $_POST['attachment_id'] ) ) { // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-			wp_send_json_error(
-				array(
-					'error_msg' => esc_html__( "Image couldn't be smushed as the nonce verification failed, try reloading the page.", 'wp-smushit' ),
-				)
-			);
-		}
-
-		if ( ! Helper::is_user_allowed( 'upload_files' ) ) {
-			wp_send_json_error(
-				array(
-					'error_msg' => esc_html__( "You don't have permission to work with uploaded files.", 'wp-smushit' ),
-				)
-			);
-		}
-
-		$image_id = (int) $_POST['attachment_id'];
-
-		WP_Smush::get_instance()->core()->mod->smush->smush_single( $image_id );
-	}
 
 	/**
 	 * Scans all the smushed attachments to check if they need to be resmushed as per the
@@ -529,16 +463,6 @@ class Ajax {
 			do_action( 'wp_smush_bulk_smush_start' );
 		}
 
-		// If the bulk smush needs to be stopped.
-		if ( ! Core::should_continue_smush() ) {
-			wp_send_json_error(
-				array(
-					'error'    => 'limit_exceeded',
-					'continue' => false,
-				)
-			);
-		}
-
 		$attachment_id = 0;
 		if ( ! empty( $_REQUEST['attachment_id'] ) ) {
 			$attachment_id = (int) $_REQUEST['attachment_id'];
@@ -584,9 +508,6 @@ class Ajax {
 
 		// Runs after a image is successfully smushed.
 		do_action( 'image_smushed', $attachment_id, $stats );
-
-		// Update the bulk Limit count.
-		Core::update_smush_count();
 
 		// Send ajax response.
 		wp_send_json_success(
@@ -809,23 +730,6 @@ class Ajax {
 	 *
 	 * @since 3.7.0
 	 */
-
-	/**
-	 * Hide the new features modal
-	 *
-	 * @since 3.7.0
-	 */
-	public function hide_new_features_modal() {
-		check_ajax_referer( 'wp-smush-ajax' );
-
-		// Check for permission.
-		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
-			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
-		}
-
-		delete_site_option( 'wp-smush-show_upgrade_modal' );
-		wp_send_json_success();
-	}
 
 	/**
 	 * Hides the new features modal.

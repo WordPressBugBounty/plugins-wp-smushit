@@ -82,7 +82,7 @@ class CLI extends WP_CLI_Command {
 	 */
 	public function compress( $args, $assoc_args ) {
 		if ( Membership::get_instance()->is_api_hub_access_required() ) {
-			WP_CLI::warning( __( 'Bulk Smush requires your site to be connected to a free WPMU DEV account. Connect your site via plugin and try again.', 'wp-smushit' ) );
+			WP_CLI::warning( __( 'Super 2X Smush requires your site to be connected to a free WPMU DEV account. Connect your site via plugin and try again.', 'wp-smushit' ) );
 			return;
 		}
 

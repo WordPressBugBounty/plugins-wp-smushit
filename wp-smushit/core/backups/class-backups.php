@@ -215,11 +215,7 @@ class Backups {
 		}
 	}
 
-	/**
-	 * TODO: merge somehow with \Smush\Core\Modules\Backup::get_attachments_with_backups
-	 * @return int
-	 */
-	private function count_attachments_with_backups() {
+	public function count_attachments_with_backups() {
 		global $wpdb;
 		$wild            = '%';
 		$backup_key_like = $wild . $wpdb->esc_like( Media_Item::get_default_backup_key() ) . $wild;

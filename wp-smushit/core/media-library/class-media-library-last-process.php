@@ -3,9 +3,9 @@
 namespace Smush\Core\Media_Library;
 
 use Smush\Core\Array_Utils;
+use Smush\Core\Background\Mutex;
 use Smush\Core\Controller;
 use Smush\Core\Helper;
-use Smush\Core\Modules\Background\Mutex;
 use Smush\Core\Settings;
 
 class Media_Library_Last_Process extends Controller {

@@ -120,6 +120,75 @@ class Thread_Safe_Options {
 		return $this->json_array_append_scalars( $option_id, $values, true );
 	}
 
+	/**
+	 * Atomically append a single associative-array (object) to a JSON array option.
+	 *
+	 * Uses a single JSON_ARRAY_APPEND … CAST(? AS JSON) UPDATE so concurrent writers
+	 * never overwrite each other's entries.
+	 *
+	 * @param string $option_id  WP option name.
+	 * @param array  $object     Associative array to append.
+	 *
+	 * @return int|false Number of affected rows, or false on error.
+	 */
+	public function append_object_to_array( $option_id, $object ) {
+		return $this->json_array_append_object( $option_id, $object );
+	}
+
+	public function append_object_to_array_in_site_option( $option_id, $object ) {
+		return $this->json_array_append_object( $option_id, $object, true );
+	}
+
+	/**
+	 * Overwrite the entire stored JSON array with the supplied objects.
+	 *
+	 * Unlike append_object_to_array(), this is not concurrent-write safe; it is
+	 * intended for single-writer contexts such as trimming an oversized list at
+	 * read time.
+	 *
+	 * @param string $option_id WP option name.
+	 * @param array  $objects   Indexed array of associative arrays to store.
+	 *
+	 * @return int|false Number of affected rows, or false on DB error.
+	 */
+	public function replace_object_array( $option_id, $objects ) {
+		global $wpdb;
+
+		list( $table, $column, $value_column ) = $this->get_table_columns( false );
+
+		$json_string  = wp_json_encode( array_values( $objects ) );
+		$prepared_id  = $wpdb->prepare( '%s', $option_id );
+		$prepared_val = $wpdb->prepare( '%s', $json_string );
+
+		return $wpdb->query(
+			"INSERT INTO {$table} (`{$column}`, `{$value_column}`)
+			 VALUES ({$prepared_id}, {$prepared_val})
+			 ON DUPLICATE KEY UPDATE `{$value_column}` = {$prepared_val}"
+		);
+	}
+
+	private function json_array_append_object( $option_id, $object, $site_option = false ) {
+		global $wpdb;
+
+		list( $table, $column, $value_column ) = $this->get_table_columns( $site_option );
+
+		$this->initialize_json_array_option( $table, $column, $option_id, $value_column );
+
+		$json_string = wp_json_encode( $object );
+
+		// CAST(expr AS JSON) is not supported on MariaDB < 10.5.2. Using
+		// JSON_EXTRACT(CONCAT('[', expr, ']'), '$[0]') achieves the same result
+		// and works on MySQL 5.7+ and MariaDB 10.2+.
+		$prepared_json = $wpdb->prepare( '%s', $json_string );
+		$prepared_id   = $wpdb->prepare( '%s', $option_id );
+
+		return $wpdb->query(
+			"UPDATE {$table}
+			 SET {$value_column} = JSON_ARRAY_APPEND({$value_column}, '$', JSON_EXTRACT(CONCAT('[', {$prepared_json}, ']'), '$[0]'))
+			 WHERE {$column} = {$prepared_id}"
+		);
+	}
+
 	private function json_array_append_scalars( $option_id, $values, $site_option = false ) {
 		global $wpdb;
 
@@ -288,20 +357,28 @@ class Thread_Safe_Options {
 	private function initialize_json_object_option( $table, $column, $option_id, $value_column ) {
 		global $wpdb;
 
-		return $wpdb->query( "
-			INSERT IGNORE INTO {$table}
-			SET `$column` = '$option_id',
-				`$value_column` = '{}';
-		" );
+		return $wpdb->query( $wpdb->prepare(
+			"INSERT INTO {$table} (`{$column}`, `{$value_column}`)
+			 VALUES (%s, '{}')
+			 ON DUPLICATE KEY UPDATE
+			     `{$value_column}` = IF(JSON_VALID(`{$value_column}`), `{$value_column}`, '{}')",
+			$option_id
+		) );
 	}
 
 	private function initialize_json_array_option( $table, $column, $option_id, $value_column ) {
 		global $wpdb;
 
-		return $wpdb->query( "
-			INSERT IGNORE INTO {$table}
-			SET `$column` = '$option_id',
-				`$value_column` = '[]';
-		" );
+		// Insert a fresh JSON array if the row doesn't exist yet.
+		// If it already exists but holds a non-JSON value (e.g. a PHP-serialised array
+		// written by the old update_option() path), overwrite it with an empty JSON array
+		// so that subsequent JSON_ARRAY_APPEND calls don't fail.
+		return $wpdb->query( $wpdb->prepare(
+			"INSERT INTO {$table} (`{$column}`, `{$value_column}`)
+			 VALUES (%s, '[]')
+			 ON DUPLICATE KEY UPDATE
+			     `{$value_column}` = IF(JSON_VALID(`{$value_column}`), `{$value_column}`, '[]')",
+			$option_id
+		) );
 	}
 }

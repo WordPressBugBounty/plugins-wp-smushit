@@ -15,9 +15,9 @@ use WDEV_Logger;
 use WP;
 
 class Png2Jpg_Controller extends Controller {
-	const GLOBAL_STATS_OPTION_ID = 'wp-smush-png2jpg-global-stats';
-	const REWRITE_RULES_FLUSHED_OPTION = 'wp-smush-png2jpg-rewrite-rules-flushed';
-	const PNG2JPG_OPTIMIZATION_ORDER = 0;
+	private static $global_stats_option_id = 'wp-smush-png2jpg-global-stats';
+	private static $rewrite_rules_flushed_option = 'wp-smush-png2jpg-rewrite-rules-flushed';
+	private static $png2jpg_optimization_order = 0;
 	/**
 	 * @var WDEV_Logger
 	 */
@@ -70,7 +70,7 @@ class Png2Jpg_Controller extends Controller {
 		$this->register_filter( 'wp_smush_optimizations', array(
 			$this,
 			'add_png2jpg_optimization',
-		), self::PNG2JPG_OPTIMIZATION_ORDER, 2 );
+		), self::$png2jpg_optimization_order, 2 );
 		$this->register_filter( 'wp_smush_global_optimization_stats', array( $this, 'add_png2jpg_global_stats' ) );
 
 		$this->register_action( 'wp_smush_settings_updated', array(
@@ -184,16 +184,16 @@ class Png2Jpg_Controller extends Controller {
 	}
 
 	private function maybe_flush_rewrite_rules() {
-		$flushed = get_option( self::REWRITE_RULES_FLUSHED_OPTION, false );
+		$flushed = get_option( self::$rewrite_rules_flushed_option, false );
 		if ( WP_SMUSH_VERSION !== $flushed ) {
 			$this->logger->info( "Flushing rewrite rules so fallback PNGs can be served" );
 			flush_rewrite_rules();
-			update_option( self::REWRITE_RULES_FLUSHED_OPTION, WP_SMUSH_VERSION );
+			update_option( self::$rewrite_rules_flushed_option, WP_SMUSH_VERSION );
 		}
 	}
 
 	public function add_png2jpg_global_stats( $stats ) {
-		$stats[ Png2Jpg_Optimization::KEY ] = new Media_Item_Optimization_Global_Stats_Persistable( self::GLOBAL_STATS_OPTION_ID );
+		$stats[ Png2Jpg_Optimization::get_key() ] = new Media_Item_Optimization_Global_Stats_Persistable( self::$global_stats_option_id );
 
 		return $stats;
 	}

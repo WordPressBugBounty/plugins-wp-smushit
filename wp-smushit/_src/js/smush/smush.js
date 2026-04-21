@@ -46,7 +46,7 @@ class Smush {
 		this.single_ajax_suffix =
 			'nextgen' === this.smush_type
 				? 'smush_manual_nextgen'
-				: 'wp_smushit_manual';
+				: 'optimize_attachment';
 		this.bulk_ajax_suffix =
 			'nextgen' === this.smush_type
 				? 'wp_smushit_nextgen_bulk'
@@ -492,7 +492,6 @@ class Smush {
 					SmushProgress.update( 0, response.data.remaining_count );
 
 					jQuery('.wp-smush-scan').prop('disabled', false);
-					self.hideBulkFreeLimitReachedNotice();
 				},
 			} )
 			.always( () => messageHolder.html( progressMessage ) );
@@ -569,46 +568,6 @@ class Smush {
 		}
 
 		bulkErrorActionsElement.classList.remove('sui-hidden');
-	}
-
-	/**
-	 * Free Smush limit exceeded.
-	 */
-	freeExceeded() {
-		const progress = jQuery( '.wp-smush-bulk-progress-bar-wrapper' );
-		progress.addClass( 'wp-smush-exceed-limit' ).removeClass('sui-hidden');
-		progress
-			.find( '.sui-progress-block .wp-smush-cancel-bulk' )
-			.removeClass( 'sui-hidden' );
-		progress
-			.find( '.sui-progress-block .wp-smush-all' )
-			.addClass( 'sui-hidden' );
-
-		progress
-			.find( 'i.sui-icon-loader' )
-			.addClass( 'sui-icon-info' )
-			.removeClass( 'sui-icon-loader' )
-			.removeClass( 'sui-loading' );
-
-		document
-			.getElementById( 'bulk-smush-resume-button' )
-			.classList.remove( 'sui-hidden' );
-
-		this.showBulkFreeLimitReachedNotice();
-	}
-
-	showBulkFreeLimitReachedNotice() {
-		const bulkFreeLimitReachedNotice = document.getElementById( 'bulk-smush-limit-reached-notice' );
-		if ( bulkFreeLimitReachedNotice ) {
-			bulkFreeLimitReachedNotice.classList.remove( 'sui-hidden' );
-		}
-	}
-
-	hideBulkFreeLimitReachedNotice() {
-		const bulkFreeLimitReachedNotice = document.getElementById( 'bulk-smush-limit-reached-notice' );
-		if ( bulkFreeLimitReachedNotice ) {
-			bulkFreeLimitReachedNotice.classList.add( 'sui-hidden' );
-		}
 	}
 
 	/**
@@ -871,7 +830,6 @@ class Smush {
 			'undefined' !== typeof perf &&
 			10 > performance.now() - perf
 		) {
-			this.freeExceeded();
 			return this.deferred;
 		}
 
@@ -967,7 +925,6 @@ class Smush {
 					self.ids.unshift( self.current_id );
 
 					perf = performance.now();
-					self.freeExceeded();
 				} else if ( self.is_bulk ) {
 					self.updateProgress( res );
 					Smush.updateScoreProgress();
@@ -1199,8 +1156,6 @@ class Smush {
 
 		// Hide the progress bar.
 		jQuery( '.wp-smush-bulk-progress-bar-wrapper' ).addClass( 'sui-hidden' );
-
-		this.hideBulkFreeLimitReachedNotice();
 
 		this.onFinishBulkSmush();
 	}

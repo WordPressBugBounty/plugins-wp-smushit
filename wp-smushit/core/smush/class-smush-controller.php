@@ -3,12 +3,15 @@
 namespace Smush\Core\Smush;
 
 use Smush\Core\Array_Utils;
+use Smush\Core\Backups\Backups;
 use Smush\Core\Controller;
 use Smush\Core\Media\Media_Item;
 use Smush\Core\Security\Security_Utils;
+use Smush\Core\Settings;
 use Smush\Core\Stats\Global_Stats;
 use Smush\Core\Stats\Media_Item_Optimization_Global_Stats_Persistable;
 use Smush\Core\Webp\Webp_Converter;
+use WP_Smush;
 
 class Smush_Controller extends Controller {
 	private static $global_stats_option_id = 'wp-smush-optimization-global-stats';
@@ -33,27 +36,91 @@ class Smush_Controller extends Controller {
 	private function __construct() {
 		$this->global_stats   = Global_Stats::get();
 
-		$this->register_filter( 'wp_smush_optimizations', array(
-			$this,
-			'add_smush_optimization',
+		$this->register_filter(
+			'wp_smush_optimizations',
+			array(
+				$this,
+				'add_smush_optimization',
 		), self::$smush_optimization_order, 2 );
-		$this->register_filter( 'wp_smush_global_optimization_stats', array( $this, 'add_png2jpg_global_stats' ) );
+		$this->register_filter( 'wp_smush_global_optimization_stats', array( $this, 'add_smush_global_stats' ) );
 		$this->register_filter( 'wp_smush_optimization_global_stats_instance', array(
-			$this,
-			'create_global_stats_instance',
-		), 10, 2 );
-		$this->register_action( 'wp_smush_settings_updated', array(
-			$this,
-			'maybe_mark_global_stats_as_outdated',
-		), 10, 2 );
+				$this,
+				'create_global_stats_instance',
+			),
+			10,
+			2
+		);
+		$this->register_action(
+			'wp_smush_settings_updated',
+			array(
+				$this,
+				'maybe_mark_global_stats_as_outdated',
+			),
+			10,
+			2
+		);
 
 		// Bulk image sizes.
-		$this->register_action( 'wp_smush_image_sizes_updated', array(
-			$this,
-			'mark_global_stats_as_outdated_on_image_sizes_change',
-		), 10, 2 );
+		$this->register_action(
+			'wp_smush_image_sizes_updated',
+			array(
+				$this,
+				'mark_global_stats_as_outdated_on_image_sizes_change',
+			),
+			10,
+			2
+		);
 		$this->register_action( 'wp_smush_image_sizes_deleted', array( $this->global_stats, 'mark_as_outdated' ) );
 		$this->register_action( 'wp_smush_image_sizes_added', array( $this->global_stats, 'mark_as_outdated' ) );
+	}
+
+	/**
+	 * Localize data for the Smush bulk optimization UI.
+	 *
+	 * TODO: [WPMUDEV SMUSH UI] remove
+	 *
+	 * @param array $data Script data.
+	 */
+	public function localize_smush_bulk_data( $data, $page_slug ) {
+		$allowed_pages = array(
+			'smush', // Dashboard.
+			'smush-bulk',
+		);
+		if ( ! in_array( $page_slug, $allowed_pages, true ) ) {
+			return $data;
+		}
+
+		$core                = WP_Smush::get_instance()->core();
+		$data['globalStats'] = $core->get_global_stats();
+		// Background processing.
+		$bg_optimization              = $core->mod->bg_optimization;
+		$data['canUseBgOptimization'] = $bg_optimization->can_use_background();
+
+		$is_bulk_smush_page = 'smush-bulk' === $page_slug;
+		if ( ! $is_bulk_smush_page ) {
+			return $data;
+		}
+
+		// Backup status.
+		$backups       = new Backups();
+		$backup_exists = $backups->items_with_backup_exist();
+
+		// Image sizes.
+		$settings     = Settings::get_instance();
+		$image_sizes  = $settings->get_setting( 'wp-smush-image_sizes' );
+		$sizes        = $core->image_dimensions();
+		$all_selected = false === $image_sizes || count( $image_sizes ) === count( $sizes );
+
+		$data['bulkSmushMetaData'] = array(
+			'imageSizes'   => array(
+				'allSelected' => $all_selected,
+				'sizes'       => $sizes,
+				'selected'    => is_array( $image_sizes ) ? $image_sizes : array(),
+			),
+			'backupExists' => $backup_exists,
+		);
+
+		return $data;
 	}
 
 	/**
@@ -69,7 +136,7 @@ class Smush_Controller extends Controller {
 		return $optimizations;
 	}
 
-	public function add_png2jpg_global_stats( $stats ) {
+	public function add_smush_global_stats( $stats ) {
 		$stats[ Smush_Optimization::get_key() ] = new Media_Item_Optimization_Global_Stats_Persistable(
 			self::$global_stats_option_id,
 			new Smush_Optimization_Global_Stats()
@@ -102,7 +169,7 @@ class Smush_Controller extends Controller {
 
 	public function mark_global_stats_as_outdated_on_image_sizes_change( $old_image_sizes, $new_image_sizes ) {
 		$image_sizes_updated = count( $old_image_sizes ) !== count( $new_image_sizes )
-		                       || array_diff( $old_image_sizes, $new_image_sizes );
+							   || array_diff( $old_image_sizes, $new_image_sizes );
 
 		if ( ! empty( $image_sizes_updated ) ) {
 			$this->global_stats->mark_as_outdated();

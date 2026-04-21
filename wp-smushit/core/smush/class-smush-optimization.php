@@ -6,6 +6,7 @@ use Smush\Core\Media\Media_Item;
 use Smush\Core\Media\Media_Item_Optimization;
 use Smush\Core\Media\Media_Item_Size;
 use Smush\Core\Media\Media_Item_Stats;
+use Smush\Core\Modules\Helpers\WhiteLabel;
 use Smush\Core\Settings;
 use WP_Error;
 
@@ -16,6 +17,13 @@ class Smush_Optimization extends Media_Item_Optimization {
 	private static $key = 'smush_optimization';
 	private static $smush_meta_key = 'wp-smpro-smush-data';
 	private static $lossy_meta_key = 'wp-smush-lossy';
+
+	/**
+	 * White label helper used for replacing branding terms.
+	 *
+	 * @var WhiteLabel
+	 */
+	private $whitelabel;
 
 	/**
 	 * @var Media_Item_Stats
@@ -63,10 +71,17 @@ class Smush_Optimization extends Media_Item_Optimization {
 	 */
 	private $smusher;
 
+	/**
+	 * Each Smush API call returns a flag indicating whether the user is a pro user
+	 * @var bool
+	 */
+	private $is_premium;
+
 	public function __construct( $media_item ) {
 		$this->media_item = $media_item;
 		$this->settings   = Settings::get_instance();
 		$this->smusher    = new Smusher();
+		$this->whitelabel = new WhiteLabel();
 	}
 
 	public static function get_smush_meta_key() {
@@ -82,7 +97,7 @@ class Smush_Optimization extends Media_Item_Optimization {
 	}
 
 	public function get_name() {
-		return __( 'Smush', 'wp-smushit' );
+		return $this->whitelabel->replace_branding_terms( __( 'Smush', 'wp-smushit' ) );
 	}
 
 	public function get_stats() {
@@ -305,6 +320,7 @@ class Smush_Optimization extends Media_Item_Optimization {
 					'keep_exif'   => $this->keep_exif(),
 					'lossy'       => $this->get_lossy_level(),
 					'api_version' => $this->get_api_version(),
+					'is_premium'  => $this->is_premium(),
 				)
 			);
 		}
@@ -370,6 +386,7 @@ class Smush_Optimization extends Media_Item_Optimization {
 		$this->set_api_version( $data->api_version );
 		$this->set_lossy_level( (int) $data->lossy );
 		$this->set_keep_exif( empty( $data->keep_exif ) ? 0 : $data->keep_exif );
+		$this->set_is_premium( $data->is_premium );
 
 		// Update the size stats
 		$size_stats->from_array( $this->size_stats_from_response( $size_stats, $data ) );
@@ -462,5 +479,35 @@ class Smush_Optimization extends Media_Item_Optimization {
 		}
 
 		return $count;
+	}
+
+	/**
+	 * // TODO: [WPMUDEV SMUSH UI] it's probably best to get rid of this method because it's an extra pro check to care about
+	 */
+	public function is_premium() {
+		if ( is_null( $this->is_premium ) ) {
+			$this->is_premium = $this->prepare_is_premium();
+		}
+
+		return $this->is_premium;
+	}
+
+	private function prepare_is_premium() {
+		$smush_meta = $this->get_smush_meta();
+
+		return isset( $smush_meta['stats']['is_premium'] ) && $smush_meta['stats']['is_premium'];
+	}
+
+	private function set_is_premium( $is_premium ) {
+		$this->is_premium = ! empty( $is_premium );
+	}
+
+	/**
+	 * @param $smusher Smusher
+	 *
+	 * @return void
+	 */
+	public function set_smusher( $smusher ) {
+		$this->smusher = $smusher;
 	}
 }

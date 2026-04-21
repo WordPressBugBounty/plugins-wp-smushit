@@ -12,8 +12,8 @@ use Smush\Core\Media_Library\Media_Library_Last_Process;
 use Smush\Core\Media_Library\Media_Library_Scan_Background_Process;
 use Smush\Core\Media_Library\Media_Library_Scanner;
 use Smush\Core\Membership\Membership;
-use Smush\Core\Modules\Background\Background_Pre_Flight_Controller;
-use Smush\Core\Modules\Background\Background_Process;
+use Smush\Core\Background\Background_Pre_Flight_Controller;
+use Smush\Core\Background\Background_Process;
 use Smush\Core\Product_Analytics;
 use Smush\Core\Server_Utils;
 use Smush\Core\Settings;
@@ -86,6 +86,8 @@ class Product_Analytics_Controller {
 		// Other events.
 		add_action( 'wp_smush_directory_smush_start', array( $this, 'track_directory_smush' ) );
 		add_action( 'wp_smush_bulk_smush_start', array( $this, 'track_bulk_smush_start' ), 20 );
+		add_action( 'wp_smush_bulk_smush_completed', array( $this, 'track_background_bulk_smush_completed' ) );
+		add_action( 'wp_smush_bulk_smush_dead', array( $this, 'track_bulk_smush_background_process_death' ) );
 		add_action( 'wp_smush_config_applied', array( $this, 'track_config_applied' ) );
 
 		$identifier          = $this->scan_background_process->get_identifier();
@@ -310,6 +312,81 @@ class Product_Analytics_Controller {
 		$this->track( 'Bulk Smush Started', $properties );
 	}
 
+	/**
+	 * Track the event on background optimization completed.
+	 * Note: For ajax Bulk Smush, we will track it via js.
+	 *
+	 * @return void
+	 */
+	public function track_background_bulk_smush_completed() {
+		$bg_optimization    = WP_Smush::get_instance()->core()->mod->bg_optimization;
+		$total_items        = $bg_optimization->get_total_items();
+		$failed_items       = $bg_optimization->get_failed_items();
+		$failure_percentage = $total_items > 0 ? round( $failed_items * 100 / $total_items ) : 0;
+
+		$properties = array_merge(
+			$this->get_bulk_smush_stats(),
+			array(
+				'Total Enqueued Images' => $total_items,
+				'Failure Percentage'    => $failure_percentage,
+			)
+		);
+		$properties = $this->filter_bulk_smush_completed_properties( $properties );
+
+		$this->track( 'Bulk Smush Completed', $properties );
+	}
+
+	private function get_bulk_smush_stats() {
+		$global_stats = WP_Smush::get_instance()->core()->get_global_stats();
+
+		return array(
+			'Total Savings'                 => $this->convert_to_megabytes( (int) $this->array_utils->get_array_value( $global_stats, 'savings_bytes' ) ),
+			'Total Images'                  => (int) $this->array_utils->get_array_value( $global_stats, 'count_images' ),
+			'Media Optimization Percentage' => (float) $this->array_utils->get_array_value( $global_stats, 'percent_optimized' ),
+			'Percentage of Savings'         => (float) $this->array_utils->get_array_value( $global_stats, 'savings_percent' ),
+			'Images Resized'                => (int) $this->array_utils->get_array_value( $global_stats, 'count_resize' ),
+			'Resize Savings'                => $this->convert_to_megabytes( (int) $this->array_utils->get_array_value( $global_stats, 'savings_resize' ) ),
+		);
+	}
+
+	public function track_bulk_smush_background_process_death() {
+		$this->track(
+			'Background Process Dead',
+			array_merge(
+				array(
+					'Process Type' => 'Smush',
+					'Slice Size'   => 0,
+					'Time Elapsed' => $this->media_library_last_process->get_process_elapsed_time(),
+					'Smush Type'   => $this->get_smush_type(),
+					'Mode'         => $this->get_current_lossy_level_label(),
+				),
+				$this->get_bulk_background_process_properties()
+			)
+		);
+	}
+
+	protected function get_bulk_background_process_properties() {
+		$bg_optimization = WP_Smush::get_instance()->core()->mod->bg_optimization;
+		$process_id      = $this->get_process_id();
+
+		if ( ! $bg_optimization->is_background_enabled() ) {
+			return array(
+				'process_id' => $process_id,
+			);
+		}
+
+		$total_items     = $bg_optimization->get_total_items();
+		$processed_items = $bg_optimization->get_processed_items();
+
+		return array(
+			'process_id'             => $process_id,
+			'Retry Attempts'         => $bg_optimization->get_revival_count(),
+			'Total Enqueued Images'  => $total_items,
+			'Completion Percentage'  => $this->get_background_process_completion_percentage( $total_items, $processed_items ),
+			'Total Processed Images' => $processed_items,
+		);
+	}
+
 	protected function get_process_id() {
 		return md5( $this->media_library_last_process->get_process_start_time() );
 	}
@@ -520,14 +597,6 @@ class Product_Analytics_Controller {
 		}
 
 		return $properties;
-	}
-
-	protected function get_bulk_background_process_properties() {
-		$process_id = $this->get_process_id();
-
-		return array(
-			'process_id' => $process_id,
-		);
 	}
 
 	protected function get_scan_background_process_properties() {

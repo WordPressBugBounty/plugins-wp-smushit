@@ -3,6 +3,10 @@
 namespace Smush\Core\Membership;
 
 use Smush\Core\Hub_Connector;
+use Smush\Core\Media\Media_Item_Cache;
+use Smush\Core\Media\Media_Item_Optimizer;
+use Smush\Core\Settings;
+use Smush\Core\Smush\Smush_Optimization;
 use WPMUDEV\Hub\Connector\Data;
 
 class Membership {
@@ -57,6 +61,14 @@ class Membership {
 		return $this->is_pro;
 	}
 
+	public function set_pro( $is_pro ) {
+		$this->is_pro = $is_pro;
+	}
+
+	public function should_show_premium_status_warning( $attachment_id ) {
+		return false;
+	}
+
 	/**
 	 * Check if the user has access to the hub.
 	 *
@@ -65,10 +77,6 @@ class Membership {
 	 * @return bool
 	 */
 	public function has_access_to_hub() {
-		if ( $this->is_pro() ) {
-			return true;
-		}
-
 		if ( class_exists( 'WPMUDEV_Dashboard' ) && method_exists( 'WPMUDEV_Dashboard_Api', 'get_membership_status' ) ) {
 			// Possible values: full, single, free, expired, paused, unit.
 			$plan = \WPMUDEV_Dashboard::$api->get_membership_status();
@@ -87,11 +95,40 @@ class Membership {
 	 * @return bool
 	 */
 	public function is_api_hub_access_required() {
-		$is_pre_3_22_site = get_site_option( 'wp_smush_pre_3_22_site' );
-		if ( $is_pre_3_22_site ) {
+		if ( $this->can_use_current_compression_level() ) {
 			return false;
 		}
 
 		return ! $this->has_access_to_hub();
+	}
+
+	/**
+	 * Check if the user can use super compression.
+	 *
+	 * @return bool
+	 */
+	public function can_use_current_compression_level() {
+		$current_lossy_level = Settings::get_instance()->get_lossy_level_setting();
+		return Settings::get_level_lossless() === $current_lossy_level;
+	}
+
+	/**
+	 * Get the value for guests.
+	 *
+	 * @param bool $value 
+	 * @param mixed $alt 
+	 */
+	public function get_guest_value( $value = true, $alt = null ) {
+		return $this->get_member_value( $alt, $value );
+	}
+
+	/**
+	 * Get the value for members.
+	 *
+	 * @param bool $value 
+	 * @param mixed $alt 
+	 */
+	public function get_member_value( $value = true, $alt = null ) {
+		return $alt;
 	}
 }

@@ -8,7 +8,7 @@ use Smush\Core\File_System;
 use Smush\Core\Helper;
 
 class Png2Jpg_Helper {
-	const LARGE_PNG_SIZE = 3840;//4k.
+	private static $large_png_size = 3840;//4k.
 	private $logger;
 	/**
 	 * @var File_System
@@ -44,7 +44,7 @@ class Png2Jpg_Helper {
 	}
 
 	private function use_editor_for_transparency_check( $width, $height ) {
-		return $width <= self::LARGE_PNG_SIZE && $height <= self::LARGE_PNG_SIZE;
+		return $width <= self::$large_png_size && $height <= self::$large_png_size;
 	}
 
 	private function file_contents_have_transparency( $file_path ) {

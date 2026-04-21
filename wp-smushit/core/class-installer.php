@@ -48,6 +48,41 @@ class Installer {
 	}
 
 	/**
+	 * Redirect to Smush page after plugin activation if onboarding wizard has not been completed.
+	 *
+	 * @since 3.17.0
+	 *
+	 * @param string $plugin Plugin basename.
+	 */
+	public static function redirect_to_setup_page( $plugin ) {
+		// Check if this is the Smush plugin being activated.
+		if ( WP_SMUSH_BASENAME !== $plugin ) {
+			return;
+		}
+
+		// Check if onboarding wizard has been completed.
+		$skip_quick_setup = ! empty( get_option( 'skip-smush-setup' ) );
+		if ( $skip_quick_setup ) {
+			return;
+		}
+
+		// Don't redirect if activating multiple plugins.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( isset( $_GET['activate-multi'] ) ) {
+			return;
+		}
+
+		// Don't redirect on AJAX, CLI, or network admin.
+		if ( wp_doing_ajax() || ( defined( 'WP_CLI' ) && WP_CLI ) || is_network_admin() ) {
+			return;
+		}
+
+		// Redirect to Smush page.
+		wp_safe_redirect( admin_url( 'admin.php?page=smush' ) );
+		exit;
+	}
+
+	/**
 	 * Check if an existing install or new.
 	 *
 	 * @since 2.8.0  Moved to this class from wp-smush.php file.
@@ -164,7 +199,11 @@ class Installer {
 				self::upgrade_3_21_0();
 			}
 
-			if ( version_compare( $version, '3.21.0', '<' ) ) {
+			if ( version_compare( $version, '4.0', '<' ) ) {
+				self::upgrade_4_0_0();
+			}
+
+			if ( version_compare( $version, '4.0', '<' ) ) {
 				$hide_new_feature_highlight_modal = apply_filters( 'wpmudev_branding_hide_doc_link', false );
 				if ( ! $hide_new_feature_highlight_modal ) {
 					// Add the flag to display the new feature background process modal.
@@ -172,7 +211,7 @@ class Installer {
 				}
 
 				// Show new feature hotspot.
-				self::set_new_feature_hotspot_flag();
+				// self::set_new_feature_hotspot_flag();
 			}
 
 			// Create/upgrade directory smush table.
@@ -290,9 +329,74 @@ class Installer {
 		// Rename the default config.
 		$stored_configs = get_site_option( 'wp-smush-preset_configs', false );
 		if ( is_array( $stored_configs ) && isset( $stored_configs[0] ) && isset( $stored_configs[0]['name'] ) && 'Basic config' === $stored_configs[0]['name'] ) {
-			$stored_configs[0]['name'] = __( 'Default config', 'wp-smushit' );
+			$stored_configs[0]['name'] = __( 'Smush', 'wp-smushit' );
 			update_site_option( 'wp-smush-preset_configs', $stored_configs );
 		}
+	}
+
+	/**
+	 * Upgrade to 4.0.0
+	 *
+	 * @return void
+	 * @since 4.0.0
+	 */
+	private static function upgrade_4_0_0() {
+		$settings     = Settings::get_instance();
+		$lazy_options = $settings->get_setting( 'wp-smush-lazy_load' );
+		if ( ! is_array( $lazy_options ) ) {
+			return;
+		}
+
+		$changed = self::migrate_lazy_load_placeholder_in_options( $lazy_options );
+		$changed = self::migrate_lazy_load_spinner_in_options( $lazy_options ) || $changed;
+
+		if ( $changed ) {
+			$settings->set_setting( 'wp-smush-lazy_load', $lazy_options );
+		}
+	}
+
+	/**
+	 * Migrate lazy load placeholder settings.
+	 *
+	 * @param array $lazy_options Lazy load options.
+	 *
+	 * @return bool True when settings were changed.
+	 */
+	private static function migrate_lazy_load_placeholder_in_options( &$lazy_options ) {
+		$selected_placeholder = isset( $lazy_options['animation']['placeholder']['selected'] ) ? (int) $lazy_options['animation']['placeholder']['selected'] : 1;
+		if ( empty( $selected_placeholder ) || 2 !== $selected_placeholder ) {
+			return false;
+		}
+
+		// Update lazy load settings.
+		$lazy_options['animation']['placeholder']['selected'] = 1;
+		return true;
+	}
+
+	/**
+	 * Migrate lazy load spinner settings.
+	 *
+	 * @param array $lazy_options Lazy load options.
+	 *
+	 * @return bool True when settings were changed.
+	 */
+	private static function migrate_lazy_load_spinner_in_options( &$lazy_options ) {
+		$selected_spinner = isset( $lazy_options['animation']['spinner']['selected'] ) ? (int) $lazy_options['animation']['spinner']['selected'] : 1;
+		if ( empty( $selected_spinner ) || $selected_spinner > 5 ) {
+			return false;
+		}
+
+		$default_spinner = 1;
+		$map_spinner     = array(
+			1 => 2,
+			3 => 3,
+		);
+		// Map the selected spinner to the new value.
+		$selected_spinner = isset( $map_spinner[ $selected_spinner ] ) ? $map_spinner[ $selected_spinner ] : $default_spinner;
+
+		// Update lazy load settings.
+		$lazy_options['animation']['spinner']['selected'] = $selected_spinner;
+		return true;
 	}
 
 	/**

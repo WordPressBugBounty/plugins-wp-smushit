@@ -11,6 +11,7 @@ namespace Smush\Core;
 use Exception;
 use WP_Error;
 use WP_REST_Request;
+use Smush\Core\Modules\Helpers\WhiteLabel;
 
 /**
  * Class Configs
@@ -27,15 +28,21 @@ class Configs {
 	 *
 	 * @var array
 	 */
-	protected $placeholder_features = array( 'png_to_jpg', 's3', 'nextgen', 'cdn', 'webp', 'webp_mod', 'avif_mod', 'preload_images', 'auto_resizing', 'image_dimensions' );
+	protected $placeholder_features = array( 's3', 'nextgen', 'cdn', 'webp', 'webp_mod', 'avif_mod', 'preload_images', 'auto_resizing', 'image_dimensions' );
 
 	/**
 	 * @var Settings
 	 */
 	private $settings;
 
+	/**
+	 * @var @var WhiteLabel
+	 */
+	private $whitelabel;
+
 	public function __construct() {
-		$this->settings = Settings::get_instance();
+		$this->settings   = Settings::get_instance();
+		$this->whitelabel = new WhiteLabel();
 	}
 
 	public static function get_instance() {
@@ -63,6 +70,14 @@ class Configs {
 		if ( false === $stored_configs ) {
 			$stored_configs = array( $this->get_basic_config() );
 			update_site_option( 'wp-smush-preset_configs', $stored_configs );
+		} else {
+			foreach ( $stored_configs as $id => $config ) {
+				$is_basic_config = ! empty( $config['default'] );
+				if ( $is_basic_config ) {
+					$stored_configs[ $id ] = $this->get_basic_config();
+					break;
+				}
+			}
 		}
 		return $stored_configs;
 	}
@@ -110,8 +125,8 @@ class Configs {
 	private function get_basic_config() {
 		$basic_config = array(
 			'id'          => 1,
-			'name'        => __( 'Default config', 'wp-smushit' ),
-			'description' => __( 'Recommended performance config for every site.', 'wp-smushit' ),
+			'name'        => $this->whitelabel->replace_branding_terms( __( 'Smush', 'wp-smushit' ) ),
+			'description' => $this->whitelabel->is_whitelabel_enabled() ? __( 'Recommended config', 'wp-smushit' ) : __( 'Recommended Smush config by WPMU DEV developers', 'wp-smushit' ),
 			'default'     => true,
 			'config'      => array(
 				'configs' => array(
@@ -120,7 +135,6 @@ class Configs {
 						'lossy'             => Settings::get_level_super_lossy(),
 						'strip_exif'        => true,
 						'resize'            => false,
-						'detection'         => false,
 						'original'          => true,
 						'backup'            => true,
 						'png_to_jpg'        => true,
@@ -180,6 +194,16 @@ class Configs {
 				'description' => empty( $description ) ? '' : $description,
 				'config'      => $this->sanitize_and_format_configs( $configs ),
 			);
+
+			if ( isset( $config_data['note'] ) ) {
+				$sanitized_data['description'] = sanitize_text_field( $config_data['note'] );
+			}
+			if ( isset( $config_data['note_added_time'] ) ) {
+				$sanitized_data['note_added_time'] = sanitize_text_field( $config_data['note_added_time'] );
+			}
+			if ( isset( $config_data['date'] ) ) {
+				$sanitized_data['date'] = sanitize_text_field( $config_data['date'] );
+			}
 
 			if ( ! empty( $config_data['hub_id'] ) ) {
 				$sanitized_data['hub_id'] = filter_var( $config_data['hub_id'], FILTER_VALIDATE_INT );
@@ -325,13 +349,13 @@ class Configs {
 
 		// Update settings. We could reuse the `save` method from settings to handle this instead.
 		if ( ! empty( $sanitized_config['settings'] ) ) {
-			$stored_settings = $settings_handler->get_setting( 'wp-smush-settings' );
+			$stored_settings = $settings_handler->get_site_settings();
 
 			// Keep the keys that are in use in this version.
 			$new_settings = array_intersect_key( $sanitized_config['settings'], $stored_settings );
 
 			if ( $new_settings ) {
-				foreach ( $this->placeholder_features as $name ) {
+				foreach ( $this->get_placeholder_features() as $name ) {
 					$new_settings[ $name ] = false;
 				}
 
@@ -669,7 +693,7 @@ class Configs {
 	 */
 	protected function format_boolean_setting_value( $name, $value ) {
 		// Display the pro features as 'inactive' for free installs.
-		if ( in_array( $name, $this->placeholder_features, true ) ) {
+		if ( in_array( $name, $this->get_placeholder_features(), true ) ) {
 			$value = false;
 		}
 		return $value ? __( 'Active', 'wp-smushit' ) : __( 'Inactive', 'wp-smushit' );
@@ -856,5 +880,14 @@ class Configs {
 		$settings['cdn_dynamic_sizes'] = $is_auto_resizing_active;
 
 		return $settings;
+	}
+
+	/**
+	 * Get the list of placeholder features.
+	 *
+	 * @return array
+	 */
+	protected function get_placeholder_features() {
+		return $this->placeholder_features;
 	}
 }

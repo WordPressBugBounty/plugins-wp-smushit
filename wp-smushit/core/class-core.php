@@ -140,15 +140,6 @@ class Core extends Stats {
 	public $total_count = 0;
 
 	/**
-	 * Limit for allowed number of images per bulk request.
-	 *
-	 * This is enforced at api level too.
-	 *
-	 * @var int
-	 */
-	private static $bulk_pause_limit = 50;
-
-	/**
 	 * Initialize modules.
 	 *
 	 * @since 2.9.0
@@ -176,6 +167,10 @@ class Core extends Stats {
 		 * E.g. S3.
 		 */
 		add_action( 'rest_api_init', array( $this, 'load_libs_for_rest_api' ), 99 );
+	}
+
+	public function __call( $method_name, $arguments ) {
+		_deprecated_function( esc_html( $method_name ), '4.0' );
 	}
 
 	/**
@@ -420,50 +415,6 @@ class Core extends Stats {
 	}
 
 	/**
-	 * Check bulk sent count, whether to allow further smushing or not
-	 *
-	 * @param bool   $reset To hard reset the transient.
-	 * @param string $key Transient Key - bulk_sent_count/dir_sent_count.
-	 *
-	 * TODO: remove this (and all related code) because the limit has been lifted in 3.12.0
-	 *
-	 * @return bool
-	 */
-	public static function should_continue_smush( $reset = false, $key = 'bulk_sent_count' ) {
-		if ( ! Settings::get_instance()->should_enforce_bulk_limit() ) {
-			return true;
-		}
-
-		$transient_name = 'wp-smush-' . $key;
-
-		// If we JUST need to reset the transient.
-		if ( $reset ) {
-			set_transient( $transient_name, 0, 60 );
-			return false;
-		}
-
-		$bulk_sent_count = (int) get_transient( $transient_name );
-
-		// Check if bulk smush limit is less than limit.
-		if ( ! $bulk_sent_count || $bulk_sent_count < self::get_bulk_pause_limit() ) {
-			$continue = true;
-		} elseif ( self::get_bulk_pause_limit() === $bulk_sent_count ) {
-			// If user has reached the limit, reset the transient.
-			$continue = false;
-			$reset    = true;
-		} else {
-			$continue = false;
-		}
-
-		// If we need to reset the transient.
-		if ( $reset ) {
-			set_transient( $transient_name, 0, 60 );
-		}
-
-		return $continue;
-	}
-
-	/**
 	 * Get registered image sizes with dimension
 	 *
 	 * @return array
@@ -526,26 +477,6 @@ class Core extends Stats {
 	}
 
 	/**
-	 * Update the image smushed count in transient
-	 *
-	 * @param string $key Database key.
-	 */
-	public static function update_smush_count( $key = 'bulk_sent_count' ) {
-		$transient_name = 'wp-smush-' . $key;
-
-		$bulk_sent_count = get_transient( $transient_name );
-
-		// If bulk sent count is not set.
-		if ( false === $bulk_sent_count ) {
-			// Start transient at 0.
-			set_transient( $transient_name, 1, 200 );
-		} elseif ( $bulk_sent_count < self::get_bulk_pause_limit() ) {
-			// If lte bulk_pause_limit images are sent, increment.
-			set_transient( $transient_name, $bulk_sent_count + 1, 200 );
-		}
-	}
-
-	/**
 	 * Set the big image threshold.
 	 *
 	 * @param int $threshold The threshold value in pixels. Default 2560.
@@ -568,15 +499,6 @@ class Core extends Stats {
 		}
 
 		return $resize_sizes['width'] > $resize_sizes['height'] ? $resize_sizes['width'] : $resize_sizes['height'];
-	}
-
-	/**
-	 * Get bulk_pause_limit.
-	 *
-	 * @return int
-	 */
-	public static function get_bulk_pause_limit() {
-		return self::$bulk_pause_limit;
 	}
 
 

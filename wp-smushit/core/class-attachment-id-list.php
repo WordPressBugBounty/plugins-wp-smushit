@@ -2,7 +2,7 @@
 
 namespace Smush\Core;
 
-use Smush\Core\Modules\Background\Mutex;
+use Smush\Core\Background\Mutex;
 
 class Attachment_Id_List {
 	private $option_id;

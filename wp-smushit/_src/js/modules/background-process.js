@@ -17,7 +17,6 @@ import loopbackTester from '../loopback-tester';
         return;
     }
     const $ = document.querySelector.bind(document);
-    const NO_FREE_LIMITED = 50;
 
     /**
      * Handle Background Process.

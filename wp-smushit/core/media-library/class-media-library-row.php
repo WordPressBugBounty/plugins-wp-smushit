@@ -12,6 +12,7 @@ use Smush\Core\Resize\Resize_Optimization;
 use Smush\Core\Settings;
 use Smush\Core\Smush\Smush_Optimization;
 use Smush\Core\Stats\Global_Stats;
+use Smush\Core\Modules\Helpers\WhiteLabel;
 use WP_Error;
 use WP_Smush;
 
@@ -53,6 +54,11 @@ class Media_Library_Row {
 	 */
 	protected $applied_optimizations;
 
+	/**
+	 * @var WhiteLabel
+	 */
+	private $whitelabel;
+
 	public static function get_instance( $attachment_id ) {
 		return new self( $attachment_id );
 	}
@@ -64,6 +70,8 @@ class Media_Library_Row {
 		$this->optimizer     = new Media_Item_Optimizer( $this->media_item );
 		$this->errors        = $this->prepare_errors();
 		$this->settings      = Settings::get_instance();
+		$this->whitelabel    = new WhiteLabel();
+
 	}
 
 	private function prepare_errors() {
@@ -311,6 +319,9 @@ class Media_Library_Row {
 	}
 
 	private function get_html_markup_for_regenerate_doc_link() {
+		if ( $this->whitelabel->should_hide_doc_link() ) {
+			return '';
+		}
 		return sprintf(
 			'<a target="_blank" href="%s" class="wp-smush-learnmore" data-id="%d">%s</a>',
 			esc_url( $this->get_regenerate_doc_link() ),
@@ -711,7 +722,7 @@ class Media_Library_Row {
 		return sprintf(
 			'<a href="#" class="wp-smush-send button" data-id="%d">%s</a>',
 			$this->attachment_id,
-			esc_html__( 'Smush', 'wp-smushit' )
+			$this->whitelabel->get_whitelabel_text( esc_html__( 'Smush', 'wp-smushit' ), esc_html__( 'Optimize', 'wp-smushit' ) )
 		);
 	}
 
@@ -742,10 +753,10 @@ class Media_Library_Row {
 
 		return sprintf(
 			'<a href="#" data-tooltip="%s" data-id="%d" data-nonce="%s" class="wp-smush-action wp-smush-title sui-tooltip sui-tooltip-constrained wp-smush-resmush button">%s</a>',
-			esc_html__( 'Smush image including original file', 'wp-smushit' ),
+			$this->whitelabel->get_whitelabel_text( esc_html__( 'Smush image including original file', 'wp-smushit' ), esc_html__( 'Optimize image including original file', 'wp-smushit' ) ),
 			$this->attachment_id,
-			wp_create_nonce( 'wp-smush-resmush-' . $this->attachment_id ),
-			esc_html__( 'Resmush', 'wp-smushit' )
+			wp_create_nonce( 'wp-smush-ajax' ),
+			$this->whitelabel->get_whitelabel_text( esc_html__( 'Resmush', 'wp-smushit' ), esc_html__( 'Reoptimize', 'wp-smushit' ) )
 		);
 	}
 
@@ -786,10 +797,10 @@ class Media_Library_Row {
 		$required_level = $this->settings->get_lossy_level_setting();
 		switch ( $required_level ) {
 			case Settings::get_level_ultra_lossy():
-				return esc_html__( 'Ultra Smush', 'wp-smushit' );
+				return $this->whitelabel->get_whitelabel_text( esc_html__( 'Ultra Smush', 'wp-smushit' ), esc_html__( 'Ultra Optimize', 'wp-smushit' ) );
 
 			case Settings::get_level_super_lossy():
-				return esc_html__( 'Super Smush', 'wp-smushit' );
+				return $this->whitelabel->get_whitelabel_text( esc_html__( 'Super Smush', 'wp-smushit' ), esc_html__( 'Super Optimize', 'wp-smushit' ) );
 
 			default:
 				return false;

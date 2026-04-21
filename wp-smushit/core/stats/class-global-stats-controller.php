@@ -57,6 +57,8 @@ class Global_Stats_Controller extends Controller {
 			'mark_as_outdated',
 		), 10, 2 );
 		$this->register_action( 'wp_ajax_wp_smush_get_global_stats', array( $this, 'ajax_get_global_stats' ) );
+		$this->register_filter( 'wp_smush_frontend_poll_data', array( $this, 'add_global_stats_to_poll' ) );
+		$this->register_filter( 'wp_smush_localize_ui_script_data', array( $this, 'localize_global_stats' ), 10, 2 );
 	}
 
 	public function register_scan_process( $before_scan, $handle_attachment, $after_slice ) {
@@ -406,12 +408,23 @@ class Global_Stats_Controller extends Controller {
 	}
 
 	/**
-	 * Get global_stats_option_id.
+	 * Add global stats data to frontend poll response
 	 *
-	 * @return mixed
+	 * @param array $data Polling data array.
+	 * @return array Modified polling data with global stats.
 	 */
-	public static function get_global_stats_option_id() {
-		return self::$global_stats_option_id;
+	public function add_global_stats_to_poll( $data ) {
+		$data['global-stats'] = $this->get_global_stats_for_ui();
+		return $data;
 	}
 
+	private function get_global_stats_for_ui() {
+		return Global_Stats_DTO::to_react_props( $this->global_stats );
+	}
+
+	public function localize_global_stats( $script_data, $page_slug ) {
+		$script_data['globalStats'] = $this->get_global_stats_for_ui();
+
+		return $script_data;
+	}
 }

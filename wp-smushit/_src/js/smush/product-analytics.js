@@ -22,7 +22,6 @@ class ProductAnalytics {
 		// Bulk Smush Interrupted Event from Bulk Smush Modal.
 		this.trackBulkSmushInterruptedEventOnStopBulkSmushModal();
 		this.trackBulkSmushInterruptedEventOnRetryBulkSmushModal();
-		this.registerBulkSmushResumeClickEvent();
 
 		// Bulk Smush Interrupted Event when exit ajax bulk smush.
 		this.trackBulkSmushInterruptedEventWhenExitingAjaxBulkSmush();
@@ -91,7 +90,7 @@ class ProductAnalytics {
 					// Local Next-Gen.
 					'summary_next-gen': 'dash_summary',
 					'smush-dashboard-next-gen-upsell': 'dash_widget',
-					'smush_next-gen_upgrade_button': 'Next-Gen Formats',// Moved from React WebP - free-content.jsx
+					// smush_webp_upgrade_button: 'webp_page',// Handled inside React WebP - free-content.jsx
 				};
 
 				if ( ! ( campaign in upsellLocations ) ) {
@@ -243,14 +242,11 @@ class ProductAnalytics {
 				return;
 			}
 
-			const isFreeExceeded = progressBar.classList.contains( 'wp-smush-exceed-limit' );
-
 			const event = 'Bulk Smush Interrupted';
 			const properties = this.getBulkSmushInterruptedEventProperties(
 				{
-					Trigger: isFreeExceeded ? 'exit_50_limit' : 'exit_in_progress',
+					Trigger: 'exit_in_progress',
 					'Modal Action': 'Exit',
-					'Retry Attempts': this.resumeBulkSmushCount,
 				}
 			); 
 
@@ -318,7 +314,6 @@ class ProductAnalytics {
 		}
 
 		return {
-			'Retry Attempts': this.resumeBulkSmushCount,
 			'Total Enqueued Images': bulkSmushObject.getTotalEnqueuedImages(),
 			'Completion Percentage': bulkSmushObject.getCompletionPercentage(),
 		};
@@ -495,17 +490,6 @@ class ProductAnalytics {
 			missedEvents.forEach( ( missedEvent ) => {
 				tracker.track( missedEvent.event, missedEvent.properties );
 			} );
-		} );
-	}
-
-	registerBulkSmushResumeClickEvent() {
-		const resumeBulkSmushButton = document.querySelector( '.wp-smush-resume-bulk-smush' );
-		if ( ! resumeBulkSmushButton ) {
-			return;
-		}
-
-		resumeBulkSmushButton.addEventListener( 'click', () => {
-			this.resumeBulkSmushCount += 1;
 		} );
 	}
 

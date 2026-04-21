@@ -64,6 +64,8 @@
 
 .wp-smush-progress {
 	padding-left: 25px;
+	padding-top:0;
+	padding-bottom: 0;
 	margin: 0;
 	background-size: 17px 17px;
 	visibility: visible;
@@ -76,8 +78,10 @@
 // Fix grid view links.
 .attachment-details .setting span.wp-smush-progress {
 	width: auto;
-	line-height: 0;
 	margin-right: 5px;
+	padding-top:0;
+	padding-bottom: 0;
+	display: inline-block;
 }
 
 /** Settings Page **/
@@ -531,8 +535,7 @@ div.wp-smush-info.notice {
  * @since 3.9.1
  */
 #smush-box-cdn-upsell,
-#smush-box-webp-wizard,
-#smush-box-next-gen-upsell .smush-box-next-gen-upsell {
+#smush-box-webp-wizard {
 	.sui-upsell-list {
 		max-width: 495px;
 		text-align: left;

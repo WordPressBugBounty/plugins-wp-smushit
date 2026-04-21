@@ -751,50 +751,6 @@
 		// Directory smush.
 		.wp-smush-progress-dialog {
 
-			// When limit is exceeded.
-			&.wp-smush-exceed-limit {
-
-				.smush-limit-reached-notice {
-					display: block;
-				}
-
-				.wp-smush-resume-scan {
-					display: inline;
-				}
-
-				.sui-progress {
-					.sui-progress-icon {
-						.sui-icon-loader {
-							@include icon( before, info );
-							&:before {
-								color: #FECF2F;
-								animation: none;
-							}
-						}
-					}
-				}
-
-				.sui-progress-bar span {
-					background: #888888;
-				}
-
-				.sui-box-footer .sui-actions-right:not(.sui-hidden) {
-					margin-left: 10px;
-					margin-right: auto;
-					float: left;
-
-					.sui-button {
-						padding: 5px 16px 7px;
-						border: 2px solid #ddd;
-						background: transparent;
-						color: #888;
-					}
-				}
-				.sui-box-footer {
-					justify-content: space-between;
-				}
-			}
-
 			// When the request fails.
 			&.wp-smush-scan-error {
 
@@ -807,7 +763,7 @@
 				}
 			}
 
-			.smush-limit-reached-notice, .wp-smush-resume-scan, #smush-scan-error-notice {
+			.wp-smush-resume-scan, #smush-scan-error-notice {
 				display: none;
 			}
 		}

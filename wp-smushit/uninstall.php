@@ -37,6 +37,8 @@ $smushit_keys = array(
 	'wp-smush-super_smushed_nextgen',
 	'wp-smush-settings_updated',
 	'wp-smush-hide_update_info',
+	'wp-smush-hide_upgrade_notice',
+	'wp-smush-hide_s3support_alert',
 	'wp-smush-install-type',
 	'wp-smush-version',
 	'wp-smush-scan',
@@ -44,6 +46,7 @@ $smushit_keys = array(
 	'wp-smush-cdn-advanced-settings',
 	'wp-smush-cdn_status',
 	'wp-smush-lazy_load',
+	'wp-smush-preload',
 	'wp-smush-last_run_sync',
 	'wp-smush-networkwide',
 	'wp-smush-cron_update_running',
@@ -71,6 +74,7 @@ $smushit_keys = array(
 	'wp-smush-avif-global-stats',
 	'wp_smush_scan_slice_size',
 	'wp_smush_media_library_last_process',
+	'wp_smush_public_expected_nonces',
 	'wp_smush_expected_public_nonces',
 	'wp_smush_expected_nonces',
 	'wp_smush_background_pre_flight',
@@ -78,6 +82,21 @@ $smushit_keys = array(
 	'wp_smush_bulk_smush_background_process_status',
 	'wp_smush_event_times',
 	'wp-smush-show-new-feature-hotspot',
+	'wp-smush-rating-status',
+	'wp-smush-api_message',
+	'wp_smush_notifications',
+	'wp-smush-directory_first_visit_dismissed',
+	'wp-smush-ignored-items-list',
+	'wp-smush-animated-items-list',
+	'wp_smush_event_data',
+	'wp_smush_show_connected_modal',
+	'wp_smush_error_counts',
+	'wp_smush_pre_3_22_site',
+	'wp_smush_pre_3_12_6_site',
+	'wp_smush_last_scan_completed',
+	'wp_smush_next_gen_previously_active_format_key',
+	'smush_deactivated',
+	'wp-smush-review_prompt_next_show',
 );
 
 $db_keys = array(
@@ -118,12 +137,10 @@ if ( ! is_multisite() ) {
 	// Delete Options.
 	foreach ( $smushit_keys as $key ) {
 		delete_option( $key );
-		delete_site_option( $key );
 	}
 
 	foreach ( $db_keys as $key ) {
 		delete_option( $key );
-		delete_site_option( $key );
 	}
 
 	// Delete Cache data.
@@ -157,6 +174,11 @@ $meta_value = '';
 $delete_all = true;
 
 if ( is_multisite() ) {
+	$blog_pattern_keys = array(
+		'wp_smush_background_scan_process_',
+		'wp_smush_bulk_smush_background_process_'
+	);
+
 	$offset = 0;
 	$limit  = 100;
 	while ( $blogs = $wpdb->get_results( "SELECT blog_id FROM {$wpdb->blogs} LIMIT $offset, $limit", ARRAY_A ) ) {
@@ -168,6 +190,13 @@ if ( is_multisite() ) {
 				delete_metadata( $meta_type, null, 'wp-smush-resize_savings', '', $delete_all );
 				delete_metadata( $meta_type, null, 'wp-smush-original_file', '', $delete_all );
 				delete_metadata( $meta_type, null, 'wp-smush-pngjpg_savings', '', $delete_all );
+				delete_metadata( $meta_type, null, 'wp-smush-animated', '', $delete_all );
+				delete_metadata( $meta_type, null, 'wp-smush-transparent', '', $delete_all );
+				delete_metadata( $meta_type, null, 'wp-smush-ignore-bulk', '', $delete_all );
+
+				foreach ( $blog_pattern_keys as $pattern ) {
+					delete_site_option($pattern . $blog['blog_id'] . '_status');
+				}
 
 				foreach ( $smushit_keys as $key ) {
 					delete_option( $key );
@@ -203,6 +232,9 @@ if ( is_multisite() ) {
 	delete_metadata( $meta_type, null, 'wp-smush-resize_savings', '', $delete_all );
 	delete_metadata( $meta_type, null, 'wp-smush-original_file', '', $delete_all );
 	delete_metadata( $meta_type, null, 'wp-smush-pngjpg_savings', '', $delete_all );
+	delete_metadata( $meta_type, null, 'wp-smush-animated', '', $delete_all );
+	delete_metadata( $meta_type, null, 'wp-smush-transparent', '', $delete_all );
+	delete_metadata( $meta_type, null, 'wp-smush-ignore-bulk', '', $delete_all );
 }
 // Delete Directory smush table.
 $wpdb->query( "DROP TABLE IF EXISTS {$wpdb->base_prefix}smush_dir_images" );

@@ -13,7 +13,7 @@
  * Plugin Name:       Smush
  * Plugin URI:        https://wpmudev.com/project/wp-smush-pro/
  * Description:       Reduce image file sizes, improve performance and boost your SEO using the free <a href="https://wpmudev.com/">WPMU DEV</a> WordPress Smush API.
- * Version:           3.24.0
+ * Version:           4.0.2
  * Requires at least: 6.4
  * Requires PHP:      7.4
  * Author:            WPMU DEV
@@ -43,15 +43,21 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
-use Smush\Core\Membership\Membership;
 
 // If this file is called directly, abort.
+use Smush\Core\Background\Background_Utils;
+use Smush\Core\Background\Mutex;
+use Smush\Core\Membership\Membership;
+
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
 if ( ! defined( 'WP_SMUSH_VERSION' ) ) {
-	define( 'WP_SMUSH_VERSION', '3.24.0' );
+	define( 'WP_SMUSH_VERSION', '4.0.2' );
+}
+if ( ! defined( 'WP_SMUSH_RELEASE_DATE' ) ) {
+	define( 'WP_SMUSH_RELEASE_DATE', '15 April 2026' );
 }
 // Used to define body class.
 if ( ! defined( 'WP_SHARED_UI_VERSION' ) ) {
@@ -88,7 +94,7 @@ if ( ! defined( 'WP_SMUSH_PARALLEL' ) ) {
 	define( 'WP_SMUSH_PARALLEL', true );
 }
 if ( ! defined( 'WP_SMUSH_BACKGROUND' ) ) {
-	define( 'WP_SMUSH_BACKGROUND', false );
+	define( 'WP_SMUSH_BACKGROUND', true );
 }
 if ( ! defined( 'WP_SMUSH_MIN_PHP_VERSION' ) ) {
 	define( 'WP_SMUSH_MIN_PHP_VERSION', '7.4' );
@@ -132,8 +138,8 @@ if ( version_compare( PHP_VERSION, WP_SMUSH_MIN_PHP_VERSION, '<' ) ) {
 			deactivate_plugins( WP_SMUSH_BASENAME, false, is_network_admin() );
 		}
 	}
-	add_action( 'admin_notices', 'wp_smush_php_deprecated_notice' );
-	add_action( 'network_admin_notices', 'wp_smush_php_deprecated_notice' );
+	//add_action( 'admin_notices', 'wp_smush_php_deprecated_notice' );
+	//add_action( 'network_admin_notices', 'wp_smush_php_deprecated_notice' );
 	return;
 }
 /**
@@ -186,6 +192,7 @@ if ( WP_SMUSH_BASENAME !== plugin_basename( __FILE__ ) ) {
 require_once WP_SMUSH_DIR . 'core/class-installer.php';
 register_activation_hook( __FILE__, array( 'Smush\\Core\\Installer', 'smush_activated' ) );
 register_deactivation_hook( __FILE__, array( 'Smush\\Core\\Installer', 'smush_deactivated' ) );
+add_action( 'activated_plugin', array( 'Smush\\Core\\Installer', 'redirect_to_setup_page' ) );
 
 register_activation_hook( __FILE__, function () {
 	update_option( 'wp-smush-plugin-activated', true );
@@ -286,19 +293,23 @@ if ( ! class_exists( 'WP_Smush' ) ) {
 			$this->init();
 		}
 
+		public static function is_pro() {
+			return Membership::get_instance()->is_pro();
+		}
+
 		public function do_plugin_activated_action() {
 			$transient_key = 'wp-smush-plugin-activated';
 			if ( ! get_option( $transient_key ) ) {
 				return;
 			}
 
-			( new \Smush\Core\Modules\Background\Mutex( $transient_key ) )
+			( new Mutex( $transient_key ) )
 				->set_break_on_timeout( true )
 				->execute( function () use ( $transient_key ) {
 					// The get_option call we made above has added the "true" value to the cache,
 					// get_option is always going to return true even if the option was deleted in another thread,
 					// now we need use a thread safe method instead
-					$background_utils = new \Smush\Core\Modules\Background\Background_Utils();
+					$background_utils = new Background_Utils();
 					if ( $background_utils->get_option( $transient_key, false ) ) {
 						do_action( 'wp_smush_plugin_activated' );
 						delete_option( $transient_key );
@@ -397,7 +408,7 @@ if ( ! class_exists( 'WP_Smush' ) ) {
 			$this->library = new Smush\App\Media_Library( $this->core() );
 			if ( is_admin() ) {
 				$this->library()->init_ui();
-				$this->admin = Smush\App\Admin::get_instance();
+                $this->admin = new Smush\App\Admin( $this->library() );
 			}
 
 			if ( defined( 'WP_CLI' ) && WP_CLI ) {
@@ -515,6 +526,10 @@ if ( ! class_exists( 'WP_Smush' ) ) {
 		 *
 		 */
 		public function load_cross_sell_module() {
+			if ( 1 ) {
+				return;
+			}
+
 			$cross_sell_plugin_file = WP_SMUSH_DIR . 'core/external/plugins-cross-sell-page/plugin-cross-sell.php';
 			if ( ! file_exists( $cross_sell_plugin_file ) ) {
 				return;
@@ -546,7 +561,7 @@ if ( ! class_exists( 'WP_Smush' ) ) {
 		 * @return int Menu position for the admin menu.
 		 */
 		public function cross_sell_module_menu_position() {
-			$default_position = 7;
+			$default_position = 6;
 
 			// Return default position if not multisite
 			if ( ! is_multisite() ) {

@@ -22,7 +22,6 @@ import SmushProcess from '../common/progressbar';
 			this.onClickIgnoreImage();
 			this.onClickIgnoreAllImages();
 			this.onScanCompleted();
-			this.resumeBulkSmushHandler();
 		}
 
 		onClickBulkSmushNow() {
@@ -38,28 +37,6 @@ import SmushProcess from '../common/progressbar';
 				e.preventDefault();
 
 				self.ajaxBulkSmushStart( bulkSmushButton );
-			} );
-		}
-
-		resumeBulkSmushHandler() {
-			const resumeButton = document.querySelector( '.wp-smush-resume-bulk-smush' );
-			if ( ! resumeButton ) {
-				return;
-			}
-
-			resumeButton.addEventListener( 'click', ( e ) => {
-				if ( ! this.#bulkSmushObj ) {
-					return;
-				}
-
-				e.preventDefault();
-
-				const isUserClick = e.clientX > 0 && e.clientY > 0 && e.isTrusted;
-				if ( ! isUserClick ) {
-					return;
-				}
-
-				WP_Smush_Bulk.#resumeBulkSmush( this.#bulkSmushObj );
 			} );
 		}
 
@@ -90,13 +67,6 @@ import SmushProcess from '../common/progressbar';
 
 			// Run bulk Smush.
 			this.#bulkSmushObj.run();
-		}
-
-		static #resumeBulkSmush( bulkSmushObj ) {
-			SmushProcess.disableExceedLimitMode();
-			SmushProcess.hideBulkSmushDescription();
-			bulkSmushObj.onStart();
-			bulkSmushObj.callAjax();
 		}
 
 		onClickIgnoreImage() {

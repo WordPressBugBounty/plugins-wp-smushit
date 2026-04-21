@@ -104,9 +104,9 @@ class Gutenberg extends Abstract_Integration {
 
 		// Gutenberg block scripts.
 		wp_enqueue_script(
-			'smush-gutenberg',
-			WP_SMUSH_URL . 'app/assets/js/smush-blocks.min.js',
-			array( 'wp-blocks', 'wp-i18n', 'wp-element' ),
+			'smush-gutenberg-blocks',
+			WP_SMUSH_URL . 'app/assets/js/smush-gutenberg-blocks.min.js',
+			array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-api' ),
 			WP_SMUSH_VERSION,
 			true
 		);

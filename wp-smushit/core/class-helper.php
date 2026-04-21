@@ -15,6 +15,7 @@ namespace Smush\Core;
 use finfo;
 use Smush\Core\Media\Media_Item_Cache;
 use Smush\Core\Media\Media_Item_Stats;
+use Smush\Core\Membership\Membership;
 use Smush\Core\Png2Jpg\Png2Jpg_Optimization;
 use WDEV_Logger;
 
@@ -110,8 +111,8 @@ class Helper {
 	 * @param string $file File path.
 	 * @return string
 	 */
-	public static function clean_file_path( $file ) {
-		return str_replace( WP_CONTENT_DIR, '', $file );
+	public static function clean_file_path( $file, $base_dir = WP_CONTENT_DIR ) {
+		return str_replace( $base_dir, '', $file );
 	}
 
 	/**
@@ -495,27 +496,6 @@ class Helper {
 	}
 
 	/**
-	 * Gets the WPMU DEV API key.
-	 *
-	 * @since 3.8.6
-	 *
-	 * @return string|false
-	 */
-	public static function get_wpmudev_apikey() {
-		// If API key defined manually, get that.
-		if ( defined( 'WPMUDEV_APIKEY' ) && WPMUDEV_APIKEY ) {
-			return WPMUDEV_APIKEY;
-		}
-
-		// If dashboard plugin is active, get API key from db.
-		if ( class_exists( 'WPMUDEV_Dashboard' ) ) {
-			return get_site_option( 'wpmudev_apikey' );
-		}
-
-		return false;
-	}
-
-	/**
 	 * Get upsell URL.
 	 *
 	 * @since 3.9.1
@@ -539,7 +519,7 @@ class Helper {
 			$hash               = '#' . $hash;
 		}
 
-		$utm_source = 'smush';
+		$utm_source = Membership::get_instance()->get_member_value( 'smush_pro', 'smush' );
 		$args       = wp_parse_args(
 			$args,
 			array(

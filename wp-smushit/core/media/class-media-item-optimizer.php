@@ -46,6 +46,9 @@ class Media_Item_Optimizer {
 	 */
 	private $restoration_errors;
 
+	/**
+	 * @param $media_item Media_Item
+	 */
 	public function __construct( $media_item ) {
 		$this->media_item   = $media_item;
 		$this->backups      = new Backups();
@@ -191,12 +194,28 @@ class Media_Item_Optimizer {
 			return false;
 		}
 
-		$media_item = $this->media_item;
+		$third_party_errors = new WP_Error();
+		$media_item         = $this->media_item;
+
+		/**
+		 * Fires before Smushing a file.
+		 *
+		 * @param int $attachment_id Attachment ID.
+		 * @param array $ref_meta Metadata.
+		 * @param WP_Error $third_party_errors A WP_Error object allowing third-parties to stop the smush process.
+		 */
 		do_action(
 			'wp_smush_before_smush_attempt',
 			$media_item->get_id(),
-			$media_item->get_wp_metadata()
+			$media_item->get_wp_metadata(),
+			$third_party_errors
 		);
+
+		if ( $third_party_errors->has_errors() ) {
+			$this->logger->log( 'Got errors from a third-party while executing the wp_smush_before_smush_file action.' );
+
+			return false;
+		}
 
 		if ( $media_item->has_errors() || $media_item->is_skipped() ) {
 			$this->adjust_global_stats_lists();
@@ -216,13 +235,6 @@ class Media_Item_Optimizer {
 
 		$optimized = $this->run_optimizations();
 
-		do_action(
-			'wp_smush_after_smush_file',
-			$media_item->get_id(),
-			$media_item->get_wp_metadata(),
-			$optimized ? array() : $this->get_errors()
-		);
-
 		if ( $optimized ) {
 			do_action(
 				'wp_smush_after_smush_successful',
@@ -234,6 +246,14 @@ class Media_Item_Optimizer {
 		} else {
 			$this->handle_optimization_errors();
 		}
+
+		// This needs to be triggered after handle_optimization_errors so that get_errors will return correct errors
+		do_action(
+			'wp_smush_after_smush_file',
+			$media_item->get_id(),
+			$media_item->get_wp_metadata(),
+			$optimized ? array() : $this->get_errors()
+		);
 
 		$this->delete_in_progress_transient();
 

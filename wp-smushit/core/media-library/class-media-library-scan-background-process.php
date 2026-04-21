@@ -2,7 +2,7 @@
 
 namespace Smush\Core\Media_Library;
 
-use Smush\Core\Modules\Background\Background_Process;
+use Smush\Core\Background\Background_Process;
 
 class Media_Library_Scan_Background_Process extends Background_Process {
 	/**

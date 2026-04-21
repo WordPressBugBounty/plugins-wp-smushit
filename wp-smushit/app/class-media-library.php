@@ -21,7 +21,9 @@ use Smush\Core\Stats\Global_Stats;
 use Smush\Core\Membership\Membership;
 use Smush\Core\Hub_Connector;
 use Smush\Core\Backups\Bulk_Restore;
+use Smush\Core\Modules\Helpers\WhiteLabel;
 use Smush\Core\Array_Utils;
+use Smush\Core\Settings;
 use WP_Post;
 use WP_Query;
 use WP_Smush;
@@ -45,6 +47,11 @@ class Media_Library extends Abstract_Module {
 	private $array_utils;
 
 	/**
+	 * @var WhiteLabel
+	 */
+	private $whitelabel;
+
+	/**
 	 * Media_Library constructor.
 	 *
 	 * @param Core $core  Core instance.
@@ -53,14 +60,18 @@ class Media_Library extends Abstract_Module {
 		parent::__construct();
 		$this->core        = $core;
 		$this->array_utils = new Array_Utils();
+		$this->whitelabel  = new WhiteLabel();
 	}
 
 	/**
 	 * Init functionality that is related to the UI.
 	 */
 	public function init_ui() {
+		// Switch to lossless and skip media hub connect.
+		add_action( 'wp_ajax_skip_media_hub_connect', array( $this, 'ajax_skip_media_hub_connect' ) );
 		if ( Membership::get_instance()->is_api_hub_access_required() ) {
 			add_action( 'all_admin_notices', array( $this, 'smush_media_hub_connect_notice' ), 5 );
+			add_action( 'admin_print_footer_scripts', array( $this, 'print_hub_connect_inline_script' ) );
 			return false;
 		}
 
@@ -80,7 +91,7 @@ class Media_Library extends Abstract_Module {
 		// Add pre WordPress 5.0 compatibility.
 		add_filter( 'wp_kses_allowed_html', array( $this, 'filter_html_attributes' ) );
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'extend_media_modal' ), 15 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_media_scripts' ), 15 );
 
 		add_filter( 'wp_prepare_attachment_for_js', array( $this, 'smush_send_status' ), 99, 3 );
 
@@ -97,7 +108,7 @@ class Media_Library extends Abstract_Module {
 	 * @return array
 	 */
 	public function add_bulk_restore_action( $actions ) {
-		$actions['smush-bulk-restore'] = esc_html__( 'Smush restore', 'wp-smushit' );
+		$actions['smush-bulk-restore'] = $this->whitelabel->replace_branding_terms( esc_html__( 'Smush restore', 'wp-smushit' ) );
 
 		return $actions;
 	}
@@ -195,7 +206,7 @@ class Media_Library extends Abstract_Module {
 	 * @return string
 	 */
 	private function get_bulk_restore_message( $restored, $total, $missing_backup_count, $error_copy_count ) {
-		$backup_link = '<a href="' . esc_url( Helper::get_page_url( 'smush-bulk#backup' ) ) . '"><strong>';
+		$backup_link = '<a href="' . esc_url( Helper::get_page_url( 'smush#smush-backup-setting-card' ) ) . '"><strong>';
 		$backup_link_close = '</strong></a>';
 
 		if ( $missing_backup_count > 0 && $error_copy_count > 0 ) {
@@ -416,7 +427,7 @@ class Media_Library extends Abstract_Module {
 		add_filter( 'posts_where_request', array( $this, 'filter_query_to_add_media_item_errors' ) );
 
 		// Custom query for failed on optimization.
-		$meta_query =  array(
+		$meta_query = array(
 			'relation' => 'AND',
 			array(
 				'key'     => Media_Item_Optimizer::get_error_meta_key(),
@@ -487,13 +498,13 @@ class Media_Library extends Abstract_Module {
 
 		?>
 		<label for="smush_filter" class="screen-reader-text">
-			<?php esc_html_e( 'Filter by Smush status', 'wp-smushit' ); ?>
+			<?php echo esc_html( $this->whitelabel->replace_branding_terms( __( 'Filter by Smush status', 'wp-smushit' ) ) ); ?>
 		</label>
 		<select class="smush-filters" name="smush-filter" id="smush_filter">
-			<option value="" <?php selected( $ignored, '' ); ?>><?php esc_html_e( 'Smush: All images', 'wp-smushit' ); ?></option>
-			<option value="unsmushed" <?php selected( $ignored, 'unsmushed' ); ?>><?php esc_html_e( 'Smush: Not processed', 'wp-smushit' ); ?></option>
-			<option value="ignored" <?php selected( $ignored, 'ignored' ); ?>><?php esc_html_e( 'Smush: Bulk ignored', 'wp-smushit' ); ?></option>
-			<option value="failed_processing" <?php selected( $ignored, 'failed_processing' ); ?>><?php esc_html_e( 'Smush: Failed Processing', 'wp-smushit' ); ?></option>
+			<option value="" <?php selected( $ignored, '' ); ?>><?php echo esc_html( $this->whitelabel->replace_branding_terms( __( 'Smush: All images', 'wp-smushit' ) ) ); ?></option>
+			<option value="unsmushed" <?php selected( $ignored, 'unsmushed' ); ?>><?php echo esc_html( $this->whitelabel->replace_branding_terms( __( 'Smush: Not processed', 'wp-smushit' ) ) ); ?></option>
+			<option value="ignored" <?php selected( $ignored, 'ignored' ); ?>><?php echo esc_html( $this->whitelabel->replace_branding_terms( __( 'Smush: Bulk ignored', 'wp-smushit' ) ) ); ?></option>
+			<option value="failed_processing" <?php selected( $ignored, 'failed_processing' ); ?>><?php echo esc_html( $this->whitelabel->replace_branding_terms( __( 'Smush: Failed Processing', 'wp-smushit' ) ) ); ?></option>
 		</select>
 		<?php
 	}
@@ -527,22 +538,51 @@ class Media_Library extends Abstract_Module {
 	 *
 	 * Localization also used in Gutenberg integration.
 	 */
-	public function extend_media_modal() {
-		// Get current screen.
+	public function enqueue_media_scripts() {
+		// Get current screen..
 		$current_screen = get_current_screen();
 
-		// Only run on required pages.
-		if ( ! empty( $current_screen ) && ! in_array( $current_screen->id, Core::$external_pages, true ) && empty( $current_screen->is_block_editor ) ) {
+		if ( empty( $current_screen ) || 'upload' !== $current_screen->base ) {
 			return;
 		}
 
-		if ( wp_script_is( 'smush-backbone-extension', 'enqueued' ) ) {
-			return;
-		}
+		$mode = get_user_option( 'media_library_mode', get_current_user_id() ) ? get_user_option( 'media_library_mode', get_current_user_id() ) : 'grid';
 
 		wp_enqueue_script(
-			'smush-backbone-extension',
-			WP_SMUSH_URL . 'app/assets/js/smush-media.min.js',
+			'smush-media-admin',
+			WP_SMUSH_URL . 'app/assets/js/smush-media-admin.min.js',
+			array(
+				'jquery',
+			),
+			WP_SMUSH_VERSION,
+			true
+		);
+
+		$wp_smush_msgs = array(
+			'nonce'         => wp_create_nonce( 'wp-smush-ajax' ),
+			'resmush'       => $this->whitelabel->get_whitelabel_text( esc_html__( 'Smushing...', 'wp-smushit' ), esc_html__( 'Optimizing...', 'wp-smushit' ) ),
+			'restore'       => esc_html__( 'Restoring image...', 'wp-smushit' ),
+			'smush'         => $this->whitelabel->get_whitelabel_text( esc_html__( 'Smushing...', 'wp-smushit' ), esc_html__( 'Optimizing...', 'wp-smushit' ) ),
+			'ignored'       => esc_html__( 'Ignored', 'wp-smushit' ),
+			'not_processed' => esc_html__( 'Not processed', 'wp-smushit' ),
+		);
+
+		wp_localize_script( 'smush-media-admin', 'wp_smush_msgs', $wp_smush_msgs );
+
+		if ( 'grid' === $mode ) {
+			$this->enqueue_media_grid_scripts();
+		}
+	}
+
+	/**
+	 * Enqueue media grid scripts.
+	 *
+	 * @return void
+	 */
+	private function enqueue_media_grid_scripts() {
+		wp_enqueue_script(
+			'smush-media-library-grid',
+			WP_SMUSH_URL . 'app/assets/js/smush-media-library-grid.min.js',
 			array(
 				'jquery',
 				'media-editor', // Used in image filters.
@@ -553,26 +593,6 @@ class Media_Library extends Abstract_Module {
 			),
 			WP_SMUSH_VERSION,
 			true
-		);
-
-		wp_localize_script(
-			'smush-backbone-extension',
-			'smush_vars',
-			array(
-				'strings' => array(
-					'stats_label'          => esc_html__( 'Smush', 'wp-smushit' ),
-					'filter_all'           => esc_html__( 'Smush: All images', 'wp-smushit' ),
-					'filter_not_processed' => esc_html__( 'Smush: Not processed', 'wp-smushit' ),
-					'filter_excl'          => esc_html__( 'Smush: Bulk ignored', 'wp-smushit' ),
-					'filter_failed'        => esc_html__( 'Smush: Failed Processing', 'wp-smushit' ),
-					'gb'                   => array(
-						'stats'        => esc_html__( 'Smush Stats', 'wp-smushit' ),
-						'select_image' => esc_html__( 'Select an image to view Smush stats.', 'wp-smushit' ),
-						'size'         => esc_html__( 'Image size', 'wp-smushit' ),
-						'savings'      => esc_html__( 'Savings', 'wp-smushit' ),
-					),
-				),
-			)
 		);
 	}
 
@@ -630,13 +650,7 @@ class Media_Library extends Abstract_Module {
 			return;
 		}
 
-		$notice_hidden = WP_Smush::get_instance()->admin()->is_notice_dismissed( 'media-hub-connect-notice' );
-
-		if ( $notice_hidden ) {
-			return;
-		}
-
-		$hub_connect_url = Hub_Connector::get_connect_site_url( 'smush-bulk', 'smush_wpadmin_media_library' );
+		$hub_connect_url = Hub_Connector::get_connect_site_url( 'smush', 'smush_wpadmin_media_library' );
 		if ( is_multisite() ) {
 			$hub_connect_url = str_replace( '/wp-admin/', '/wp-admin/network/', $hub_connect_url );
 		}
@@ -646,28 +660,112 @@ class Media_Library extends Abstract_Module {
 			<div class="sui-notice sui-notice-blue" style="margin-top: 10px">
 				<div class="sui-notice-content">
 					<div class="sui-notice-message">
-						<h4><?php esc_html_e( 'Unlock Bulk Smush instantly!', 'wp-smushit' ); ?></h4>
+						<h4><?php esc_html_e( 'Unlock 2X Smush instantly!', 'wp-smushit' ); ?></h4>
 						<p>
 							<?php
 							printf(
 							/* translators: %s - strong tags */
-								esc_html__( 'Connect your site to WPMU DEV for %1$sfree%2$s and start smushing your images—takes just a few seconds, no credit card or API key needed.', 'wp-smushit' ),
+								esc_html__( 'Connect your site to WPMU DEV for %1$sfree%2$s and start Smushing with Super 2X—takes just a few seconds, no credit card or API key needed.', 'wp-smushit' ),
 								'<strong>',
 								'</strong>'
 							);
 							?>
 						</p>
 						<p>
-							<a class="sui-button sui-button-blue" href="<?php echo esc_url( $hub_connect_url ); ?>">
+							<a id="smush-media-hub-connect" class="sui-button sui-button-blue" href="<?php echo esc_url( $hub_connect_url ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'wp-smush-ajax' ) ); ?>">
 								<?php esc_html_e( 'Connect my site', 'wp-smushit' ); ?>
 							</a>
-							<a id="smush-media-notification-skip" class="smus-media-notification-skip" href="#"><?php esc_html_e( 'Skip for now', 'wp-smushit' ); ?></a>
+							<a id="smush-media-skip-connect" class="smus-media-notification-skip" data-nonce="<?php echo esc_attr( wp_create_nonce( 'wp-smush-ajax' ) ); ?>" href="#"><?php esc_html_e( "I'm happy with 1X Smush", 'wp-smushit' ); ?></a>
 						</p>
 					</div>
 				</div>
 			</div>
 		</div>
 		<?php
+	}
+
+	/**
+	 * Print the inline script for the Hub Connect notice.
+	 *
+	 * @return void
+	 */
+	public function print_hub_connect_inline_script() {
+		?>
+		<script type="text/javascript">
+			jQuery(function($) {
+				function insertHubConnectNotice() {
+					const mediaHubConnectNotice = $('#smush-hub-connect-media-notice');
+					if (!mediaHubConnectNotice.length) {
+						return;
+					}
+					const headerEnd = $('.wrap > .wp-header-end');
+					if (headerEnd.length) {
+						headerEnd.after(mediaHubConnectNotice.show());
+					}
+				}
+				insertHubConnectNotice();
+
+				$('#smush-media-hub-connect').on('click', function(e) {
+					var href = $(this).attr('href');
+					var nonce = $(this).data('nonce');
+					if ( window.wp_smush_mixpanel && window.wp_smush_mixpanel.opt_in ) {
+						e.preventDefault();
+						$.post(ajaxurl, {
+							action: 'smush_analytics_track_event',
+							event: 'smush_hub_connect',
+							properties: {
+								utm_medium:  'plugin',
+								utm_source:  'smush',
+								utm_content: 'hub-connector',
+								page_action: 'hub_connection',
+								utm_campaign: 'smush_wpadmin_media_library',
+							},
+							_ajax_nonce: nonce,
+						})
+						.always(function() {
+							window.location.href = href;
+						});
+					}
+				});
+
+				$('#smush-media-skip-connect').on('click', function(e) {
+					e.preventDefault();
+					$.post(ajaxurl, {
+						action: 'skip_media_hub_connect',
+						_ajax_nonce: $(this).data('nonce')
+					})
+					.done(function(response) {
+						if (response && response.success) {
+							$('#smush-hub-connect-media-notice').remove();
+							window.location.reload();
+						}
+					})
+					.fail(function() {
+						console.error('Failed to dismiss the media hub connect notice.');
+					});
+				});
+			});
+		</script>
+		<?php
+	}
+
+	/**
+	 * Switch to Lossless to skip media hub connect notice.
+	 *
+	 * @return void
+	 */
+	public function ajax_skip_media_hub_connect() {
+		check_ajax_referer( 'wp-smush-ajax' );
+
+		// Check capability.
+		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
+		}
+
+		// Switch to lossless compression.
+		Settings::get_instance()->set_lossless_level();
+
+		wp_send_json_success();
 	}
 
 	/**
@@ -746,7 +844,7 @@ class Media_Library extends Abstract_Module {
 
 		if ( get_post_meta( $id, 'wp-smush-ignore-bulk', true ) ) {
 			$nonce = wp_create_nonce( 'wp-smush-remove-skipped' );
-			$html .= " | <a href='#' class='wp-smush-remove-skipped' data-id={$id} data-nonce={$nonce}>" . esc_html__( 'Show in bulk Smush', 'wp-smushit' ) . '</a>';
+			$html .= " | <a href='#' class='wp-smush-remove-skipped' data-id={$id} data-nonce={$nonce}>" . esc_html__( 'Show in bulk optimization', 'wp-smushit' ) . '</a>';
 		} else {
 			$html .= " | <a href='#' class='smush-ignore-image' data-id='{$id}'>" . esc_html__( 'Ignore', 'wp-smushit' ) . '</a>';
 		}

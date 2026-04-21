@@ -79,7 +79,7 @@ class Smusher {
 	private $thread_safe_options;
 
 	public function __construct() {
-		$this->smush_parallel = WP_SMUSH_PARALLEL;
+		$this->smush_parallel = apply_filters( 'wp_smush_parallel_optimization', WP_SMUSH_PARALLEL );
 
 		$this->settings            = Settings::get_instance();
 		$this->logger              = Helper::logger();

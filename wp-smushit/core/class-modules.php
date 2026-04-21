@@ -10,8 +10,11 @@
 
 namespace Smush\Core;
 
+use Smush\Core\Background\Background_Pre_Flight_Controller;
 use Smush\Core\Backups\Backups_Controller;
 use Smush\Core\Cache\Cache_Controller;
+use Smush\Core\Frontend\Frontend_Controller;
+use Smush\Core\Frontend\Multisite_Frontend_Controller;
 use Smush\Core\Lazy_Load\Lazy_Load_Controller;
 use Smush\Core\Lazy_Load\Video_Embed\Video_Thumbnail_Controller;
 use Smush\Core\Media\Attachment_Url_Cache_Controller;
@@ -21,14 +24,15 @@ use Smush\Core\Media_Library\Background_Media_Library_Scanner;
 use Smush\Core\Media_Library\Media_Library_Last_Process;
 use Smush\Core\Media_Library\Media_Library_Slice_Data_Fetcher;
 use Smush\Core\Media_Library\Media_Library_Watcher;
-use Smush\Core\Modules\Background\Background_Pre_Flight_Controller;
 use Smush\Core\Modules\CDN;
 use Smush\Core\Photon\Photon_Controller;
+use Smush\Core\Rating_Notification\Rating_Notification_Controller;
 use Smush\Core\Resize\Resize_Controller;
 use Smush\Core\Security\Security_Controller;
 use Smush\Core\Smush\Smush_Controller;
 use Smush\Core\Stats\Global_Stats_Controller;
 use Smush\Core\Transform\Transformation_Controller;
+use Smush\Core\Png2Jpg\Png2Jpg_Controller;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -100,7 +104,7 @@ class Modules {
 	/**
 	 * Cache background optimization controller - Bulk_Smush_Controller
 	 *
-	 * @var Modules\Bulk\Background_Bulk_Smush
+	 * @var \Smush\Core\Bulk\Background_Bulk_Smush_Controller
 	 */
 	public $bg_optimization;
 
@@ -123,22 +127,27 @@ class Modules {
 
 		new Api\Hub(); // Init hub endpoints.
 
-		new Modules\Resize_Detection();
 		new Rest();
 
 		if ( is_admin() ) {
 			$this->dir = new Modules\Dir();
 		}
 
-		$this->smush  = $this->get_smush_module();
-		$this->backup = new Modules\Backup();
-		$this->resize = new Modules\Resize();
+		$this->smush           = $this->get_smush_module();
+		$this->backup          = new Modules\Backup();
+		$this->resize          = new Modules\Resize();
 
 		$transformation_controller = new Transformation_Controller();
 		$transformation_controller->init();
 
 		$this->lazy              = new Modules\Lazy();
 		$this->product_analytics = new Modules\Product_Analytics_Controller();
+
+		$this->png2jpg      = new Modules\Png2jpg();
+		$png2jpg_controller = Png2Jpg_Controller::get_instance();
+		$png2jpg_controller->init();
+
+		$this->bg_optimization = Bulk\Background_Bulk_Smush_Controller::get_instance();
 
 		$smush_controller = Smush_Controller::get_instance();
 		$smush_controller->init();
@@ -173,7 +182,7 @@ class Modules {
 		$media_item_controller = new Media_Item_Controller();
 		$media_item_controller->init();
 
-		$optimization_controller = new Optimization_Controller();
+		$optimization_controller = Optimization_Controller::get_instance();
 		$optimization_controller->init();
 
 		$photon_controller = new Photon_Controller();
@@ -204,6 +213,18 @@ class Modules {
 
 		$hub_connector = new Hub_Connector();
 		$hub_connector->init();
+
+		$frontend_controller = is_multisite() ? new Multisite_Frontend_Controller() : new Frontend_Controller();
+		$frontend_controller->init();
+
+		$settings_controller = new Settings_Controller();
+		$settings_controller->init();
+
+		$rating_notification_controller = new Rating_Notification_Controller();
+		$rating_notification_controller->init();
+
+		$activity_log_controller = Activity_Log_Controller::get_instance();
+		$activity_log_controller->init();
 	}
 
 	protected function get_smush_module() {

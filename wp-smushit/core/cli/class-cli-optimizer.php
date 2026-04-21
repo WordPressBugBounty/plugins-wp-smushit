@@ -203,7 +203,7 @@ class CLI_Optimizer {
 		$media_item = Media_Item_Cache::get_instance()->get( $attachment_id );
 		return array(
 			self::$image_id_key      => $attachment_id,
-			self::$edit_link_key     => $media_item->get_edit_link(),
+			self::$edit_link_key     => $media_item->get_edit_url(),
 			self::$error_message_key => $error_message,
 		);
 	}

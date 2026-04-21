@@ -2,8 +2,8 @@
 
 namespace Smush\Core\Stats;
 
+use Smush\Core\Background\Mutex;
 use Smush\Core\Media\Media_Item_Optimization_Global_Stats;
-use Smush\Core\Modules\Background\Mutex;
 
 class Media_Item_Optimization_Global_Stats_Persistable {
 	/**
