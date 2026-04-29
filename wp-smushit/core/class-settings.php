@@ -684,9 +684,6 @@ class Settings {
 
 		// And append subsite settings to the site settings.
 		$network_settings = array_merge( $network_settings, $subsite_settings );
-		if ( isset( $network_settings['lossy'] ) ) {
-			$network_settings['lossy'] = $this->sanitize_lossy_level( $network_settings['lossy'] );
-		}
 
 		return $network_settings;
 	}
@@ -714,6 +711,10 @@ class Settings {
 	 */
 	public function get( $setting = '' ) {
 		$settings = $this->get_site_settings();
+
+		if ( 'lossy' === $setting && isset( $settings['lossy'] ) ) {
+			return $this->sanitize_lossy_level( $settings['lossy'] );
+		}
 
 		if ( ! empty( $setting ) ) {
 			return isset( $settings[ $setting ] ) ? $settings[ $setting ] : false;

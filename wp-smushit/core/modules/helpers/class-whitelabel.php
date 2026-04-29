@@ -73,6 +73,15 @@ class WhiteLabel {
 		return apply_filters( 'wpmudev_branding_hide_doc_link', false );
 	}
 
+	/**
+	 * Whether to hide pro tag or not.
+	 *
+	 * @return bool
+	 */
+	public function should_hide_pro_tag() {
+		return apply_filters( 'wpmudev_branding_hide_pro_tag', $this->is_whitelabel_enabled() );
+	}
+
 	public function remove_brand_links( $text ) {
 		if ( ! $this->should_hide_doc_link() ) {
 			return $text;
@@ -162,6 +171,10 @@ class WhiteLabel {
 		if ( 'upload' === $plugin_settings['icon_type'] && ! empty( $plugin_settings['thumb_id'] ) ) {
 			return wp_get_attachment_image_url( $plugin_settings['thumb_id'], 'full' );
 		}
+		if( 'dashicon' === $plugin_settings['icon_type'] && ! empty( $plugin_settings['icon_class'] ) ) {
+			// Dashicons don't have a URL, so we return the dashicon class instead.
+			return $plugin_settings['icon_class'];
+		}
 
 		return false;
 	}
@@ -243,14 +256,35 @@ class WhiteLabel {
 		);
 
 		if ( $this->is_whitelabel_enabled() ) {
+			$icon_url   = '';
+			$icon_class = '';
+
+			if ( $this->is_plugin_labeling_enabled() ) {
+				$settings        = WPMUDEV_Dashboard::$whitelabel->get_settings();
+				$plugin_settings = $settings['labels_config'][ self::PLUGIN_ID ];
+				$icon_type       = isset( $plugin_settings['icon_type'] ) ? (string) $plugin_settings['icon_type'] : '';
+
+				if ( 'none' === $icon_type ) {
+					// null tells the JS side to hide the icon entirely.
+					$icon_url = null;
+				} elseif ( 'dashicon' === $icon_type && ! empty( $plugin_settings['icon_class'] ) ) {
+					$icon_class = $plugin_settings['icon_class'];
+				} elseif ( 'link' === $icon_type && ! empty( $plugin_settings['icon_url'] ) ) {
+					$icon_url = $plugin_settings['icon_url'];
+				} elseif ( 'upload' === $icon_type && ! empty( $plugin_settings['thumb_id'] ) ) {
+					$icon_url = wp_get_attachment_image_url( $plugin_settings['thumb_id'], 'full' );
+				}
+			}
+
 			$whitelabel_data = array(
-				'whitelabelEnabled'   => true,
-				// 'customPluginIconUrl' => $this->get_plugin_logo_url(),
-				'customPluginIconUrl' => '',
-				'customPluginName'    => $this->get_custom_plugin_name(),
-				'customMadeBy'        => apply_filters( 'wp_smush_whitelabel_custom_made_by', '' ),
-				'hideBranding'        => $this->should_hide_branding(),
-				'hideDocLink'         => $this->should_hide_doc_link(),
+				'whitelabelEnabled'     => true,
+				'customPluginIconUrl'   => $icon_url,
+				'customPluginIconClass' => $icon_class,
+				'customPluginName'      => $this->get_custom_plugin_name(),
+				'customMadeBy'          => apply_filters( 'wp_smush_whitelabel_custom_made_by', '' ),
+				'hideBranding'          => $this->should_hide_branding(),
+				'hideDocLink'           => $this->should_hide_doc_link(),
+				'hideProTag'          => $this->should_hide_pro_tag(),
 			);
 		}
 

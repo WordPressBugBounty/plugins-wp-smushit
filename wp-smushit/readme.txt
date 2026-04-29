@@ -1,6 +1,6 @@
 === Smush – Image Optimization, Compression, Lazy Load, WebP & CDN===
 Plugin Name: Smush – Image Optimization, Compression, Lazy Load, WebP & CDN
-Version: 4.0.2
+Version: 4.0.3
 Author: WPMU DEV
 Author URI: https://wpmudev.com/
 Contributors: WPMUDEV, alexdunae
@@ -187,13 +187,21 @@ We take plugin security incredibly seriously; if you have a bug or vulnerability
 
 == Screenshots ==
 
-1. Bulk Image Compression.
-2. Smush detects images that need compression.
-3. Compress unlimited images in the background.
-4. Compress images like a pro with single Smush settings.
-5. Make your page load faster with lazy loading.
+1. Configure your site in seconds.
+2. Effortless Bulk Image Optimization via the new dashboard.
+3. Directory Smush: Optimize images in any folder on your server.
+4. Boost site performance with advanced Lazy Loading settings.
+5. Serve images at lightning speed via our global CDN.
 
 == Changelog ==
+
+= 4.0.3 ( 2026-04-29 ) =
+- Fix: Resolved issue where Super Smush was not working on main site and subsites.
+- Fix: Improved White Label behavior across plugin UI and status screens.
+- Fix: Prevented opt-in toast from reappearing when restarting Smush without a refresh.
+- Fix: Preload settings changes are now recorded in the Activity Log.
+- Improvement: Updated onboarding and Directory Smush welcome modal UI and copy.
+- Improvement: Minor visual refinements across header and main menu.
 
 = 4.0.2 ( 2026-04-21 ) =
 - Fix: Configs not applied correctly in certain situations.

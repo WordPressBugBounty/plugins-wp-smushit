@@ -650,7 +650,7 @@ class Media_Library extends Abstract_Module {
 			return;
 		}
 
-		$hub_connect_url = Hub_Connector::get_connect_site_url( 'smush', 'smush_wpadmin_media_library' );
+		$hub_connect_url = Hub_Connector::get_connect_site_url( 'smush', 'smush_wpadmin_media_library_connect_create_account' );
 		if ( is_multisite() ) {
 			$hub_connect_url = str_replace( '/wp-admin/', '/wp-admin/network/', $hub_connect_url );
 		}

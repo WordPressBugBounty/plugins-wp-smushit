@@ -321,6 +321,10 @@ function SmushFetcher() {
 			}
 		},
 
+		onboarding: {
+			resumeWizard: () => request( 'resume_smush_setup' ),
+		},
+
 		request: ( action, data = {}, method = 'POST' ) => {
 			return request( action, data, method );
 		}
