@@ -11,6 +11,7 @@ use Smush\Core\Core;
 use Smush\Core\Error_Handler;
 use Smush\Core\Helper;
 use Smush\Core\Next_Gen\Next_Gen_Manager;
+use Smush\Core\Server_Utils;
 use Smush\Core\Settings;
 use Smush\Core\Stats\Global_Stats;
 use Smush\Core\Membership\Membership;
@@ -51,8 +52,6 @@ class Admin {
 	 * @var array $plugin_pages
 	 */
 	public static $plugin_pages = array(
-		'gallery_page_wp-smush-nextgen-bulk',
-		'nextgen-gallery_page_wp-smush-nextgen-bulk', // Different since NextGen 3.3.6.
 		'toplevel_page_smush',
 		'toplevel_page_smush-network',
 	);
@@ -77,10 +76,10 @@ class Admin {
 		$media_lib->init_ui();
 
 		// Plugin conflict notice.
-		// add_action( 'admin_notices', array( $this, 'show_plugin_conflict_notice' ) );
+		add_action( 'admin_notices', array( $this, 'show_plugin_conflict_notice' ) );
 		// add_action( 'admin_notices', array( $this, 'show_parallel_unavailability_notice' ) );
 		// add_action( 'admin_notices', array( $this, 'show_background_unavailability_notice' ) );
-		// add_action( 'smush_check_for_conflicts', array( $this, 'check_for_conflicts_cron' ) );
+        add_action( 'smush_check_for_conflicts', array( $this, 'check_for_conflicts_cron' ) );
 		add_action( 'activated_plugin', array( $this, 'check_for_conflicts_cron' ) );
 		add_action( 'deactivated_plugin', array( $this, 'check_for_conflicts_cron' ) );
 
@@ -281,6 +280,7 @@ class Admin {
 			'tiny-compress-images/tiny-compress-images.php',
 			'wp-rocket/wp-rocket.php',
 			'optimole-wp/optimole-wp.php',
+            'image-optimization/image-optimization.php',
 			// lazy load plugins.
 			'rocket-lazy-load/rocket-lazy-load.php',
 			'a3-lazy-load/a3-lazy-load.php',
@@ -321,11 +321,6 @@ class Admin {
 	 * @since 3.6.0
 	 */
 	public function show_plugin_conflict_notice() {
-		// Do not show on lazy load module, there we show an inline notice.
-		$is_lazy_preload_page = false !== strpos( get_current_screen()->id, 'page_smush-lazy-preload' );
-		if ( $is_lazy_preload_page ) {
-			return;
-		}
 
 		$dismissed = $this->is_notice_dismissed( 'plugin-conflict' );
 		if ( $dismissed ) {
@@ -352,16 +347,16 @@ class Admin {
 			}
 		);
 		?>
-		<div class="notice notice-info is-dismissible smush-dismissible-notice"
+		<div class="notice notice-info is-dismissible smush-dismissible-notice smush-plugin-conflict-notice"
 			 id="smush-conflict-notice"
 			 data-key="plugin-conflict">
 
-			<p><?php esc_html_e( 'You have multiple WordPress image optimization plugins installed. This may cause unpredictable behavior while optimizing your images, inaccurate reporting, or images to not display. For best results use only one image optimizer plugin at a time. These plugins may cause issues with Smush:', 'wp-smushit' ); ?></p>
+			<p><?php esc_html_e( 'You have multiple image optimization plugins installed that could conflict with Smush and cause issues. For best results, we recommend deactivating the following plugin(s):', 'wp-smushit' ); ?></p>
 			<p>
 				<?php echo wp_kses_post( join( '<br>', $conflict_check ) ); ?>
 			</p>
 			<p>
-				<a href="<?php echo esc_url( admin_url( 'plugins.php' ) ); ?>" class="button button-primary">
+				<a href="<?php echo esc_url( admin_url( 'plugins.php' ) ); ?>" class="button button-primary smush-plugin-conflict-manage-button">
 					<?php esc_html_e( 'Manage Plugins', 'wp-smushit' ); ?>
 				</a>
 				<a href="#"
@@ -472,23 +467,11 @@ class Admin {
 	 *
 	 * @since 3.0
 	 *
-	 * @param array $plugin_pages  Nextgen pages is not introduced in built in wpmudev branding.
+	 * @param array $plugin_pages  Plugin pages for wpmudev branding.
 	 *
 	 * @return array
 	 */
 	public function builtin_wpmudev_branding( $plugin_pages ) {
-		$plugin_pages['gallery_page_wp-smush-nextgen-bulk'] = array(
-			'wpmudev_whitelabel_sui_plugins_branding',
-			'wpmudev_whitelabel_sui_plugins_footer',
-			'wpmudev_whitelabel_sui_plugins_doc_links',
-		);
-
-		// There's a different page ID since NextGen 3.3.6.
-		$plugin_pages['nextgen-gallery_page_wp-smush-nextgen-bulk'] = array(
-			'wpmudev_whitelabel_sui_plugins_branding',
-			'wpmudev_whitelabel_sui_plugins_footer',
-			'wpmudev_whitelabel_sui_plugins_doc_links',
-		);
 
 		foreach ( $this->pages as $key => $value ) {
 			$plugin_pages[ "smush-pro_page_smush-{$key}" ] = array(
@@ -509,7 +492,7 @@ class Admin {
 
 	public function show_parallel_unavailability_notice() {
 		$smush                     = WP_Smush::get_instance()->core()->mod->smush;
-		$curl_multi_exec_available = $smush->curl_multi_exec_available();
+		$curl_multi_exec_available = ( new Server_Utils() )->curl_multi_exec_available();
 		$is_current_user_not_admin = ! current_user_can( 'manage_options' );
 		$is_not_bulk_smush_page    = false === strpos( get_current_screen()->id, 'page_smush-bulk' );
 		$notice_hidden             = $this->is_notice_dismissed( 'curl-multi-unavailable' );

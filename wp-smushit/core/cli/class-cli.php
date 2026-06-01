@@ -9,6 +9,7 @@
 namespace Smush\Core\CLI;
 
 use Smush\Core\Array_Utils;
+use Smush\Core\Backups\Backups;
 use Smush\Core\Helper;
 use Smush\Core\Media_Library\Background_Media_Library_Scanner;
 use Smush\Core\Membership\Membership;
@@ -201,7 +202,7 @@ class CLI extends WP_CLI_Command {
 	public function restore( $args, $assoc_args ) {
 		$id = $this->array_utils->get_array_value( $assoc_args, 'id' );
 		if ( 'all' === $id ) {
-			$restore_ids = WP_Smush::get_instance()->core()->mod->backup->get_attachments_with_backups();
+			$restore_ids = ( new Backups() )->get_attachments_with_backups();
 			$this->cli_optimizer->set_ids( $restore_ids )
 			                    ->bulk_restore( __( 'Restoring all images', 'wp-smushit' ) );
 			return;

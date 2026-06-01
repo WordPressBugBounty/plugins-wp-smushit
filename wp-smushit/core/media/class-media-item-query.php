@@ -167,12 +167,29 @@ class Media_Item_Query {
 		$escaped_relative_urls = array_map( function ( $relative_url ) {
 			return "'" . esc_sql( $relative_url ) . "'";
 		}, $absolute_key_relative_value );
-		$in                    = join( ',', $escaped_relative_urls );
 
 		global $wpdb;
-		$sql = "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '_wp_attached_file' AND meta_value IN ({$in})";
 
-		$results = $wpdb->get_results( $sql, ARRAY_A );
+		/**
+		 * Maximum number of URLs per IN() clause when resolving attachment IDs.
+		 * Lower this on hosts that kill long queries (e.g. WP Engine).
+		 * 100 is summing to good enough number of characters usually.
+		 *
+		 * @param int $chunk_size Default 100.
+		 */
+		$chunk_size = (int) apply_filters( 'wp_smush_attachment_urls_chunk_size', 100 );
+		$chunks     = array_chunk( $escaped_relative_urls, $chunk_size );
+
+		$results = array();
+		foreach ( $chunks as $chunk ) {
+			$in           = join( ',', $chunk );
+			$sql          = "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '_wp_attached_file' AND meta_value IN ({$in})";
+			$chunk_result = $wpdb->get_results( $sql, ARRAY_A );
+			if ( ! empty( $chunk_result ) ) {
+				$results = array_merge( $results, $chunk_result );
+			}
+		}
+
 		if ( empty( $results ) ) {
 			return array();
 		}

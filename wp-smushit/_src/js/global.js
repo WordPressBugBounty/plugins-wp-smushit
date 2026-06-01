@@ -116,4 +116,11 @@ document.addEventListener( 'DOMContentLoaded', function() {
 	}
 
 	handleHeaderNotice();
+
+	// Open the upgrade submenu link in a new tab.
+	const upgradeLink = document.querySelector( '#toplevel_page_smush ul.wp-submenu li:last-child a[href*="wpmudev.com"]' );
+	if ( upgradeLink ) {
+		upgradeLink.target = '_blank';
+		upgradeLink.rel = 'noopener noreferrer';
+	}
 });

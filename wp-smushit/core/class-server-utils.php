@@ -221,4 +221,17 @@ class Server_Utils {
 
 		return true;
 	}
+
+	public function curl_multi_exec_available() {
+		if ( ! function_exists( 'curl_multi_exec' ) ) {
+			return false;
+		}
+
+		$disabled_functions = explode( ',', ini_get( 'disable_functions' ) );
+		if ( in_array( 'curl_multi_exec', $disabled_functions ) ) {
+			return false;
+		}
+
+		return true;
+	}
 }

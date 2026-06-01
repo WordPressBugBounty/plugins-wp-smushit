@@ -165,6 +165,18 @@ function SmushFetcher() {
 				formData.append( 'file', file );
 				return request( 'smush_upload_config', formData );
 			},
+
+			/**
+			 * Sync a config to the Hub.
+			 *
+			 * @param {Object} config Config object to sync.
+			 */
+			syncToHub: ( config ) => {
+				return request( 'smush_hub_sync_config', {
+					_ajax_nonce: window.smushUIData?.configsData?.nonce || '',
+					config:      JSON.stringify( config ),
+				} );
+			},
 		},
 
 		/**

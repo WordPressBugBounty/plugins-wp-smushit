@@ -136,7 +136,7 @@ class Backups {
 	 */
 	public function restore_backup_to_file_path( $media_item, $file_path ) {
 		$backup_file_path = '';
-		$attachment_id   = $media_item->get_id();
+		$attachment_id    = $media_item->get_id();
 		$this->reset_errors(); // Reset errors.
 
 		do {
@@ -198,9 +198,9 @@ class Backups {
 	/**
 	 * Update the attached file for a media item if the file path has changed.
 	 *
-	 * @param Media_Item $media_item  Media Item.
-	 * @param array      $metadata    Image metadata.
-	 * @param mixed      $file_path    Image file path.
+	 * @param Media_Item $media_item Media Item.
+	 * @param array $metadata Image metadata.
+	 * @param mixed $file_path Image file path.
 	 */
 	private function maybe_update_attached_file( $media_item, $metadata, $file_path ) {
 		if ( empty( $metadata['file'] ) ) {
@@ -216,20 +216,26 @@ class Backups {
 	}
 
 	public function count_attachments_with_backups() {
+		return count( $this->get_attachments_with_backups() );
+	}
+
+	public function get_attachments_with_backups() {
 		global $wpdb;
-		$wild            = '%';
-		$backup_key_like = $wild . $wpdb->esc_like( Media_Item::get_default_backup_key() ) . $wild;
-		$no_backup_files = $wpdb->get_var(
+		$wild                     = '%';
+		$backup_key_like          = $wild . $wpdb->esc_like( Media_Item::get_default_backup_key() ) . $wild;
+		$png_key_like             = $wild . 'smush_png_path' . $wild;
+		$attachments_with_backups = $wpdb->get_col(
 			$wpdb->prepare(
-				"SELECT count(*)
+				"SELECT post_id
 				FROM {$wpdb->postmeta}
-				WHERE meta_key=%s AND `meta_value` LIKE %s",
+				WHERE meta_key=%s AND (`meta_value` LIKE %s OR `meta_value` LIKE %s)",
 				Media_Item::get_backup_sizes_meta_key(),
-				$backup_key_like
+				$backup_key_like,
+				$png_key_like
 			)
 		);
 
-		return (int) $no_backup_files;
+		return $attachments_with_backups;
 	}
 
 	public function items_with_backup_exist() {

@@ -91,9 +91,6 @@ class Ajax {
 		/**
 		 * BULK SMUSH
 		 */
-		// Ignore image from bulk Smush.
-		add_action( 'wp_ajax_wp_smushit_bulk', array( $this, 'process_smush_request' ) );
-		// Remove from skip list.
 
 		/**
 		 * DIRECTORY SMUSH
@@ -438,85 +435,6 @@ class Ajax {
 	 *
 	 * BULK SMUSH
 	 */
-
-	/**
-	 * Bulk Smushing Handler.
-	 *
-	 * Processes the Smush request and sends back the next id for smushing.
-	 */
-	public function process_smush_request() {
-		check_ajax_referer( 'wp-smush-ajax', '_nonce' );
-
-		// Check capability.
-		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
-			wp_send_json_error(
-				array(
-					'error'         => 'unauthorized',
-					'error_message' => esc_html__( "You don't have permission to do this.", 'wp-smushit' ),
-				),
-				403
-			);
-		}
-
-		$new_bulk_smush = ! empty( $_REQUEST['new_bulk_smush_started'] ) && $_REQUEST['new_bulk_smush_started'] !== 'false';
-		if ( $new_bulk_smush ) {
-			do_action( 'wp_smush_bulk_smush_start' );
-		}
-
-		$attachment_id = 0;
-		if ( ! empty( $_REQUEST['attachment_id'] ) ) {
-			$attachment_id = (int) $_REQUEST['attachment_id'];
-		}
-
-		$smush = WP_Smush::get_instance()->core()->mod->smush;
-
-		/**
-		 * Smush image.
-		 *
-		 * @since 3.9.6
-		 *
-		 * @param int      $attachment_id  Attachment ID.
-		 * @param array    $meta Image metadata (passed by reference).
-		 * @param WP_Error $errors WP_Error (passed by reference).
-		 */
-		$smush->smushit( $attachment_id, $meta, $errors );
-
-		$smush_data         = get_post_meta( $attachment_id, Smush::$smushed_meta_key, true );
-		$resize_savings     = get_post_meta( $attachment_id, 'wp-smush-resize_savings', true );
-		$conversion_savings = Helper::get_pngjpg_savings( $attachment_id );
-
-		$stats = array(
-			'count'              => ! empty( $smush_data['sizes'] ) ? count( $smush_data['sizes'] ) : 0,
-			'size_before'        => ! empty( $smush_data['stats'] ) ? $smush_data['stats']['size_before'] : 0,
-			'size_after'         => ! empty( $smush_data['stats'] ) ? $smush_data['stats']['size_after'] : 0,
-			'savings_resize'     => max( $resize_savings, 0 ),
-			'savings_conversion' => $conversion_savings['bytes'] > 0 ? $conversion_savings : 0,
-			'is_lossy'           => ! empty( $smush_data ['stats'] ) ? $smush_data['stats']['lossy'] : false,
-		);
-
-		if ( $errors && is_wp_error( $errors ) && $errors->has_errors() ) {
-			$error = Error_Handler::get_error( $errors, Media_Item_Cache::get_instance()->get( $attachment_id ) );
-			$response = array(
-				'stats'        => $stats,
-				'error'        => $error,
-				'show_warning' => (int) $smush->show_warning(),
-			);
-
-			// Send data.
-			wp_send_json_error( $response );
-		}
-
-		// Runs after a image is successfully smushed.
-		do_action( 'image_smushed', $attachment_id, $stats );
-
-		// Send ajax response.
-		wp_send_json_success(
-			array(
-				'stats'        => $stats,
-				'show_warning' => (int) $smush->show_warning(),
-			)
-		);
-	}
 
 	/***************************************
 	 *

@@ -97,6 +97,7 @@ $smushit_keys = array(
 	'wp_smush_next_gen_previously_active_format_key',
 	'smush_deactivated',
 	'wp-smush-review_prompt_next_show',
+	'wp-smush-dir-settings',
 );
 
 $db_keys = array(
@@ -213,9 +214,6 @@ if ( is_multisite() ) {
 					wp_cache_delete( $s_key, 'wp-smush' );
 				}
 
-				foreach ( $cache_nextgen_group as $n_key ) {
-					wp_cache_delete( $n_key, 'nextgen' );
-				}
 
 				wp_cache_delete( 'get_image_sizes', 'smush_image_sizes' );
 				if ( class_exists( '\Smush\Core\LCP\LCP_Helper' ) ) {

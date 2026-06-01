@@ -4,6 +4,11 @@ namespace Smush\Core;
 
 use Smush\Core\Media\Media_Item_Cache;
 use Smush\Core\Media\Media_Item_Optimizer;
+use Smush\Core\Membership\Membership;
+use Smush\Core\Smush\Smusher;
+use Smush\Core\Smush\Smusher_Options;
+use Smush\Core\Smush\Smusher_Options_Provider;
+use Smush\Core\Webp\Webp_Converter;
 use WP_Error;
 
 /**
@@ -28,6 +33,8 @@ class Optimizer {
 	 * @var \WP_Error
 	 */
 	private $errors;
+	private $membership;
+	private $settings;
 
 	public static function get_instance() {
 		if ( empty( self::$instance ) ) {
@@ -40,6 +47,38 @@ class Optimizer {
 	private function __construct() {
 		$this->media_item_cache = Media_Item_Cache::get_instance();
 		$this->errors           = new \WP_Error();
+		$this->membership       = Membership::get_instance();
+		$this->settings         = Settings::get_instance();
+	}
+
+	public function should_auto_optimize( $attachment_id ) {
+		if ( $this->membership->is_api_hub_access_required() ) {
+			return false;
+		}
+
+		if ( ! $this->settings->is_automatic_compression_active() ) {
+			return false;
+		}
+
+		$media_item = $this->media_item_cache->get( $attachment_id );
+		if ( ! $media_item->is_valid() ) {
+			return false;
+		}
+
+		/**
+		 * Skip auto smush filter.
+		 *
+		 * @param bool $skip_auto_smush Whether to skip auto smush or not.
+		 */
+		$skip_auto_smush = apply_filters( 'wp_smush_should_skip_auto_smush', false, $attachment_id );
+
+		// We don't want very large files to be auto smushed.
+		$skip_auto_smush = $skip_auto_smush || $media_item->is_large();
+		if ( $skip_auto_smush ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public function optimize( $attachment_id ) {
@@ -66,6 +105,20 @@ class Optimizer {
 		$this->optimization_in_progress = false;
 
 		return $optimized;
+	}
+
+	public function optimize_file( $file_path, $convert_to_webp = false, $options = null ) {
+		$smusher_options = $options ?? ( new Smusher_Options_Provider() )->get_options();
+		$smusher         = $convert_to_webp
+			? new Webp_Converter( $smusher_options )
+			: new Smusher( $smusher_options );
+
+		$data = $smusher->validate_and_smush_file( $file_path );
+		if ( $data ) {
+			return array( 'success' => true, 'data' => $data );
+		} else {
+			return $smusher->get_errors();
+		}
 	}
 
 	public function get_errors() {

@@ -28,7 +28,7 @@ class Configs {
 	 *
 	 * @var array
 	 */
-	protected $placeholder_features = array( 's3', 'nextgen', 'cdn', 'webp', 'webp_mod', 'avif_mod', 'preload_images', 'auto_resizing', 'image_dimensions' );
+	protected $placeholder_features = array( 's3', 'cdn', 'webp', 'webp_mod', 'avif_mod', 'preload_images', 'auto_resizing', 'image_dimensions' );
 
 	/**
 	 * @var Settings
@@ -139,7 +139,6 @@ class Configs {
 						'backup'            => true,
 						'png_to_jpg'        => true,
 						'background_email'  => false,
-						'nextgen'           => false,
 						's3'                => false,
 						'gutenberg'         => false,
 						'js_builder'        => false,
@@ -157,6 +156,7 @@ class Configs {
 						'webp_mod'          => false,
 						'avif_mod'          => false,
 						'preload_images'    => false,
+						'lcp_fetchpriority' => false,
 					),
 				),
 			),
@@ -347,9 +347,23 @@ class Configs {
 			$settings_handler->set_setting( 'wp-smush-resize_sizes', $sanitized_config['resize_sizes'] );
 		}
 
+		// Update image sizes include/exclude list.
+		if ( array_key_exists( 'image_sizes', $sanitized_config ) ) {
+			if ( is_array( $sanitized_config['image_sizes'] ) ) {
+				$settings_handler->set_setting( 'wp-smush-image_sizes', $sanitized_config['image_sizes'] );
+			} else {
+				// Non-array values represent "all selected".
+				$settings_handler->delete_setting( 'wp-smush-image_sizes' );
+			}
+		}
+
 		// Update settings. We could reuse the `save` method from settings to handle this instead.
 		if ( ! empty( $sanitized_config['settings'] ) ) {
 			$stored_settings = $settings_handler->get_site_settings();
+			$incoming_lcp_fetchpriority = isset( $sanitized_config['settings']['lcp_fetchpriority'] )
+				? (bool) $sanitized_config['settings']['lcp_fetchpriority']
+				: null;
+
 
 			// Keep the keys that are in use in this version.
 			$new_settings = array_intersect_key( $sanitized_config['settings'], $stored_settings );
@@ -362,6 +376,16 @@ class Configs {
 				// Keep the stored settings that aren't present in the incoming one.
 				$new_settings = array_merge( $stored_settings, $new_settings );
 				$settings_handler->set_setting( 'wp-smush-settings', $new_settings );
+			}
+
+			if ( null !== $incoming_lcp_fetchpriority ) {
+				$stored_preload = $settings_handler->get_setting( 'wp-smush-preload', array() );
+				if ( ! is_array( $stored_preload ) ) {
+					$stored_preload = array();
+				}
+
+				$stored_preload['lcp_fetchpriority'] = $incoming_lcp_fetchpriority;
+				$settings_handler->set_setting( 'wp-smush-preload', $stored_preload );
 			}
 		}
 
@@ -404,12 +428,22 @@ class Configs {
 		$settings = Settings::get_instance();
 
 		$stored_settings = $settings->get_setting( 'wp-smush-settings' );
+		if ( ! is_array( $stored_settings ) ) {
+			$stored_settings = array();
+		}
+		$stored_preload_settings = $settings->get_setting( 'wp-smush-preload', array() );
+		$stored_settings['lcp_fetchpriority'] =
+			is_array( $stored_preload_settings ) && ! empty( $stored_preload_settings['lcp_fetchpriority'] );
 
 		$configs = array( 'settings' => $stored_settings );
 
-		if ( $stored_settings['resize'] ) {
+		if ( ! empty( $stored_settings['resize'] ) ) {
 			$configs['resize_sizes'] = $settings->get_setting( 'wp-smush-resize_sizes' );
 		}
+
+		// Keep image sizes in the config payload even though they are stored in a separate option.
+		$stored_image_sizes                   = $settings->get_setting( 'wp-smush-image_sizes' );
+		$configs['settings']['image_sizes'] = is_array( $stored_image_sizes ) ? $stored_image_sizes : false;
 
 		// Let's store this only for multisites.
 		if ( is_multisite() ) {
@@ -472,6 +506,13 @@ class Configs {
 	 */
 	protected function sanitize_config( $config ) {
 		$sanitized = array();
+		$raw_image_sizes = null;
+
+		if ( array_key_exists( 'image_sizes', $config ) ) {
+			$raw_image_sizes = $config['image_sizes'];
+		} elseif ( isset( $config['settings'] ) && array_key_exists( 'image_sizes', $config['settings'] ) ) {
+			$raw_image_sizes = $config['settings']['image_sizes'];
+		}
 
 		if ( isset( $config['networkwide'] ) ) {
 			if ( ! is_array( $config['networkwide'] ) ) {
@@ -493,9 +534,25 @@ class Configs {
 				$sanitized['settings']['lossy'] = $this->settings->sanitize_lossy_level( $config['settings']['lossy'] );
 			}
 
+			if ( isset( $config['settings']['lcp_fetchpriority'] ) ) {
+				$sanitized['settings']['lcp_fetchpriority'] = filter_var( $config['settings']['lcp_fetchpriority'], FILTER_VALIDATE_BOOLEAN );
+			}
+
 			if ( isset( $config['settings'][ Settings::get_next_gen_cdn_key() ] ) ) {
 				$sanitized['settings'][ Settings::get_next_gen_cdn_key() ] = $this->settings->sanitize_cdn_next_gen_conversion_mode( $config['settings'][ Settings::get_next_gen_cdn_key() ] );
 			}
+
+			if ( null !== $raw_image_sizes ) {
+				$sanitized['settings']['image_sizes'] = is_array( $raw_image_sizes )
+					? array_values( array_filter( array_map( 'sanitize_text_field', $raw_image_sizes ) ) )
+					: false;
+			}
+		}
+
+		if ( null !== $raw_image_sizes ) {
+			$sanitized['image_sizes'] = is_array( $raw_image_sizes )
+				? array_values( array_filter( array_map( 'sanitize_text_field', $raw_image_sizes ) ) )
+				: false;
 		}
 
 		if ( isset( $config['resize_sizes'] ) ) {
@@ -563,51 +620,178 @@ class Configs {
 	 * @return array Contains an array for each setting. Each with a 'label' and 'value' keys.
 	 */
 	protected function format_config_to_display( $config ) {
-		$lazy_load_fields    = Settings::get_instance()->get_lazy_load_fields();
-		$preload_fields      = Settings::get_instance()->get_preload_fields();
-		$lazy_preload_fields = array_merge( $lazy_load_fields, $preload_fields );
-		$lazy_preload_module = Settings::get_lazy_preload_module_name();
-		$settings_data       = array(
-			'bulk_smush'         => Settings::get_instance()->get_bulk_fields(),
-			$lazy_preload_module => $lazy_preload_fields,
-			'cdn'                => Settings::get_instance()->get_cdn_fields(),
-			'next_gen'           => Settings::get_instance()->get_next_gen_fields(),
-			'integrations'       => Settings::get_instance()->get_integrations_fields(),
-			'settings'           => Settings::get_instance()->get_settings_fields(),
+		$settings  = ! empty( $config['settings'] ) && is_array( $config['settings'] ) ? $config['settings'] : array();
+		$lazy_load = ! empty( $config['lazy_load'] ) && is_array( $config['lazy_load'] ) ? $config['lazy_load'] : array();
+
+		$to_bool = static function ( $value ) {
+			return (bool) $value;
+		};
+
+		$to_status = static function ( $enabled ) {
+			return $enabled ? __( 'Active', 'wp-smushit' ) : __( 'Inactive', 'wp-smushit' );
+		};
+
+		$get_compression_level = static function ( $lossy ) {
+			$value = strtolower( (string) $lossy );
+
+			if ( false !== strpos( $value, 'ultra' ) || '2' === $value ) {
+				return 'ultra';
+			}
+
+			if ( false !== strpos( $value, 'super' ) || '1' === $value ) {
+				return 'super';
+			}
+
+			return 'basic';
+		};
+
+		$has_any_enabled_value = static function ( $value, $excluded_keys = array(), $fallback_if_empty = false ) use ( $to_bool ) {
+			if ( is_array( $value ) ) {
+				$entries = array();
+				foreach ( $value as $key => $item ) {
+					if ( in_array( (string) $key, $excluded_keys, true ) ) {
+						continue;
+					}
+					$entries[] = $item;
+				}
+
+				if ( empty( $entries ) ) {
+					return $to_bool( $fallback_if_empty );
+				}
+
+				foreach ( $entries as $item ) {
+					if ( $to_bool( $item ) ) {
+						return true;
+					}
+				}
+				return false;
+			}
+
+			if ( null === $value || '' === $value ) {
+				return $to_bool( $fallback_if_empty );
+			}
+
+			return $to_bool( $value );
+		};
+
+		$compression_level = $get_compression_level( isset( $settings['lossy'] ) ? $settings['lossy'] : '' );
+		$cdn_enabled       = $to_bool( isset( $settings['cdn'] ) ? $settings['cdn'] : false );
+		$cdn_file_format   = $cdn_enabled && $to_bool( isset( $settings['webp'] ) ? $settings['webp'] : false );
+		$preload_enabled   = $to_bool( isset( $settings['preload_images'] ) ? $settings['preload_images'] : false );
+		$fetchpriority     = $preload_enabled && $to_bool( isset( $settings['lcp_fetchpriority'] ) ? $settings['lcp_fetchpriority'] : false );
+
+		$has_lazy_load_config = array_key_exists( 'lazy_load', $config );
+		$is_lazy_load_empty   = $has_lazy_load_config && empty( $lazy_load );
+		$is_lazy_load_enabled = $to_bool( isset( $settings['lazy_load'] ) ? $settings['lazy_load'] : false ) || $is_lazy_load_empty;
+		$lazy_default_on      = $is_lazy_load_enabled && ( ! $has_lazy_load_config || $is_lazy_load_empty );
+
+		$has_lazy_format = is_array( $lazy_load ) && array_key_exists( 'format', $lazy_load );
+		$has_lazy_output = is_array( $lazy_load ) && array_key_exists( 'output', $lazy_load );
+
+		$lazy_media_types_enabled = $is_lazy_load_enabled && $has_any_enabled_value(
+			isset( $lazy_load['format'] ) ? $lazy_load['format'] : null,
+			array( 'embed_video' ),
+			$lazy_default_on || ! $has_lazy_format
 		);
 
-		$display_array = array();
+		$lazy_locations_enabled = $is_lazy_load_enabled && $has_any_enabled_value(
+			isset( $lazy_load['output'] ) ? $lazy_load['output'] : null,
+			array(),
+			$lazy_default_on || ! $has_lazy_output
+		);
 
-		if ( ! empty( $config['settings'] ) ) {
-			foreach ( $settings_data as $name => $fields ) {
-				if ( 'next_gen' === $name ) {
-					$display_array['next_gen'] = $this->get_next_gen_settings_display_value( $config );
-					continue;
+		$lazy_excluded_content_enabled = false;
+		$has_lazy_load_include_setting = is_array( $lazy_load ) && array_key_exists( 'include', $lazy_load );
+		if ( $is_lazy_load_enabled && $has_lazy_load_include_setting && is_array( $lazy_load['include'] ) ) {
+			foreach ( $lazy_load['include'] as $is_included ) {
+				if ( ! $to_bool( $is_included ) ) {
+					$lazy_excluded_content_enabled = true;
+					break;
 				}
-
-				if ( $lazy_preload_module === $name ) {
-					$display_array[ $lazy_preload_module ] = $this->get_lazy_preload_settings_to_display( $config );
-					continue;
-				}
-
-				// Display the setting inactive when the module is off.
-				if ( 'cdn' === $name ) {
-					$display_array[ $name ] = $this->format_boolean_setting_value( $name, $config['settings'][ $name ] );
-					continue;
-				}
-
-				$display_array[ $name ] = $this->get_settings_display_value( $config, $fields );
 			}
+		} elseif ( $is_lazy_load_enabled && ! $has_lazy_load_include_setting ) {
+			$lazy_excluded_content_enabled = $this->has_public_custom_post_types();
+		}
 
-			// Append the resize_sizes to the Bulk Smush display settings.
-			if ( ! empty( $config['settings']['resize'] ) && ! empty( $config['resize_sizes'] ) ) {
-				$display_array['bulk_smush'][] = sprintf(
-					/* translators: 1. Resize-size max width, 2. Resize-size max height */
-					__( 'Full images max-sizes to resize - Max-width: %1$s. Max height: %2$s', 'wp-smushit' ),
-					$config['resize_sizes']['width'],
-					$config['resize_sizes']['height']
+		$image_sizes_setting = array_key_exists( 'image_sizes', $settings ) ? $settings['image_sizes'] : null;
+		$image_sizes_enabled = true;
+		if ( is_array( $image_sizes_setting ) ) {
+			if ( empty( $image_sizes_setting ) ) {
+				$image_sizes_enabled = false;
+			} else {
+				$normalized_sizes = array_filter(
+					array_map(
+						static function ( $item ) {
+							return trim( (string) $item );
+						},
+						$image_sizes_setting
+					)
 				);
+				$image_sizes_enabled = ! empty( $normalized_sizes );
 			}
+		} elseif ( array_key_exists( 'image_sizes', $settings ) && null !== $image_sizes_setting ) {
+			$image_sizes_enabled = false === $image_sizes_setting ? true : $to_bool( $image_sizes_setting );
+		}
+
+		$display_array = array(
+			'compression_level' => array(
+				__( 'Basic 1X', 'wp-smushit' ) . ' - ' . $to_status( 'basic' === $compression_level ),
+				__( 'Super 2X', 'wp-smushit' ) . ' - ' . $to_status( 'super' === $compression_level ),
+				__( 'Ultra 5X', 'wp-smushit' ) . ' - ' . $to_status( 'ultra' === $compression_level ),
+			),
+			'image_format_type' => array(
+				__( 'Original', 'wp-smushit' ) . ' - ' . $to_status( ! $to_bool( isset( $settings['webp_mod'] ) ? $settings['webp_mod'] : false ) && ! $to_bool( isset( $settings['avif_mod'] ) ? $settings['avif_mod'] : false ) ),
+				__( 'WebP', 'wp-smushit' ) . ' - ' . $this->format_boolean_setting_value( 'webp_mod', $to_bool( isset( $settings['webp_mod'] ) ? $settings['webp_mod'] : false ) ),
+				__( 'AVIF', 'wp-smushit' ) . ' - ' . $this->format_boolean_setting_value( 'avif_mod', $to_bool( isset( $settings['avif_mod'] ) ? $settings['avif_mod'] : false ) ),
+			),
+			'lazy_load' => array(
+				__( 'Lazyload offscreen images', 'wp-smushit' ) . ' - ' . $to_status( $is_lazy_load_enabled ),
+				__( 'Preload critical images', 'wp-smushit' ) . ' - ' . $to_status( $preload_enabled ),
+				__( 'Fetchpriority', 'wp-smushit' ) . ' - ' . $to_status( $fetchpriority ),
+				__( 'Lazy loading appearance', 'wp-smushit' ) . ' - ' . $to_status( $is_lazy_load_enabled ),
+				__( 'Lazy loaded media types', 'wp-smushit' ) . ' - ' . $to_status( $lazy_media_types_enabled ),
+				__( 'Lazy loaded locations', 'wp-smushit' ) . ' - ' . $to_status( $lazy_locations_enabled ),
+				__( 'Youtube/Vimeo preview images', 'wp-smushit' ) . ' - ' . $to_status( $is_lazy_load_enabled && $to_bool( isset( $lazy_load['format']['embed_video'] ) ? $lazy_load['format']['embed_video'] : false ) ),
+				__( 'Excluded content', 'wp-smushit' ) . ' - ' . $to_status( $lazy_excluded_content_enabled ),
+				__( 'Scripts', 'wp-smushit' ) . ' - ' . $to_status( $is_lazy_load_enabled && $to_bool( isset( $lazy_load['footer'] ) ? $lazy_load['footer'] : false ) ),
+				__( 'Native lazy load', 'wp-smushit' ) . ' - ' . $to_status( $is_lazy_load_enabled && $to_bool( isset( $lazy_load['native'] ) ? $lazy_load['native'] : false ) ),
+				__( 'Noscript fallback', 'wp-smushit' ) . ' - ' . $to_status( $is_lazy_load_enabled && $to_bool( isset( $lazy_load['noscript_fallback'] ) ? $lazy_load['noscript_fallback'] : false ) ),
+			),
+			'cdn' => array(
+				__( 'Single location', 'wp-smushit' ) . ' - ' . $to_status( ! $cdn_enabled ),
+				__( 'CDN network', 'wp-smushit' ) . ' - ' . $this->format_boolean_setting_value( 'cdn', $cdn_enabled ),
+				sprintf( __( 'Supported Media Types: %s', 'wp-smushit' ), 'JPG | PNG | WEBP | GIF | AVIF' ) . ' - ' . $to_status( $cdn_enabled ),
+				__( 'Background Images', 'wp-smushit' ) . ' - ' . $to_status( $cdn_enabled && $to_bool( isset( $settings['background_images'] ) ? $settings['background_images'] : false ) ),
+				__( 'Dynamic resizing', 'wp-smushit' ) . ' - ' . $to_status( $cdn_enabled && $to_bool( isset( $settings['cdn_dynamic_sizes'] ) ? $settings['cdn_dynamic_sizes'] : false ) ),
+				__( 'CDN file format', 'wp-smushit' ) . ' - ' . $to_status( $cdn_file_format ),
+				__( 'REST API', 'wp-smushit' ) . ' - ' . $to_status( $cdn_enabled && $to_bool( isset( $settings['rest_api_support'] ) ? $settings['rest_api_support'] : false ) ),
+			),
+			'bulk_smush' => array(
+				__( 'Automatic compression', 'wp-smushit' ) . ' - ' . $to_status( $to_bool( isset( $settings['auto'] ) ? $settings['auto'] : false ) ),
+				__( 'Metadata', 'wp-smushit' ) . ' - ' . $to_status( $to_bool( isset( $settings['strip_exif'] ) ? $settings['strip_exif'] : false ) ),
+				__( 'Optimize original images', 'wp-smushit' ) . ' - ' . $to_status( $to_bool( isset( $settings['original'] ) ? $settings['original'] : false ) ),
+				__( 'Backup original images', 'wp-smushit' ) . ' - ' . $to_status( $to_bool( isset( $settings['backup'] ) ? $settings['backup'] : false ) ),
+				__( 'Automatic resizing', 'wp-smushit' ) . ' - ' . $this->format_boolean_setting_value( 'auto_resizing', $to_bool( isset( $settings['auto_resizing'] ) ? $settings['auto_resizing'] : false ) ),
+				__( 'Set image dimensions', 'wp-smushit' ) . ' - ' . $this->format_boolean_setting_value( 'image_dimensions', $to_bool( isset( $settings['image_dimensions'] ) ? $settings['image_dimensions'] : false ) ),
+				__( 'Image sizes', 'wp-smushit' ) . ' - ' . $to_status( $image_sizes_enabled ),
+				__( 'Resize large images', 'wp-smushit' ) . ' - ' . $to_status( $to_bool( isset( $settings['resize'] ) ? $settings['resize'] : false ) ),
+				__( 'Disable scaled images', 'wp-smushit' ) . ' - ' . $to_status( $to_bool( isset( $settings['no_scale'] ) ? $settings['no_scale'] : false ) ),
+				__( 'PNG to JPEG Conversion', 'wp-smushit' ) . ' - ' . $to_status( $to_bool( isset( $settings['png_to_jpg'] ) ? $settings['png_to_jpg'] : false ) ),
+				__( 'Email Notification', 'wp-smushit' ) . ' - ' . $to_status( $to_bool( isset( $settings['background_email'] ) ? $settings['background_email'] : false ) ),
+			),
+			'integrations' => array(
+				__( 'Gutenberg Support', 'wp-smushit' ) . ' - ' . $to_status( $to_bool( isset( $settings['gutenberg'] ) ? $settings['gutenberg'] : false ) ),
+				__( 'WPBakery Page Builder', 'wp-smushit' ) . ' - ' . $to_status( $to_bool( isset( $settings['js_builder'] ) ? $settings['js_builder'] : false ) ),
+				__( 'Gravity Forms', 'wp-smushit' ) . ' - ' . $to_status( $to_bool( isset( $settings['gform'] ) ? $settings['gform'] : false ) ),
+				__( 'Amazon S3', 'wp-smushit' ) . ' - ' . $this->format_boolean_setting_value( 's3', $to_bool( isset( $settings['s3'] ) ? $settings['s3'] : false ) ),
+			),
+			'settings' => array(
+				__( 'Usage tracking', 'wp-smushit' ) . ' - ' . $to_status( $to_bool( isset( $settings['usage'] ) ? $settings['usage'] : false ) ),
+			),
+		);
+
+		foreach ( $display_array as $name => $rows ) {
+			$display_array[ $name ] = array_values( array_filter( $rows ) );
 		}
 
 		// Display only for multisites, if the setting exists.
@@ -651,7 +835,6 @@ class Configs {
 
 		$extra_labels = array(
 			's3'        => __( 'Amazon S3', 'wp-smushit' ),
-			'nextgen'   => __( 'NextGen Gallery', 'wp-smushit' ),
 			'cdn'       => __( 'CDN', 'wp-smushit' ),
 			'keep_data' => __( 'Keep Data On Uninstall', 'wp-smushit' ),
 		);
@@ -889,5 +1072,24 @@ class Configs {
 	 */
 	protected function get_placeholder_features() {
 		return $this->placeholder_features;
+	}
+
+	/**
+	 * Whether the site has at least one public custom post type.
+	 *
+	 * @since 4.1.0
+	 *
+	 * @return bool
+	 */
+	private function has_public_custom_post_types() {
+		$custom_post_types = get_post_types(
+			array(
+				'public'   => true,
+				'_builtin' => false,
+			),
+			'names'
+		);
+
+		return ! empty( $custom_post_types );
 	}
 }

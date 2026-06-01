@@ -8,7 +8,6 @@
 
 namespace Smush\Core;
 
-use Smush\App\Admin;
 use WP_Smush;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -26,20 +25,6 @@ class Core extends Stats {
 	 * @var int
 	 */
 	private static $status_animated = 2;
-
-	/**
-	 * S3 module
-	 *
-	 * @var Integrations\S3
-	 */
-	public $s3;
-
-	/**
-	 * NextGen module.
-	 *
-	 * @var Integrations\Nextgen
-	 */
-	public $nextgen;
 
 	/**
 	 * Modules array.
@@ -188,18 +173,6 @@ class Core extends Stats {
 	public function load_libs() {
 		$this->wp_smush_async();
 
-		if ( is_admin() ) {
-			$this->s3 = new Integrations\S3();
-		}
-
-		/**
-		 * Load NextGen integration on admin or custom ajax request.
-		 *
-		 * @since 3.10.0
-		 */
-		if ( is_admin() || defined( 'NGG_AJAX_SLUG' ) && ! empty( $_REQUEST[ NGG_AJAX_SLUG ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$this->nextgen = new Integrations\Nextgen();
-		}
 
 		new Integrations\Gutenberg();
 		new Integrations\Composer();
@@ -254,10 +227,6 @@ class Core extends Stats {
 	 * Load lib for REST API.
 	 */
 	public function load_libs_for_rest_api() {
-		// Load S3 if there is media REST API.
-		if ( ! Helper::is_non_rest_media() && ! $this->s3 ) {
-			$this->s3 = new Integrations\S3();
-		}
 	}
 
 	/**
@@ -489,7 +458,7 @@ class Core extends Stats {
 			return false;
 		}
 
-		if ( ! $this->mod->resize->is_active() ) {
+		if ( ! Settings::get_instance()->is_resize_module_active() ) {
 			return $threshold;
 		}
 

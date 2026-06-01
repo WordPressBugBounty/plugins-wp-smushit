@@ -4,6 +4,7 @@ namespace Smush\Core\Rating_Notification;
 
 use Smush\Core\Controller;
 use Smush\Core\Helper;
+use Smush\Core\Server_Utils;
 
 class Rating_Notification_Controller extends Controller {
 	public function __construct() {
@@ -109,6 +110,7 @@ class Rating_Notification_Controller extends Controller {
 	 */
 	private function get_rating_notification_data() {
 		$rating_status    = get_option( 'wp-smush-rating-status', array() );
+		$server_utils     = new Server_Utils();
 		$dismissed        = isset( $rating_status['dismissed'] ) ? $rating_status['dismissed'] : false;
 		$completed        = isset( $rating_status['completed'] ) ? $rating_status['completed'] : false;
 		$remind_later     = isset( $rating_status['remind_later'] ) ? $rating_status['remind_later'] : 0;
@@ -145,6 +147,7 @@ class Rating_Notification_Controller extends Controller {
 			'shouldShowAfterReminder' => $should_show_after_reminder,
 			'shouldShowNotification'  => $should_show_notification,
 			'remainingSeconds'        => (int) $remaining_seconds,
+			'isCurlMultiExecAvailable' => $server_utils->curl_multi_exec_available(),
 		);
 	}
 }

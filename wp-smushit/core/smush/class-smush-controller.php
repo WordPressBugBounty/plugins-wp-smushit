@@ -75,55 +75,6 @@ class Smush_Controller extends Controller {
 	}
 
 	/**
-	 * Localize data for the Smush bulk optimization UI.
-	 *
-	 * TODO: [WPMUDEV SMUSH UI] remove
-	 *
-	 * @param array $data Script data.
-	 */
-	public function localize_smush_bulk_data( $data, $page_slug ) {
-		$allowed_pages = array(
-			'smush', // Dashboard.
-			'smush-bulk',
-		);
-		if ( ! in_array( $page_slug, $allowed_pages, true ) ) {
-			return $data;
-		}
-
-		$core                = WP_Smush::get_instance()->core();
-		$data['globalStats'] = $core->get_global_stats();
-		// Background processing.
-		$bg_optimization              = $core->mod->bg_optimization;
-		$data['canUseBgOptimization'] = $bg_optimization->can_use_background();
-
-		$is_bulk_smush_page = 'smush-bulk' === $page_slug;
-		if ( ! $is_bulk_smush_page ) {
-			return $data;
-		}
-
-		// Backup status.
-		$backups       = new Backups();
-		$backup_exists = $backups->items_with_backup_exist();
-
-		// Image sizes.
-		$settings     = Settings::get_instance();
-		$image_sizes  = $settings->get_setting( 'wp-smush-image_sizes' );
-		$sizes        = $core->image_dimensions();
-		$all_selected = false === $image_sizes || count( $image_sizes ) === count( $sizes );
-
-		$data['bulkSmushMetaData'] = array(
-			'imageSizes'   => array(
-				'allSelected' => $all_selected,
-				'sizes'       => $sizes,
-				'selected'    => is_array( $image_sizes ) ? $image_sizes : array(),
-			),
-			'backupExists' => $backup_exists,
-		);
-
-		return $data;
-	}
-
-	/**
 	 * @param $optimizations array
 	 * @param $media_item Media_Item
 	 *
@@ -168,6 +119,14 @@ class Smush_Controller extends Controller {
 	}
 
 	public function mark_global_stats_as_outdated_on_image_sizes_change( $old_image_sizes, $new_image_sizes ) {
+		if ( ! is_array( $old_image_sizes ) ) {
+			$old_image_sizes = array();
+		}
+
+		if ( ! is_array( $new_image_sizes ) ) {
+			$new_image_sizes = array();
+		}
+
 		$image_sizes_updated = count( $old_image_sizes ) !== count( $new_image_sizes )
 							   || array_diff( $old_image_sizes, $new_image_sizes );
 

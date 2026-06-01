@@ -19,8 +19,10 @@ use Smush\Core\Bulk\Bulk_Optimize;
 use Smush\Core\Core;
 use Smush\Core\Installer;
 use Smush\Core\Membership\Membership;
+use Smush\Core\Optimizer;
 use Smush\Core\Settings;
 use Smush\Core\Helper;
+use Smush\Core\Smush\Dir_Smusher_Options_Provider;
 use WP_Error;
 use WP_Smush;
 
@@ -69,6 +71,9 @@ class Dir extends Abstract_Module {
 		if ( ! is_admin() ) {
 			return;
 		}
+
+		add_filter( 'wp_smush_localize_ui_script_data', array( $this, 'localize_dir_script_data' ) );
+		add_filter( 'wp_smush_sync_settings', array( $this, 'handle_settings_sync' ), 10, 3 );
 
 		$this->membership = Membership::get_instance();
 
@@ -303,7 +308,8 @@ class Dir extends Abstract_Module {
 		}
 
 		// We have the image path, optimise.
-		$results = WP_Smush::get_instance()->core()->mod->smush->do_smushit( $path );
+		$dir_smusher_options = ( new Dir_Smusher_Options_Provider() )->get_options();
+		$results             = Optimizer::get_instance()->optimize_file( $path, false, $dir_smusher_options );
 
 		if ( is_wp_error( $results ) ) {
 			/**
@@ -347,8 +353,8 @@ class Dir extends Abstract_Module {
 				"UPDATE {$wpdb->base_prefix}smush_dir_images SET error=NULL, image_size=%d, file_time=%d, lossy=%d, meta=%d WHERE id=%d LIMIT 1",
 				$results['data']->after_size,
 				filectime( $path ), // Get file time.
-				$this->settings->get( 'lossy' ),
-				$this->settings->get( 'strip_exif' ),
+				$this->settings->get_dir_lossy_level_setting(),
+				$this->settings->get( 'dir_strip_exif' ),
 				$id
 			)
 		); // Db call ok; no-cache ok.
@@ -443,12 +449,12 @@ class Dir extends Abstract_Module {
 		global $wpdb;
 
 		$condition   = 'image_size IS NULL';
-		$lossy_level = $this->settings->get_lossy_level_setting();
+		$lossy_level = $this->settings->get_dir_lossy_level_setting();
 		if ( $lossy_level > 0 ) {
 			$condition .= ' OR lossy IS NULL OR lossy < ' . intval( $lossy_level );
 		}
 
-		if ( $this->settings->get( 'strip_exif' ) ) {
+		if ( $this->settings->get( 'dir_strip_exif' ) ) {
 			$condition .= ' OR meta <> 1';
 		}
 
@@ -1343,5 +1349,62 @@ class Dir extends Abstract_Module {
 		</div>
 			<?php
 		}
+	}
+
+	/**
+	 * Localize directory smush settings for React.
+	 *
+	 * @param array $localize Current localize data.
+	 *
+	 * @return array
+	 */
+	public function localize_dir_script_data( $localize ) {
+		$dir_settings = array(
+			'dir_lossy'      => Settings::get_instance()->get_dir_lossy_level_setting(),
+			'dir_strip_exif' => Settings::get_instance()->get_dir_strip_exif_setting(),
+		);
+
+		$localize['directorySettings']                = Dir_Settings_DTO::to_react_props( $dir_settings );
+		$localize['directorySettings']['tableExists'] = self::table_exist();
+
+		return $localize;
+	}
+
+	/**
+	 * Handle directory smush settings sync via unified endpoint.
+	 *
+	 * @param array|null $saved_settings Saved settings from previous filter, or null.
+	 * @param array      $settings       Incoming settings from React (camelCase).
+	 * @param string     $context        Context identifier.
+	 *
+	 * @return array|null Saved settings array if context matches, otherwise pass through.
+	 */
+	public function handle_settings_sync( $saved_settings, $settings, $context ) {
+		if ( 'directory' !== $context ) {
+			return $saved_settings;
+		}
+
+		$db_settings = Dir_Settings_DTO::from_react_props( $settings );
+
+		// Save directory settings to separate option
+		$dir_settings = array(
+			'dir_lossy'      => $this->settings->get_dir_lossy_level_setting(),
+			'dir_strip_exif' => $this->settings->get_dir_strip_exif_setting(),
+		);
+		foreach ( $db_settings as $key => $value ) {
+			if ( in_array( $key, array( 'dir_lossy', 'dir_strip_exif' ), true ) ) {
+				$dir_settings[ $key ] = $value;
+			}
+		}
+		if ( ! empty( $dir_settings ) ) {
+			$this->settings->update_dir_settings( $dir_settings );
+		}
+
+		$updated_settings = array(
+			'dir_lossy'      => $this->settings->get_dir_lossy_level_setting(),
+			'dir_strip_exif' => $this->settings->get_dir_strip_exif_setting(),
+		);
+
+		return Dir_Settings_DTO::to_react_props( $updated_settings );
 	}
 }

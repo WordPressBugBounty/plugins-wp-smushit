@@ -26,6 +26,16 @@ class Multisite_Frontend_Controller extends Frontend_Controller {
 	);
 	private $array_utils;
 
+    private static $instance = null;
+
+    public static function get_instance() {
+        if ( is_null( self::$instance ) ) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
 	public function __construct() {
 		parent::__construct();
 

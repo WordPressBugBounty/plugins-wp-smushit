@@ -13,6 +13,7 @@
 namespace Smush\Core\Integrations;
 
 use Smush\Core\CDN\CDN_Helper;
+use Smush\Core\Optimizer;
 use WP_Smush;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -138,7 +139,7 @@ class Composer extends Abstract_Integration {
 		}
 
 		// Smush image. TODO: should we update the stats?
-		WP_Smush::get_instance()->core()->mod->smush->do_smushit( $vc_image );
+		Optimizer::get_instance()->optimize_file( $vc_image );
 
 		return $vc_image;
 	}

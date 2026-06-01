@@ -372,39 +372,39 @@ abstract class Background_Process extends Async_Request {
 		$mutex = new Mutex( $this->identifier . '_cron_healthcheck' );
 		$mutex->set_break_on_timeout( true )
 		      ->set_timeout( 1 ) // We don't want two health checks running
-			->execute(
+		      ->execute(
 				function () {
 
 					$this->logger()->info( 'Running scheduled health check.' );
 
-				if ( $this->is_process_running() ) {
-							  $this->logger()->info( 'Health check: Process seems healthy, no action required.' );
-							  exit;
+					if ( $this->is_process_running() ) {
+						$this->logger()->info( 'Health check: Process seems healthy, no action required.' );
+						exit;
 					}
 
 					if ( $this->status->is_paused() ) {
 						$this->logger()->info( 'Health check: Process is paused, no action required.' );
-					exit;
-				}
+						exit;
+					}
 
-				if ( $this->is_queue_empty() ) {
-							 $this->logger()->info( 'Health check: Process not in progress but the queue is empty, no action required.' );
-					$this->clear_scheduled_event();
-					exit;
-				}
+					if ( $this->is_queue_empty() ) {
+						$this->logger()->info( 'Health check: Process not in progress but the queue is empty, no action required.' );
+						$this->clear_scheduled_event();
+						exit;
+					}
 
-				if ( $this->status->is_cancelled() ) {
-							$this->logger()->info( 'Health check: Process has been cancelled already, no action required.' );
-					$this->clear_scheduled_event();
-					exit;
-				}
+					if ( $this->status->is_cancelled() ) {
+						$this->logger()->info( 'Health check: Process has been cancelled already, no action required.' );
+						$this->clear_scheduled_event();
+						exit;
+					}
 
-				if ( ! $this->is_revival_limit_reached() ) {
-						   $this->logger()->warning( 'Health check: Process instance seems to have died. Spawn a new instance.' );
-					$this->revive_process();
-				} else {
-						  $this->logger()->warning( 'Health check: Process instance seems to have died. Restart disabled, marking the process as dead.' );
-					$this->mark_as_dead();
+					if ( ! $this->is_revival_limit_reached() ) {
+						$this->logger()->warning( 'Health check: Process instance seems to have died. Spawn a new instance.' );
+						$this->revive_process();
+					} else {
+						$this->logger()->warning( 'Health check: Process instance seems to have died. Restart disabled, marking the process as dead.' );
+						$this->mark_as_dead();
 					}
 				}
 			);

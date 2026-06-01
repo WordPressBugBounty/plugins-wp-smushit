@@ -8,6 +8,7 @@ use Smush\Core\Media\Media_Item_Size;
 use Smush\Core\Media\Media_Item_Stats;
 use Smush\Core\Modules\Helpers\WhiteLabel;
 use Smush\Core\Settings;
+use Smush\Core\Smush\Smusher_Options_Provider;
 use WP_Error;
 
 /**
@@ -80,7 +81,8 @@ class Smush_Optimization extends Media_Item_Optimization {
 	public function __construct( $media_item ) {
 		$this->media_item = $media_item;
 		$this->settings   = Settings::get_instance();
-		$this->smusher    = new Smusher();
+		$smusher_options  = ( new Smusher_Options_Provider() )->get_options();
+		$this->smusher    = new Smusher( $smusher_options );
 		$this->whitelabel = new WhiteLabel();
 	}
 
@@ -184,13 +186,10 @@ class Smush_Optimization extends Media_Item_Optimization {
 		}
 
 		$media_item        = $this->media_item;
-		$files_data        = array_map( function ( $size ) {
-			return array(
-				'url'  => $size->get_file_url(),
-				'path' => $size->get_file_path(),
-			);
+		$file_paths        = array_map( function ( $size ) {
+			return $size->get_file_path();
 		}, $this->get_sizes_to_smush() );
-		$responses         = $this->smusher->smush( $files_data );
+		$responses         = $this->smusher->smush( $file_paths );
 		$success_responses = array_filter( $responses );
 		if ( count( $success_responses ) !== count( $responses ) ) {
 			return false;

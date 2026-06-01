@@ -58,50 +58,6 @@ class Modules {
 	public $smush;
 
 	/**
-	 * Backup module.
-	 *
-	 * @var Modules\Backup
-	 */
-	public $backup;
-
-	/**
-	 * PNG 2 JPG module.
-	 *
-	 * @var Modules\Png2jpg
-	 */
-	public $png2jpg;
-
-	/**
-	 * Resize module.
-	 *
-	 * @var Modules\Resize
-	 */
-	public $resize;
-
-	/**
-	 * CDN module.
-	 *
-	 * @var CDN
-	 */
-	public $cdn;
-
-	/**
-	 * Image lazy load module.
-	 *
-	 * @since 3.2
-	 *
-	 * @var \Smush\Core\Modules\Lazy
-	 */
-	public $lazy;
-
-	/**
-	 * Webp module.
-	 *
-	 * @var Modules\Webp
-	 */
-	public $webp;
-
-	/**
 	 * Cache background optimization controller - Bulk_Smush_Controller
 	 *
 	 * @var \Smush\Core\Bulk\Background_Bulk_Smush_Controller
@@ -109,7 +65,7 @@ class Modules {
 	public $bg_optimization;
 
 	/**
-	 * @var Modules\Product_Analytics_Controller
+	 * @var Product_Analytics\Product_Analytics_Controller
 	 */
 	public $product_analytics;
 
@@ -133,17 +89,13 @@ class Modules {
 			$this->dir = new Modules\Dir();
 		}
 
-		$this->smush           = $this->get_smush_module();
-		$this->backup          = new Modules\Backup();
-		$this->resize          = new Modules\Resize();
+		$this->smush = $this->get_smush_module();
 
 		$transformation_controller = new Transformation_Controller();
 		$transformation_controller->init();
 
-		$this->lazy              = new Modules\Lazy();
-		$this->product_analytics = new Modules\Product_Analytics_Controller();
+		$this->product_analytics = Product_Analytics\Product_Analytics_Controller::get_instance();
 
-		$this->png2jpg      = new Modules\Png2jpg();
 		$png2jpg_controller = Png2Jpg_Controller::get_instance();
 		$png2jpg_controller->init();
 
@@ -214,7 +166,9 @@ class Modules {
 		$hub_connector = new Hub_Connector();
 		$hub_connector->init();
 
-		$frontend_controller = is_multisite() ? new Multisite_Frontend_Controller() : new Frontend_Controller();
+		$frontend_controller = is_multisite()
+			? Multisite_Frontend_Controller::get_instance()
+			: Frontend_Controller::get_instance();
 		$frontend_controller->init();
 
 		$settings_controller = new Settings_Controller();

@@ -94,6 +94,16 @@ class Background_Bulk_Smush_Controller {
 	public function bulk_smush_start() {
 		$this->check_ajax_referrer();
 
+		if ( $this->membership->is_api_hub_access_required() ) {
+			wp_send_json_error(
+				array(
+					'error'         => 'hub_access_required',
+					'error_message' => esc_html__( 'A WPMU DEV Hub connection is required to optimize images.', 'wp-smushit' ),
+				),
+				403
+			);
+		}
+
 		$process       = $this->background_process;
 		$in_processing = $process->get_status()->is_in_processing();
 		if ( $in_processing ) {
@@ -389,6 +399,11 @@ class Background_Bulk_Smush_Controller {
 		if ( ! $this->should_use_background() ) {
 			return false;
 		}
+
+		if ( $this->membership->is_api_hub_access_required() ) {
+			return false;
+		}
+
 		$process       = $this->background_process;
 		$in_processing = $process->get_status()->is_in_processing();
 		if ( $in_processing ) {

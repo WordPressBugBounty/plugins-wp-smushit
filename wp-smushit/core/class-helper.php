@@ -475,7 +475,7 @@ class Helper {
 		if ( ! file_exists( $original_file_path ) ) {
 			return false;
 		}
-		$max_file_size = WP_SMUSH_MAX_BYTES;
+		$max_file_size = Settings::get_instance()->get_file_size_limit();
 		$file_size     = filesize( $original_file_path );
 
 		return $file_size > $max_file_size ? $file_size : false;

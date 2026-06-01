@@ -100,6 +100,7 @@ class Lazy_Load_Controller extends Controller {
 
 		// Hook into unified settings sync filter
 		$this->register_filter( 'wp_smush_sync_settings', array( $this, 'handle_settings_sync' ), 10, 3 );
+		$this->register_action( 'wp_smush_lazy_load_updated', array( $this, 'reset_lazy_load_option_cache' ) );
 
 		// Only run on front end and if lazy loading is enabled.
 		if ( is_admin() || ! $this->settings->is_module_active( 'lazy_load' ) ) {
@@ -139,12 +140,20 @@ class Lazy_Load_Controller extends Controller {
 		}
 	}
 
+	/**
+	 * Reset lazy load options on update.
+	 */
+	public function reset_lazy_load_option_cache() {
+		$this->helper->set_lazy_load_options( null );
+	}
+
 	public function localize_lazy_load_script_data( $localize ) {
 		if ( ! is_admin() ) {
 			return $localize;
 		}
 
-		$lazy_load_options                       = $this->helper->get_lazy_load_options();
+		$lazy_load_options = $this->helper->get_lazy_load_options();
+
 		$localize['lazyloadSettings']            = Lazy_Load_Settings_DTO::to_react_props( $lazy_load_options );
 		$localize['metaData']['customPostTypes'] = $this->get_custom_post_types_for_ui();
 

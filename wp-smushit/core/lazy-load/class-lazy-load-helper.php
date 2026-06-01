@@ -5,6 +5,7 @@ namespace Smush\Core\Lazy_Load;
 use Smush\Core\Array_Utils;
 use Smush\Core\Server_Utils;
 use Smush\Core\Settings;
+use Smush\Core\Urls_Exclusions;
 
 class Lazy_Load_Helper {
 	private $settings;
@@ -123,14 +124,7 @@ class Lazy_Load_Helper {
 	}
 
 	public function is_excluded_uri() {
-		$excluded_page_urls = $this->get_excluded_pages();
-		if ( empty( $excluded_page_urls ) ) {
-			return false;
-		}
-
-		$request_uri = $this->server_utils->get_request_uri();
-		$uri_pattern = implode( '|', $excluded_page_urls );
-		return ! ! preg_match( "#{$uri_pattern}#i", $request_uri );
+		return ( new Urls_Exclusions() )->is_excluded_uri( $this->server_utils->get_request_uri(), $this->get_excluded_pages() );
 	}
 
 	private function get_wp_location() {

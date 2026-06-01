@@ -18,18 +18,18 @@ class Smush_Request_WP_Sequential extends Smush_Request {
 	 */
 	private $retry_wait;
 
-	public function __construct( $streaming_enabled = true, $extra_headers = array() ) {
+	public function __construct( $options ) {
 		$this->backoff        = new Backoff();
 		$this->retry_attempts = WP_SMUSH_RETRY_ATTEMPTS;
 		$this->retry_wait     = WP_SMUSH_RETRY_WAIT;
 
-		parent::__construct( $streaming_enabled, $extra_headers );
+		parent::__construct( $options );
 	}
 
-	public function do_requests( $files_data ) {
+	public function do_requests( $file_paths ) {
 		$responses = array();
-		foreach ( $files_data as $size_key => $file_data ) {
-			$responses[ $size_key ] = $this->do_request( $file_data, $size_key );
+		foreach ( $file_paths as $size_key => $file_path ) {
+			$responses[ $size_key ] = $this->do_request( $file_path, $size_key );
 		}
 
 		return $responses;
@@ -67,19 +67,18 @@ class Smush_Request_WP_Sequential extends Smush_Request {
 	}
 
 	/**
-	 * @param $file_data
+	 * @param $file_path
 	 * @param $size_key
 	 *
 	 * @return mixed
 	 */
-	public function do_request( $file_data, $size_key ) {
-		list( $file_path ) = $this->get_file_path_and_url( $file_data );
+	public function do_request( $file_path, $size_key ) {
 		$request  = $this->get_api_request_args( $file_path );
 		$response = $this->make_request_with_backoff( $request );
 
 		do_action( 'smush_http_api_debug', $response, $request );
 
-		return call_user_func( $this->get_on_complete(), $response, $size_key, $file_data );
+		return call_user_func( $this->get_on_complete(), $response, $size_key, $file_path );
 	}
 
 	/**

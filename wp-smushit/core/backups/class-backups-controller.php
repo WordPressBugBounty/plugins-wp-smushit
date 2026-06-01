@@ -8,7 +8,7 @@ use Smush\Core\File_System;
 use Smush\Core\Helper;
 use Smush\Core\Media\Media_Item_Cache;
 use Smush\Core\Media\Media_Item_Optimizer;
-use Smush\Core\Product_Analytics;
+use Smush\Core\Product_Analytics\Product_Analytics;
 use Smush\Core\Settings;
 use WP_Smush;
 

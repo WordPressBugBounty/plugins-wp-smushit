@@ -705,29 +705,6 @@ class Media_Library extends Abstract_Module {
 				}
 				insertHubConnectNotice();
 
-				$('#smush-media-hub-connect').on('click', function(e) {
-					var href = $(this).attr('href');
-					var nonce = $(this).data('nonce');
-					if ( window.wp_smush_mixpanel && window.wp_smush_mixpanel.opt_in ) {
-						e.preventDefault();
-						$.post(ajaxurl, {
-							action: 'smush_analytics_track_event',
-							event: 'smush_hub_connect',
-							properties: {
-								utm_medium:  'plugin',
-								utm_source:  'smush',
-								utm_content: 'hub-connector',
-								page_action: 'hub_connection',
-								utm_campaign: 'smush_wpadmin_media_library',
-							},
-							_ajax_nonce: nonce,
-						})
-						.always(function() {
-							window.location.href = href;
-						});
-					}
-				});
-
 				$('#smush-media-skip-connect').on('click', function(e) {
 					e.preventDefault();
 					$.post(ajaxurl, {

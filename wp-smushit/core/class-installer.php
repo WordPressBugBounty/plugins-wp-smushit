@@ -15,6 +15,7 @@ namespace Smush\Core;
 use Smush\App\Abstract_Page;
 use Smush\Core\CDN\CDN_Controller;
 use Smush\Core\Smush\Smusher;
+use Smush\Core\Smush\Smusher_Options_Provider;
 use WP_Smush;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -506,7 +507,8 @@ class Installer {
 	 * @return void
 	 */
 	private static function reset_smusher_error_counts() {
-		( new Smusher() )->reset_error_counts();
+		$smusher_options = ( new Smusher_Options_Provider() )->get_options();
+		( new Smusher( $smusher_options ) )->reset_error_counts();
 	}
 
 	private static function set_new_feature_hotspot_flag() {

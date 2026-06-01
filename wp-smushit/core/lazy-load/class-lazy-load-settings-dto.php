@@ -181,10 +181,41 @@ class Lazy_Load_Settings_DTO extends Abstract_Settings_DTO {
 				'placeholder' => array(
 					'selected' => array( 'sanitizer' => 'intval' ),
 					'custom'   => array( 'sanitizer' => 'intval' ),
-					'color'    => array( 'sanitizer' => 'sanitize_hex_color' ),
+					'color'    => array( 'sanitizer' => array( __CLASS__, 'sanitize_color' ) ),
 				),
 			),
 		);
+	}
+
+	/**
+	 * Sanitize color value to ensure it's a valid color format.
+	 *
+	 * Supports hex colors, rgb/rgba.
+	 *
+	 * @param string $color The color value to sanitize.
+	 *
+	 * @return string Sanitized color value or empty string if invalid.
+	 */
+	public static function sanitize_color( $color ) {
+		if ( ! is_string( $color ) ) {
+			return '';
+		}
+
+		// Remove any whitespace.
+		$color = trim( $color );
+
+		// Check if it's a valid hex color (#fff, #ffffff, #ffffffff) via WordPress core.
+		$hex = sanitize_hex_color( $color );
+		if ( null !== $hex ) {
+			return $hex;
+		}
+
+		// Check for rgb/rgba colors.
+		if ( preg_match( '/^rgba?\(\s*(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\s*,\s*(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\s*,\s*(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\s*(?:,\s*(?:1(?:\.0+)?|0(?:\.\d+)?|\.\d+)\s*)?\)$/', $color ) ) {
+			return $color;
+		}
+
+		return '';
 	}
 
 	/**

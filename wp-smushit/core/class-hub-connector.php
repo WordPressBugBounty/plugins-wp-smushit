@@ -90,26 +90,27 @@ class Hub_Connector extends Controller {
 
 		// TODO: Maybe remove hubConnector if site is already connected.
 		$data['hubConnector'] = array(
-			'is_available'         => current_user_can( $permission_level ) && self::is_hub_connector_available(),
-			'is_syncing'           => self::is_syncing(),
-			// 'is_team_selection' => false,
-			'has_access'           => current_user_can( $permission_level ),
-			'is_logged_in'         => self::is_logged_in(),
+			'is_available'                 => current_user_can( $permission_level ) && self::is_hub_connector_available(),
+			'is_syncing'                   => self::is_syncing(),
+			// 'is_team_selection'         => false,
+			'has_access'                   => current_user_can( $permission_level ),
+			'is_logged_in'                 => self::is_logged_in(),
+			'should_redirect_to_dashboard' => self::should_redirect_to_dashboard(),
 			// Not being used for literal output / DB insert.
 			// phpcs:disable WordPress.Security.NonceVerification.Recommended
-			'current_tab'          => isset( $_GET['hub_connector_callback'] ) ? 'login' : 'register',
-			'login_auth_url'       => self::get_hub_site_login_auth_url(),
-			'hub_auth_url'         => self::get_hub_google_login_url(),
-			'hub_signup_url'       => self::get_hub_register_url(),
-			'redirect_url'         => self::get_connect_site_url( 'smush' ),
-			'forgot_password_url'    => $this->get_hub_forgot_password_url(),
-			'domain'               => self::get_site_domain(),
-			'auth_nonce'           => wp_create_nonce( 'auth_nonce' ),
-			'has_login_error'      => self::has_error_in_login(),
-			'login_error_message'  => self::get_auth_error(),
-			'hide_onboarding'      => isset( $_GET['page_action'] ) && 'hub_connection' === sanitize_text_field( wp_unslash( $_GET['page_action'] ) ) && ! ( boolval( self::has_error_in_login() ) ),
-			'info_modal_dismissed' => ! empty( $dismissed_notices['hub_connect_info_modal'] ),
-			'profile_data'          => $this->get_profile_data_for_ui(),
+			'current_tab'                  => isset( $_GET['hub_connector_callback'] ) ? 'login' : 'register',
+			'login_auth_url'               => self::get_hub_site_login_auth_url(),
+			'hub_auth_url'                 => self::get_hub_google_login_url(),
+			'hub_signup_url'               => self::get_hub_register_url(),
+			'redirect_url'                 => self::get_connect_site_url( 'smush' ),
+			'forgot_password_url'          => $this->get_hub_forgot_password_url(),
+			'domain'                       => self::get_site_domain(),
+			'auth_nonce'                   => wp_create_nonce( 'auth_nonce' ),
+			'has_login_error'              => self::has_error_in_login(),
+			'login_error_message'          => self::get_auth_error(),
+			'hide_onboarding'              => isset( $_GET['page_action'] ) && 'hub_connection' === sanitize_text_field( wp_unslash( $_GET['page_action'] ) ) && ! ( boolval( self::has_error_in_login() ) ),
+			'info_modal_dismissed'         => ! empty( $dismissed_notices['hub_connect_info_modal'] ),
+			'profile_data'                 => $this->get_profile_data_for_ui(),
 		);
 
 		return $data;

@@ -14,6 +14,7 @@ namespace Smush\Core\Integrations;
 use GFFormsModel;
 use Smush\Core\Core;
 use Smush\Core\Helper;
+use Smush\Core\Optimizer;
 use WP_Smush;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -129,7 +130,7 @@ class Gravity_Forms extends Abstract_Integration {
 					continue;
 				}
 
-				WP_Smush::get_instance()->core()->mod->smush->do_smushit( $file );
+				Optimizer::get_instance()->optimize_file( $file );
 			}
 		}
 	}

@@ -36,6 +36,7 @@ class Settings {
 	private static $none_cdn_mode = 0;
 	private static $webp_cdn_mode = 1;
 	private static $avif_cdn_mode = 2;
+	protected static $dir_settings_option_id = 'wp-smush-dir-settings';
 
 	/**
 	 * Plugin instance.
@@ -849,6 +850,7 @@ class Settings {
 		$this->delete_setting( 'wp-smush-lazy_load' );
 		$this->delete_setting( 'wp-smush-cdn-advanced-settings' );
 		$this->delete_setting( 'wp-smush-hide-tutorials' );
+		$this->delete_setting( self::$dir_settings_option_id );
 		delete_option( 'wp-smush-png2jpg-rewrite-rules-flushed' );
 		delete_option( 'wp_smush_scan_slice_size' );
 
@@ -1461,6 +1463,28 @@ class Settings {
 		return $this->sanitize_lossy_level( $current_level );
 	}
 
+	public function update_dir_settings( $settings ) {
+		$this->set_setting( self::$dir_settings_option_id, $settings );
+	}
+
+	public function get_dir_lossy_level_setting() {
+		$dir_settings = $this->get_setting( self::$dir_settings_option_id, array() );
+		if ( isset( $dir_settings['dir_lossy'] ) ) {
+			return $this->sanitize_lossy_level( $dir_settings['dir_lossy'] );
+		}
+		// Fallback to global lossy setting
+		return $this->get_lossy_level_setting();
+	}
+
+	public function get_dir_strip_exif_setting() {
+		$dir_settings = $this->get_setting( self::$dir_settings_option_id, array() );
+		if ( isset( $dir_settings['dir_strip_exif'] ) ) {
+			return (bool) $dir_settings['dir_strip_exif'];
+		}
+		// Fallback to global strip_exif setting
+		return (bool) $this->get( 'strip_exif' );
+	}
+
 	public function sanitize_lossy_level( $lossy_level ) {
 		$highest_level = $this->get_highest_lossy_level();
 
@@ -1823,4 +1847,18 @@ class Settings {
 		);
 		return $defaults;
 	}
+
+	/**
+	 * Get the maximum file size (in bytes) that can be optimized.
+	 *
+	 * @return mixed
+	 */
+	public function get_file_size_limit() {
+		$file_size_limit = 5 * 1024 * 1024; // 5 MB
+		if ( defined( 'WP_SMUSH_MAX_BYTES' ) && WP_SMUSH_MAX_BYTES > 0 ) {
+			$file_size_limit = min( $file_size_limit, WP_SMUSH_MAX_BYTES );
+		}
+		return $file_size_limit;
+	}
 }
+

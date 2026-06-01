@@ -5,13 +5,13 @@ namespace Smush\Core\Smush;
 use Smush\Core\Array_Utils;
 use Smush\Core\File_System;
 use Smush\Core\Helper;
-use Smush\Core\Product_Analytics;
-use Smush\Core\Settings;
+use Smush\Core\Product_Analytics\Product_Analytics;
 use Smush\Core\Threads\Thread_Safe_Options;
 use Smush\Core\Timer;
 use Smush\Core\Upload_Dir;
 use Smush_Vendor\GuzzleHttp\Client;
 use WP_Error;
+
 
 /**
  * Takes raw image file paths and processes them through the Smush API. Replaces originals with the optimized versions.
@@ -26,9 +26,9 @@ class Smusher {
 	private static $response_code_non_200 = 'response_code_non_200';
 	private static $option_id_smush_error_counts = 'wp_smush_error_counts';
 	/**
-	 * @var Settings
+	 * @var Smusher_Options
 	 */
-	private $settings;
+	private $options;
 	/**
 	 * @var Smush_Request
 	 */
@@ -77,11 +77,13 @@ class Smusher {
 	 * @var Thread_Safe_Options
 	 */
 	private $thread_safe_options;
+	/**
+	 * @var int|null
+	 */
+	private $max_size;
 
-	public function __construct() {
-		$this->smush_parallel = apply_filters( 'wp_smush_parallel_optimization', WP_SMUSH_PARALLEL );
-
-		$this->settings            = Settings::get_instance();
+	public function __construct( $options ) {
+		$this->options             = $options;
 		$this->logger              = Helper::logger();
 		$this->errors              = new WP_Error();
 		$this->warnings            = new WP_Error();
@@ -89,19 +91,24 @@ class Smusher {
 		$this->upload_dir          = new Upload_Dir();
 		$this->array_utils         = new Array_Utils();
 		$this->product_analytics   = Product_Analytics::get_instance();
-		$this->streaming_enabled   = $this->settings->streaming_enabled();
 		$this->thread_safe_options = new Thread_Safe_Options();
 
-		$this->request_multiple   = new Smush_Request_Guzzle_Multiple( $this->streaming_enabled );
-		$this->request_sequential = new Smush_Request_WP_Sequential( $this->streaming_enabled );
+		$this->smush_parallel    = $options->is_parallel_optimization_enabled();
+		$this->streaming_enabled = $options->is_streaming_enabled();
+		$this->max_size          = $options->get_max_size();
+
+		$this->request_multiple   = new Smush_Request_Guzzle_Multiple( $options );
+		$this->request_sequential = new Smush_Request_WP_Sequential( $options );
 	}
 
 	/**
-	 * @param $files_data string[]|array[]
+	 * @param $file_paths string[]
 	 *
 	 * @return boolean[]|object[]
 	 */
-	public function smush( $files_data ) {
+	public function smush( $file_paths ) {
+		$file_paths = $this->normalize_file_paths( $file_paths );
+
 		$this->set_errors( new WP_Error() );
 		$this->set_warnings( new WP_Error() );
 
@@ -109,46 +116,42 @@ class Smusher {
 			$this->smush_parallel
 			&& $this->parallel_available_on_server()
 		) {
-			return $this->smush_parallel( $files_data );
+			return $this->smush_parallel( $file_paths );
 		} else {
-			return $this->smush_sequential( $files_data );
+			return $this->smush_sequential( $file_paths );
 		}
 	}
 
 	/**
-	 * @param $files_data string[]|array[]
+	 * @param $file_paths string[]
 	 *
 	 * @return boolean[]|object[]
 	 */
-	private function smush_parallel( $files_data ) {
+	private function smush_parallel( $file_paths ) {
 		$timer = new Timer();
 		$timer->start();
 		$retry     = array();
 		$responses = array();
 		$this->request_multiple
-			->set_on_complete( function ( $response, $response_size_key, $size_file_data ) use ( &$responses, &$retry ) {
-				list( $size_file_path ) = $this->get_file_path_and_url( $size_file_data );
+			->set_on_complete( function ( $response, $response_size_key, $size_file_path ) use ( &$responses, &$retry ) {
 				$parsed_response = $this->parse_response( $response, $size_file_path );
 
 				if ( $this->is_network_error( $parsed_response ) ) {
-					$retry[ $response_size_key ] = $size_file_data;
+					$retry[ $response_size_key ] = $size_file_path;
 
 					$this->add_warnings( $parsed_response, $response_size_key );
 				} else {
 					$is_success_response = $this->handle_response( $parsed_response, $response_size_key, $size_file_path );
 					// If the network request was successful, there are still some cases where it's best to retry
 					if ( ! $is_success_response && $this->has_error_worth_retrying() ) {
-						$retry[ $response_size_key ] = $size_file_data;
+						$retry[ $response_size_key ] = $size_file_path;
 					} else {
 						$responses[ $response_size_key ] = $is_success_response;
 					}
 				}
-			} )->do_requests( $files_data );
+			} )->do_requests( $file_paths );
 
-		foreach ( $retry as $retry_size_key => $retry_size_file ) {
-			list( $retry_file_path ) = $this->get_file_path_and_url( $retry_size_file );
-			// Note that we are not sending a file URL because we want the retry to happen using the traditional approach
-			// This is designed to prevent issues when a firewall is blocking the callback
+		foreach ( $retry as $retry_size_key => $retry_file_path ) {
 			$responses[ $retry_size_key ] = $this->smush_file( $retry_file_path, $retry_size_key );
 		}
 
@@ -161,27 +164,52 @@ class Smusher {
 		return $responses;
 	}
 
+	/**
+	 * Normalizes file paths to the current flat string[] format.
+	 *
+	 * Supports the legacy format:
+	 *   array( 'key' => array( 'url' => string, 'path' => string ) )
+	 *
+	 * Converts to current format:
+	 *   array( 'key' => string )
+	 *
+	 * @param array $file_paths
+	 *
+	 * @return string[]
+	 */
+	private function normalize_file_paths( $file_paths ) {
+		$normalized = array();
+		foreach ( $file_paths as $key => $value ) {
+			if ( is_array( $value ) && isset( $value['path'] ) ) {
+				$normalized[ $key ] = $value['path'];
+			} else {
+				$normalized[ $key ] = $value;
+			}
+		}
+
+		return $normalized;
+	}
+
 	private function maybe_change_http_setting() {
 		$codes = array_merge( $this->errors->get_error_codes(), $this->warnings->get_error_codes() );
 		if ( in_array( self::$error_ssl_cert, $codes, true ) ) {
 			// Switch to http protocol.
-			$this->settings->set_setting( 'wp-smush-use_http', 1 );
+			$this->options->switch_to_http();
 		}
 	}
 
 	/**
-	 * @param $files_data string[]|array[]
+	 * @param $file_paths string[]
 	 *
 	 * @return boolean[]|object[]
 	 */
-	private function smush_sequential( $files_data ) {
+	private function smush_sequential( $file_paths ) {
 		return $this->request_sequential
 			->set_streaming_enabled( $this->streaming_enabled )
-			->set_on_complete( function ( $response, $response_size_key, $size_file_data ) {
-				list( $size_file_path ) = $this->get_file_path_and_url( $size_file_data );
+			->set_on_complete( function ( $response, $response_size_key, $size_file_path ) {
 				$parsed_response = $this->parse_response( $response, $size_file_path );
 				return $this->handle_response( $parsed_response, $response_size_key, $size_file_path );
-			} )->do_requests( $files_data );
+			} )->do_requests( $file_paths );
 	}
 
 	/**
@@ -190,15 +218,92 @@ class Smusher {
 	 *
 	 * @return bool|object
 	 */
-	public function smush_file( $file_path, $size_key = '', $file_url = '' ) {
+	public function smush_file( $file_path, $size_key = '' ) {
 		return $this->request_sequential
 			->set_streaming_enabled( false )
-			->set_on_complete( function ( $response, $size_key, $file_data ) {
-				list( $file_path ) = $this->get_file_path_and_url( $file_data );
+			->set_on_complete( function ( $response, $size_key, $file_path ) {
 				$parsed_response = $this->parse_response( $response, $file_path );
 				return $this->handle_response( $parsed_response, $size_key, $file_path );
 			} )
 			->do_request( $file_path, $size_key );
+	}
+
+	/**
+	 * Validates and smushes a single file. Use this for standalone files without attachment IDs.
+	 *
+	 * @param string $file_path Absolute path to the file.
+	 * @param string $size_key Size key identifier.
+	 *
+	 * @return bool|object Returns response object on success, false on failure.
+	 */
+	public function validate_and_smush_file( $file_path, $size_key = '' ) {
+		// Validate the file before processing
+		$validation_error = $this->validate_file( $file_path );
+		if ( is_wp_error( $validation_error ) ) {
+			$this->add_error( $size_key, $validation_error->get_error_code(), $validation_error->get_error_message(), $validation_error->get_error_data() );
+			return false;
+		}
+
+		return $this->smush_file( $file_path, $size_key );
+	}
+
+	/**
+	 * Validates a file before processing.
+	 *
+	 * @param string $file_path Absolute path to the file.
+	 *
+	 * @return true|WP_Error Returns true if valid, WP_Error otherwise.
+	 */
+	private function validate_file( $file_path ) {
+		$dir_name = trailingslashit( dirname( $file_path ) );
+
+		// Check if file exists and the directory is writable.
+		if ( empty( $file_path ) ) {
+			return new WP_Error( 'empty_path', esc_html__( 'File path is empty', 'wp-smushit' ) );
+		}
+
+		if ( ! file_exists( $file_path ) || ! is_file( $file_path ) ) {
+			// Check that the file exists.
+			/* translators: %s: file path */
+			return new WP_Error(
+				'file_not_found',
+				sprintf( __( 'Skipped (%s), File not found.', 'wp-smushit' ), basename( $file_path ) )
+			);
+		}
+
+		if ( ! is_writable( $dir_name ) ) {
+			// Check that the file is writable.
+			/* translators: %s: directory name */
+			return new WP_Error(
+				'not_writable',
+				sprintf( __( '%s is not writable', 'wp-smushit' ), $dir_name )
+			);
+		}
+
+		$file_size = filesize( $file_path );
+
+		// Check if file exists.
+		if ( 0 === (int) $file_size ) {
+			return new WP_Error(
+				'file_not_found',
+				sprintf( __( 'Skipped (%s), File not found.', 'wp-smushit' ), basename( $file_path ) )
+			);
+		}
+
+		// Check size limit.
+		$max_size        = $this->max_size;
+		$size_limit_code = 'size_limit';
+
+		if ( $file_size > $max_size ) {
+			/* translators: %s: image size */
+			return new WP_Error(
+				$size_limit_code,
+				sprintf( __( 'Skipped (%s), file size limit of 5mb exceeded', 'wp-smushit' ), size_format( $file_size, 1 ) ),
+				array( 'file_name' => basename( $file_path ) )
+			);
+		}
+
+		return true;
 	}
 
 	public function set_request_sequential( $request_sequential ) {
@@ -209,6 +314,19 @@ class Smusher {
 
 	public function get_request_sequential() {
 		return $this->request_sequential;
+	}
+
+	/**
+	 * Set the maximum file size for validation.
+	 *
+	 * @param int $max_size Maximum file size in bytes.
+	 *
+	 * @return $this
+	 */
+	public function set_max_size( $max_size ) {
+		$this->max_size = $max_size;
+
+		return $this;
 	}
 
 	/**
@@ -506,7 +624,7 @@ class Smusher {
 				);
 
 				return $error;
-			}else {
+			} else {
 				// Make an error from the response message
 				$error_message = sprintf(
 				/* translators: 1: Error code, 2: Error message. */
@@ -632,6 +750,10 @@ class Smusher {
 		return $this;
 	}
 
+	public function has_errors() {
+		return $this->get_errors()->has_errors();
+	}
+
 	public function get_errors() {
 		return $this->errors;
 	}
@@ -754,7 +876,7 @@ class Smusher {
 		if ( $max_occurrences < 3 ) {
 			$this->count_error_types();
 		} else {
-			$this->settings->set( 'disable_streams', WP_SMUSH_VERSION );
+			$this->options->disable_streaming();
 		}
 	}
 
@@ -818,7 +940,7 @@ class Smusher {
 				$original_code,
 				$original_message,
 				array(
-					'Smush Type'   => $this->get_type_label() == 'Avif' ? 'AVIF' : $this->get_type_label(),
+					'Smush Type'   => $this->get_type_label(),
 					'Time Elapsed' => $time_elapsed,
 				)
 			);
@@ -935,26 +1057,6 @@ class Smusher {
 		}
 
 		return $mime;
-	}
-
-	/**
-	 * TODO: remove deprecated errors
-	 */
-
-	public function should_retry_smush( $response ) {
-		_deprecated_function( __METHOD__, '3.17.0', 'Smusher::get_request_sequential()->should_retry()' );
-	}
-
-	public function curl_multi_exec_available() {
-		_deprecated_function( __METHOD__, '3.17.0', 'Smusher::get_request_multiple()->is_supported()' );
-	}
-
-	public function set_retry_attempts( $retry_attempts ) {
-		_deprecated_function( __METHOD__, '3.17.0', 'Smusher::get_request_sequential()->set_retry_attempts()' );
-	}
-
-	public function set_timeout( $timeout ) {
-		_deprecated_function( __METHOD__, '3.17.0' );
 	}
 
 	/**
