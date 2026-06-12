@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Smush Pro 4.1.0\n"
+"Project-Id-Version: Smush Pro 4.1.1\n"
 "Report-Msgid-Bugs-To: https://wpmudev.com\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-05-25T14:17:03+00:00\n"
+"POT-Creation-Date: 2026-06-12T09:37:15+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wp-smushit\n"
@@ -235,7 +235,7 @@ msgstr ""
 #: app/class-admin.php:647
 #: app/class-admin.php:690
 #: app/class-admin.php:723
-#: core/frontend/class-frontend-controller.php:1392
+#: core/frontend/class-frontend-controller.php:1394
 #: _src/smush-ui/pages/dashboard/components/RatingNotification/RatingNotification.jsx:106
 msgid "Rate Smush"
 msgstr ""
@@ -293,7 +293,7 @@ msgstr ""
 #: core/class-hub-connector.php:655
 #: core/class-hub-connector.php:692
 #: core/class-settings.php:837
-#: core/frontend/class-frontend-controller.php:1199
+#: core/frontend/class-frontend-controller.php:1201
 #: core/membership/class-membership-controller.php:23
 #: core/modules/class-dir.php:195
 #: core/modules/class-dir.php:212
@@ -566,7 +566,7 @@ msgid "Includes better GIF performance"
 msgstr ""
 
 #: app/views/email/upsell-cdn.php:60
-#: core/frontend/class-frontend-controller.php:1345
+#: core/frontend/class-frontend-controller.php:1347
 msgid "Get Smush Pro"
 msgstr ""
 
@@ -842,7 +842,7 @@ msgstr ""
 #: core/class-activity-log-controller.php:155
 #: core/frontend/class-frontend-controller.php:211
 #: core/frontend/class-frontend-controller.php:222
-#: core/frontend/class-frontend-controller.php:1116
+#: core/frontend/class-frontend-controller.php:1118
 msgid "Insufficient permissions"
 msgstr ""
 
@@ -2087,9 +2087,9 @@ msgid "Settings saved successfully"
 msgstr ""
 
 #: core/frontend/class-frontend-controller.php:266
-#: core/frontend/class-frontend-controller.php:1440
+#: core/frontend/class-frontend-controller.php:1442
 #: _src/react/views/webp/steps-bar.jsx:52
-#: _src/smush-ui/core-ui/components/MemberStatusBadge/MemberStatusBadge.jsx:18
+#: _src/smush-ui/core-ui/components/MemberStatusBadge/MemberStatusBadge.jsx:31
 #: _src/smush-ui/layout/PageHeader.jsx:69
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:41
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigStatus.jsx:153
@@ -2097,7 +2097,7 @@ msgid "Pro"
 msgstr ""
 
 #: core/frontend/class-frontend-controller.php:731
-#: core/frontend/class-frontend-controller.php:1367
+#: core/frontend/class-frontend-controller.php:1369
 msgid "Dashboard"
 msgstr ""
 
@@ -2166,52 +2166,52 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1344
-#: core/frontend/class-frontend-controller.php:1436
+#: core/frontend/class-frontend-controller.php:1346
+#: core/frontend/class-frontend-controller.php:1438
 msgid "Upgrade to Smush Pro"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1347
-#: core/frontend/class-frontend-controller.php:1348
+#: core/frontend/class-frontend-controller.php:1349
+#: core/frontend/class-frontend-controller.php:1350
 msgid "Renew Membership"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1362
+#: core/frontend/class-frontend-controller.php:1364
 msgid "View Smush Documentation"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1362
+#: core/frontend/class-frontend-controller.php:1364
 msgid "Docs"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1367
+#: core/frontend/class-frontend-controller.php:1369
 msgid "Go to Smush Dashboard"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1393
+#: core/frontend/class-frontend-controller.php:1395
 #: _src/smush-ui/layout/PageFooter.jsx:69
 #: _src/smush-ui/layout/PageHeader.jsx:223
 msgid "Support"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1398
+#: core/frontend/class-frontend-controller.php:1400
 msgid "View details"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1402
+#: core/frontend/class-frontend-controller.php:1404
 msgid "Premium Support"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1416
+#: core/frontend/class-frontend-controller.php:1418
 #: _src/smush-ui/layout/PageFooter.jsx:58
 msgid "Roadmap"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1417
+#: core/frontend/class-frontend-controller.php:1419
 msgid "Rate our plugin"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1439
+#: core/frontend/class-frontend-controller.php:1441
 msgid "Upgrade"
 msgstr ""
 
@@ -3337,15 +3337,15 @@ msgstr ""
 msgid "5X compression"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/SelectCompression/SelectCompression.jsx:83
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/SelectCompression/SelectCompression.jsx:84
 msgid "Need Network Admin access"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/SelectCompression/SelectCompression.jsx:84
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/SelectCompression/SelectCompression.jsx:85
 msgid "Contact your Network Admin to enable Super 2x Compression."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/SelectCompression/SelectCompression.jsx:95
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/SelectCompression/SelectCompression.jsx:96
 #: _src/smush-ui/hooks/useSmushScanAndBulk.js:45
 #: _src/smush-ui/pages/dashboard/components/BulkSmushCompletedModal/BulkSmushCompletedModal.jsx:92
 #: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:63
@@ -4185,20 +4185,20 @@ msgstr ""
 msgid "No Directory Selected"
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/components/DirectoryStats.jsx:202
+#: _src/smush-ui/pages/directory-smush/components/DirectoryStats.jsx:203
 #: _src/smush-ui/pages/settings/components/tools/General.jsx:47
 msgid "Remove metadata from images"
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/components/DirectoryStats.jsx:203
+#: _src/smush-ui/pages/directory-smush/components/DirectoryStats.jsx:204
 msgid "Removes hidden metadata (EXIF data) from images to reduce file size and improve privacy."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/components/DirectoryStats.jsx:223
+#: _src/smush-ui/pages/directory-smush/components/DirectoryStats.jsx:224
 msgid "Processing…"
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/components/DirectoryStats.jsx:229
+#: _src/smush-ui/pages/directory-smush/components/DirectoryStats.jsx:230
 msgid "Optimize file(s)"
 msgstr ""
 

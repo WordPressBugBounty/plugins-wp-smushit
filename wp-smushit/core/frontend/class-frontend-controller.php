@@ -917,6 +917,8 @@ class Frontend_Controller extends Controller {
 			$classes .= ' smush-onboarding-wizard smush-onboarding-wizard--fullscreen';
 		}
 
+		$classes .= Membership::get_instance()->get_guest_value( ' smush-plan-free', ' smush-plan-pro' );
+
 		return $classes;
 	}
 

@@ -1,13 +1,13 @@
 === Smush – Image Optimization, Compression, Lazy Load, WebP & CDN===
 Plugin Name: Smush – Image Optimization, Compression, Lazy Load, WebP & CDN
-Version: 4.1.0
+Version: 4.1.1
 Author: WPMU DEV
 Author URI: https://wpmudev.com/
 Contributors: WPMUDEV, alexdunae
 Tags: optimize images, convert webp, image optimization, compress images, image optimizer
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 4.1.0
+Stable tag: 4.1.0A
 Requires PHP: 7.4
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -192,6 +192,9 @@ We take plugin security incredibly seriously; if you have a bug or vulnerability
 5. Serve images at lightning speed via our global CDN.
 
 == Changelog ==
+
+= 4.1.1 ( 2026-06-11 ) =
+- Improvement: Stability improvements and minor bug fixes
 
 = 4.1.0 ( 2026-06-01 ) =
 - Improvement: Added notice when images fail to optimize
