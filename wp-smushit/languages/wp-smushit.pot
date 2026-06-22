@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Smush Pro 4.1.1\n"
+"Project-Id-Version: Smush Pro 4.1.2\n"
 "Report-Msgid-Bugs-To: https://wpmudev.com\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-12T09:37:15+00:00\n"
+"POT-Creation-Date: 2026-06-22T13:26:57+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wp-smushit\n"
@@ -596,7 +596,7 @@ msgstr ""
 #: core/class-configs.php:745
 #: core/class-settings.php:1403
 #: _src/smush-ui/pages/cdn/components/FormatOptions.jsx:13
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:30
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:31
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:189
 msgid "AVIF"
 msgstr ""
@@ -905,7 +905,7 @@ msgstr ""
 #: _src/smush-ui/pages/lazy-preload/components/Maincontent.jsx:14
 #: _src/smush-ui/pages/lazy-preload/components/Maincontent.jsx:15
 #: _src/smush-ui/pages/onboarding-wizard/components/DefaultSettings.jsx:155
-#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:68
+#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:71
 msgid "Lazy Load"
 msgstr ""
 
@@ -920,19 +920,19 @@ msgstr ""
 #: core/webp/class-webp-configuration.php:54
 #: core/webp/class-webp-optimization.php:81
 #: _src/smush-ui/pages/cdn/components/FormatOptions.jsx:14
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:29
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:30
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:188
 msgid "WebP"
 msgstr ""
 
 #: core/class-configs-pro.php:125
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:515
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:562
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:530
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:577
 msgid "Direct Conversion"
 msgstr ""
 
 #: core/class-configs-pro.php:125
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:536
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:551
 msgid "Server Configuration"
 msgstr ""
 
@@ -940,11 +940,12 @@ msgstr ""
 #: core/frontend/class-frontend-controller.php:821
 #: _src/react/modules/configs.jsx:151
 #: _src/react/views/webp/free-content.jsx:18
-#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:80
+#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:81
 #: _src/smush-ui/pages/settings/components/Maincontent.jsx:50
 #: _src/smush-ui/pages/settings/components/Maincontent.jsx:51
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:98
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:379
+#: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:75
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:102
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:388
 msgid "Next-Gen Formats"
 msgstr ""
 
@@ -1007,21 +1008,21 @@ msgid "The given config ID does not exist"
 msgstr ""
 
 #: core/class-configs.php:738
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:54
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:70
 #: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:40
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:178
 msgid "Basic 1X"
 msgstr ""
 
 #: core/class-configs.php:739
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:55
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:71
 #: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:41
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:179
 msgid "Super 2X"
 msgstr ""
 
 #: core/class-configs.php:740
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:56
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:72
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:47
 #: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:42
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:180
@@ -1030,7 +1031,7 @@ msgstr ""
 
 #: core/class-configs.php:743
 #: _src/smush-ui/pages/cdn/components/FormatOptions.jsx:12
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:28
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:29
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:187
 msgid "Original"
 msgstr ""
@@ -1126,8 +1127,8 @@ msgstr ""
 
 #: core/class-configs.php:772
 #: core/class-settings.php:350
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:118
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:124
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:119
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:125
 #: _src/smush-ui/pages/onboarding-wizard/components/DefaultSettings.jsx:173
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:228
 #: _src/smush-ui/pages/settings/components/tools/General.jsx:56
@@ -1136,9 +1137,9 @@ msgstr ""
 
 #: core/class-configs.php:773
 #: core/class-settings.php:355
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:120
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:122
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:234
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:121
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:123
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:243
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:229
 msgid "Backup original images"
 msgstr ""
@@ -1150,7 +1151,7 @@ msgstr ""
 #: core/class-configs.php:775
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ImageSizing.jsx:46
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:231
-#: _src/smush-ui/pages/settings/components/tools/ImageSizing.jsx:55
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:50
 msgid "Set image dimensions"
 msgstr ""
 
@@ -1224,9 +1225,10 @@ msgstr ""
 #: core/frontend/class-frontend-controller.php:775
 #: core/frontend/class-frontend-controller.php:820
 #: _src/react/modules/configs.jsx:150
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:91
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:141
-#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:78
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:83
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:94
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:149
+#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:79
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:210
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:278
 #: _src/smush-ui/pages/settings/components/permissions/PermissionsSettings.jsx:54
@@ -1432,8 +1434,8 @@ msgstr ""
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:372
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigStatus.jsx:204
 #: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:201
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:600
-#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:250
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:615
+#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:261
 msgid "Cancel"
 msgstr ""
 
@@ -1870,6 +1872,7 @@ msgstr ""
 
 #: core/class-settings.php:1518
 #: _src/smush-ui/core-ui/components/BulkSmushStatusCard/SelectCompression/SelectCompression.jsx:47
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:61
 msgid "Ultra"
 msgstr ""
 
@@ -2089,7 +2092,8 @@ msgstr ""
 #: core/frontend/class-frontend-controller.php:266
 #: core/frontend/class-frontend-controller.php:1442
 #: _src/react/views/webp/steps-bar.jsx:52
-#: _src/smush-ui/core-ui/components/MemberStatusBadge/MemberStatusBadge.jsx:31
+#: _src/smush-ui/core-ui/components/MemberStatusBadge/MemberStatusBadge.jsx:17
+#: _src/smush-ui/core-ui/components/SelectorToggleCard/SelectorToggleCard.jsx:135
 #: _src/smush-ui/layout/PageHeader.jsx:69
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:41
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigStatus.jsx:153
@@ -2129,8 +2133,9 @@ msgstr ""
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:58
 #: _src/smush-ui/pages/lazy-preload/components/Maincontent.jsx:20
 #: _src/smush-ui/pages/lazy-preload/components/Maincontent.jsx:21
-#: _src/smush-ui/pages/lazy-preload/components/preload/PreloadCard.jsx:28
-#: _src/smush-ui/pages/lazy-preload/components/preload/PreloadSettings.jsx:19
+#: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:63
+#: _src/smush-ui/pages/lazy-preload/components/preload/PreloadCard.jsx:25
+#: _src/smush-ui/pages/lazy-preload/components/preload/PreloadSettings.jsx:21
 msgid "Preload"
 msgstr ""
 
@@ -2212,6 +2217,12 @@ msgid "Rate our plugin"
 msgstr ""
 
 #: core/frontend/class-frontend-controller.php:1441
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:80
+#: _src/smush-ui/core-ui/components/SelectorToggleCard/SelectorToggleCard.jsx:134
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:111
+#: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:86
+#: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:98
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellModal.jsx:69
 msgid "Upgrade"
 msgstr ""
 
@@ -2272,7 +2283,7 @@ msgid "Background scan is already in processing."
 msgstr ""
 
 #: core/media-library/class-background-media-library-scanner.php:153
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboard.jsx:160
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboard.jsx:162
 msgid "No scans yet"
 msgstr ""
 
@@ -2366,10 +2377,10 @@ msgid "We recommend regenerating the thumbnails."
 msgstr ""
 
 #: core/media-library/class-media-library-row.php:329
-#: _src/smush-ui/core-ui/components/SelectorToggleCard/SelectorToggleCard.jsx:102
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:116
+#: _src/smush-ui/core-ui/components/SelectorToggleCard/SelectorToggleCard.jsx:122
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:119
 #: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:90
-#: _src/smush-ui/pages/lazy-preload/components/preload/PreloadCard.jsx:47
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellCard.jsx:33
 msgid "Learn more"
 msgstr ""
 
@@ -2780,7 +2791,7 @@ msgid "Preset Configs"
 msgstr ""
 
 #: _src/react/modules/configs.jsx:41
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboard.jsx:185
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboard.jsx:187
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:213
 msgid "Upload"
 msgstr ""
@@ -3255,58 +3266,58 @@ msgstr ""
 #: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:19
 #: _src/smush-ui/hooks/useSmushToast.js:58
 #: _src/smush-ui/hooks/useSmushToast.js:116
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:192
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:196
 msgid "Optimize Images"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:100
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:101
 msgid "Processing continues in the background. No need to wait, we'll email you when it's finished."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:101
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:102
 #: _src/smush-ui/core-ui/components/ProgressBar/ProgressBar.jsx:298
 msgid "Processing continues in the background."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:119
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:120
 msgid " is disabled, which means that enabling "
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:121
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:122
 msgid " won't yield additional benefits and will use more storage space. We recommend enabling "
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:123
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:124
 msgid " only if "
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:125
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:126
 msgid " is also enabled."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:135
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:66
-#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:50
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:53
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:136
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:69
+#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:51
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:57
 msgid "Ok"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:209
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:218
 #: _src/smush-ui/pages/directory-smush/components/DirectoryStats.jsx:178
 msgid "Select compression"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:235
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:244
 msgid "Keep a backup of your original images so you can restore them anytime. Be aware this will increase the size of your uploads folder."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:269
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:278
 #: _src/smush-ui/layout/GlobalNotices/GlobalProgressOverlays.jsx:86
-#: _src/smush-ui/pages/directory-smush/components/Maincontent.jsx:77
+#: _src/smush-ui/pages/directory-smush/components/Maincontent.jsx:85
 msgid "Optimizing"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:273
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:282
 #: _src/smush-ui/core-ui/components/ProgressBar/ProgressBar.jsx:275
 #: _src/smush-ui/core-ui/components/ProgressBar/ProgressBar.jsx:284
 msgid "Stop"
@@ -3348,10 +3359,10 @@ msgstr ""
 #: _src/smush-ui/core-ui/components/BulkSmushStatusCard/SelectCompression/SelectCompression.jsx:96
 #: _src/smush-ui/hooks/useSmushScanAndBulk.js:45
 #: _src/smush-ui/pages/dashboard/components/BulkSmushCompletedModal/BulkSmushCompletedModal.jsx:92
-#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:63
+#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:64
 #: _src/smush-ui/pages/dashboard/components/RequiredFunctionNotification/RequiredFunctionNotification.jsx:51
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:183
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:308
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:189
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:312
 msgid "OK"
 msgstr ""
 
@@ -3369,7 +3380,7 @@ msgstr ""
 #: _src/smush-ui/core-ui/components/SlideInModal/SlideInModal.jsx:92
 #: _src/smush-ui/core-ui/components/SlideInModal/SlideInModal.jsx:96
 #: _src/smush-ui/layout/GlobalNotices/HubConnectionFlow/HubConnectionFlow.jsx:59
-#: _src/smush-ui/pages/shared/components/SlideModal.jsx:289
+#: _src/smush-ui/pages/shared/components/SlideModal.jsx:308
 msgid "Close"
 msgstr ""
 
@@ -3427,20 +3438,20 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: compression level label.
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:61
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:77
 #, js-format
 msgid "Compression level changed to %s."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:65
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:81
 msgid "Backup original images enabled."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:65
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:81
 msgid "Backup original images disabled."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:274
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:290
 #: _src/smush-ui/hooks/useSmushScanAndBulk.js:149
 #, js-format
 msgid "You have <number>%d</number> image ready to optimize."
@@ -3448,18 +3459,58 @@ msgid_plural "You have <number>%d</number> images ready to optimize."
 msgstr[0] ""
 msgstr[1] ""
 
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:291
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:307
 #: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:25
 msgid "Optimize images"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:292
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:308
 msgid "Not Now"
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:33
+msgid "Maximum file size reduction"
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:34
+msgid "Achieve up to 5X compression than Super optimization."
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:37
+msgid "Maintain image quality"
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:38
+msgid "Reduce file size while keeping images looking sharp."
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:41
+msgid "Optimize existing images"
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:42
+msgid "Recompress optimized images for extra savings."
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:45
+msgid "Faster page loads"
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:46
+msgid "Smaller images help page load quicker."
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:59
+msgid "Unlock Ultra compression"
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:60
+msgid "Compress images up to 5X more while keeping them sharp and high-quality."
 msgstr ""
 
 #: _src/smush-ui/core-ui/components/Popup/Popup.jsx:103
 #: _src/smush-ui/layout/GlobalNotices/HubConnectionFlow/HubConnectionFlow.jsx:53
-#: _src/smush-ui/pages/shared/components/SlideModal.jsx:287
+#: _src/smush-ui/pages/shared/components/SlideModal.jsx:306
 msgid "Exit"
 msgstr ""
 
@@ -3497,20 +3548,29 @@ msgstr ""
 msgid "Scanning"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/StatsCard/StatsCard.jsx:84
+#: _src/smush-ui/core-ui/components/StatsCard/StatsCard.jsx:101
 msgid "Smush Savings"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/StatsCard/StatsCard.jsx:115
+#: _src/smush-ui/core-ui/components/StatsCard/StatsCard.jsx:113
+msgid "Save up to 50% with Ultra Pro. <moreLink>Learn more</moreLink>"
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/StatsCard/StatsCard.jsx:114
+#, js-format
+msgid "Save up to %1$s%2$s with Ultra Pro. <moreLink>Learn more</moreLink>"
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/StatsCard/StatsCard.jsx:140
 #: _src/smush-ui/pages/onboarding-wizard/components/ScanCompleted.jsx:139
 msgid "Images to optimize"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/StatsCard/StatsCard.jsx:117
+#: _src/smush-ui/core-ui/components/StatsCard/StatsCard.jsx:142
 msgid "The total amount of space saved by optimizing your images."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/StatsCard/StatsCard.jsx:130
+#: _src/smush-ui/core-ui/components/StatsCard/StatsCard.jsx:155
 msgid "Images optimized"
 msgstr ""
 
@@ -3525,7 +3585,7 @@ msgstr ""
 #: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:98
 #: _src/smush-ui/pages/dashboard/components/useSkipWizardFlow.js:52
 #: _src/smush-ui/pages/settings/components/configs/Configs.jsx:126
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:182
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:186
 msgid "Not now"
 msgstr ""
 
@@ -3655,7 +3715,10 @@ msgid "Plus, you're getting more than ever with %s:"
 msgstr ""
 
 #: _src/smush-ui/layout/GlobalNotices/WhatsNewModal/WhatsNewModal.jsx:56
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:113
 #: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:60
+#: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:88
+#: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:100
 msgid "Get started"
 msgstr ""
 
@@ -3713,7 +3776,7 @@ msgid "by"
 msgstr ""
 
 #: _src/smush-ui/layout/PageHeader.jsx:58
-#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:89
+#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:92
 msgid "wpmudev"
 msgstr ""
 
@@ -3746,7 +3809,7 @@ msgstr ""
 msgid "Product Roadmap"
 msgstr ""
 
-#: _src/smush-ui/layout/PageHeader.jsx:273
+#: _src/smush-ui/layout/PageHeader.jsx:274
 msgid "Pro Features"
 msgstr ""
 
@@ -3851,6 +3914,62 @@ msgstr ""
 msgid "Add one keyword per line. E.g. <strong>#image-id</strong> or <strong>.image-class</strong> or <strong>logo_image</strong> or <strong>go_imag</strong> or <strong>x.com/</strong> or <strong>@url-keyword</strong>."
 msgstr ""
 
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:46
+msgid "150+ Tbps Tier-1 network"
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:47
+msgid "Reliable, high-speed delivery on a global network."
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:50
+msgid "Smart global routing"
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:51
+msgid "Routes visitors to the nearest edge for lower latency."
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:54
+msgid "NVMe+ SSD edge servers"
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:55
+msgid "High-performance hardware built to deliver images faster."
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:58
+msgid "WebP and AVIF support"
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:59
+msgid "Modern formats with automatic fallbacks."
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:62
+msgid "Built-in DDoS protection"
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:63
+msgid "Block attacks quickly and keep every request encrypted."
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:66
+msgid "Reduced server load"
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:67
+msgid "Combines duplicate requests so your server handles less traffic."
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:80
+msgid "Images load faster"
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:81
+msgid "Serve images from 119 CDN locations worldwide."
+msgstr ""
+
 #: _src/smush-ui/pages/cdn/components/FormatOptions.jsx:12
 msgid "Serve images in their original format."
 msgstr ""
@@ -3863,43 +3982,38 @@ msgstr ""
 msgid "WebP format with smaller file sizes."
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:39
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:40
 msgid "CDN file format changed to"
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:74
-#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:58
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:77
+#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:59
 msgid "CDN status changed"
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:75
-#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:59
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:62
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:78
+#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:60
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:66
 msgid "If you’re using page or server caching, clear it to ensure everything works properly."
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:94
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:97
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/LazyloadSettings.jsx:23
-#: _src/smush-ui/pages/lazy-preload/components/preload/PreloadSettings.jsx:22
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:103
+#: _src/smush-ui/pages/lazy-preload/components/preload/PreloadSettings.jsx:24
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:107
 msgid "Do you want to turn it on?"
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:112
-#, js-format
-msgid "Serve your images from %d global locations."
-msgstr ""
-
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:114
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:117
 #, js-format
 msgid "Serve your images from %d global locations.<moreLink>%s</moreLink>"
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:155
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:164
 msgid "Global CDN map"
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:171
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:180
 msgid "Preferred CDN file format"
 msgstr ""
 
@@ -3928,7 +4042,7 @@ msgid "REST API support disabled."
 msgstr ""
 
 #: _src/smush-ui/pages/cdn/components/Settings.jsx:27
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:424
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:439
 msgid "Supported media types"
 msgstr ""
 
@@ -4013,7 +4127,7 @@ msgstr ""
 msgid "Close popup"
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:79
+#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:80
 #, js-format
 msgid "Serve your images from %d global locations"
 msgstr ""
@@ -4062,33 +4176,33 @@ msgstr ""
 msgid "Loads images when needed, speeding up your site"
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:18
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:80
+#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:19
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:84
 msgid "Next-Gen Formats enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:18
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:80
+#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:19
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:84
 msgid "Next-Gen Formats disabled."
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:48
+#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:49
 msgid "Next-Gen Formats is active"
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:49
+#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:50
 msgid "Existing images to be served as next-gen format."
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:54
+#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:55
 msgid "Next-Gen Formats is inactive"
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:55
+#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:56
 msgid "Existing images will not be served as next-gen format. If you’re using page or server caching, clear it to ensure everything works properly."
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:81
+#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:82
 msgid "Convert your images to modern & fast formats"
 msgstr ""
 
@@ -4234,15 +4348,15 @@ msgstr ""
 msgid "Run Smush and optimize everything in one go.<br/>It's that easy."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/components/Maincontent.jsx:77
+#: _src/smush-ui/pages/directory-smush/components/Maincontent.jsx:85
 msgid "Optimizing Directory"
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/components/Maincontent.jsx:82
+#: _src/smush-ui/pages/directory-smush/components/Maincontent.jsx:90
 msgid "Please do not leave this page while Directory Smush is running"
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/components/Maincontent.jsx:82
+#: _src/smush-ui/pages/directory-smush/components/Maincontent.jsx:90
 msgid "Please do not leave this page while Directory Optimization is running"
 msgstr ""
 
@@ -4270,51 +4384,51 @@ msgstr ""
 msgid "Compression level changed to"
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:108
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:114
 msgid "We couldn't find any images in the selected directory."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:118
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:124
 msgid "Directory Optimization started."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:118
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:124
 msgid "Directory Smush started."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:130
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:136
 msgid "Smush limit exceeded. Please upgrade to Pro for unlimited smushing."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:151
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:157
 msgid "Directory Optimization completed."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:151
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:157
 msgid "Directory Smush completed."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:161
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:167
 msgid "Smush complete"
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:164
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:170
 msgid "You've smushed "
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:166
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:172
 msgid " images and saved "
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:192
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:198
 msgid "An error occurred during smushing."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:207
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:213
 msgid "Directory Optimization cancelled."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:207
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:213
 msgid "Directory Smush cancelled."
 msgstr ""
 
@@ -4517,18 +4631,17 @@ msgid "Image Sizing"
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ImageSizing.jsx:30
-#: _src/smush-ui/pages/settings/components/tools/ImageSizing.jsx:24
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:22
 msgid "Automatically resize, add dimensions, and generate dynamic sizes to ensure that the correct image size is loaded in every situation."
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ImageSizing.jsx:36
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:230
-#: _src/smush-ui/pages/settings/components/tools/ImageSizing.jsx:48
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:43
 msgid "Automatic Resizing"
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ImageSizing.jsx:40
-#: _src/smush-ui/pages/lazy-preload/components/preload/PreloadCard.jsx:41
 msgid "Resize image files to fit their container and speed up loading."
 msgstr ""
 
@@ -4537,7 +4650,7 @@ msgid "Learn more."
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ImageSizing.jsx:50
-#: _src/smush-ui/pages/settings/components/tools/ImageSizing.jsx:59
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:54
 msgid "Add width and height attributes to prevent layout shifts."
 msgstr ""
 
@@ -4664,7 +4777,7 @@ msgid "Failed to clear LCP data"
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:45
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:259
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:263
 msgid "An error occurred. Please try again."
 msgstr ""
 
@@ -4700,6 +4813,46 @@ msgstr ""
 msgid "Specify URLs of the pages or posts you want to disable preload on."
 msgstr ""
 
+#: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:34
+msgid "Automatic LCP image detection"
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:35
+msgid "Finds the largest visible image and prioritizes faster loading."
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:38
+msgid "Smart image preloading"
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:39
+msgid "Preloads above-the-fold images to reduce render delays."
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:42
+msgid "High fetch priority"
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:43
+msgid "Adds fetchpriority=\"high\" to LCP images for faster loading."
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:46
+msgid "Better PageSpeed performance"
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:47
+msgid "Helps improve LCP and meet Google’s 2.5s benchmark."
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:60
+msgid "Load critical images first"
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:61
+msgid "Improve LCP by automatically detecting the largest visible image and giving it priority."
+msgstr ""
+
 #: _src/smush-ui/pages/lazy-preload/components/preload/OptimizeLcpFetchpriority.jsx:8
 msgid "Fetchpriority enabled."
 msgstr ""
@@ -4712,11 +4865,15 @@ msgstr ""
 msgid "Replace WordPress default fetchpriority=high with smarter LCP detection for better lazy loading, image handling, and faster page performance."
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/preload/PreloadSettings.jsx:16
+#: _src/smush-ui/pages/lazy-preload/components/preload/PreloadCard.jsx:40
+msgid "Resize image files to fit their container and speed up loading. <moreLink>Learn more</moreLink>"
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/preload/PreloadSettings.jsx:18
 msgid "Preload enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/preload/PreloadSettings.jsx:16
+#: _src/smush-ui/pages/lazy-preload/components/preload/PreloadSettings.jsx:18
 msgid "Preload disabled."
 msgstr ""
 
@@ -5442,6 +5599,46 @@ msgstr ""
 msgid "Other Settings"
 msgstr ""
 
+#: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:46
+msgid "One-click conversion"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:47
+msgid "Fix PageSpeed’s next-gen image recommendation without touching code."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:50
+msgid "Native WebP and AVIF serving"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:51
+msgid "Deliver lighter image files from your server for faster page loads."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:54
+msgid "Smart browser fallbacks"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:55
+msgid "Show WebP or AVIF when supported, then fall back to JPEG or PNG when needed."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:58
+msgid "No server setup required"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:59
+msgid "Complex Nginx or Apache rules not needed. Smush handles delivery inside your existing WordPress setup."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:72
+msgid "Smarter image formats"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:73
+msgid "Serve WebP or AVIF automatically, when supported."
+msgstr ""
+
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/LocalWebpSetupWizard.jsx:92
 msgid "Local WebP Setup"
 msgstr ""
@@ -5532,8 +5729,8 @@ msgid "If this is incorrect, choose another server type."
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepFinishSetup.jsx:39
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:317
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:344
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:321
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:348
 msgid "WebP is now being served"
 msgstr ""
 
@@ -5550,12 +5747,12 @@ msgid "Finish & Convert Now"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/useLocalWebpSetupWizard.js:41
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:32
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:36
 msgid "WebP conversion method set to Direct Conversion."
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/useLocalWebpSetupWizard.js:41
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:32
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:36
 msgid "WebP conversion method set to Server Configuration."
 msgstr ""
 
@@ -5580,178 +5777,178 @@ msgstr ""
 msgid "Check Status"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:26
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:27
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:30
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:31
 msgid "JavaScript fallback enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:26
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:27
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:30
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:31
 msgid "JavaScript fallback disabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:85
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:92
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:217
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:89
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:96
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:221
 msgid "Next-Gen Formats status changed"
 msgstr ""
 
 #. translators: %s: next-gen format label (WebP or AVIF).
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:137
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:141
 #, js-format
 msgid "Next-Gen Format changed from %1$s to %2$s."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:167
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:171
 msgid "Require Action"
 msgstr ""
 
 #. translators: %s: next-gen format label (WebP or AVIF).
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:170
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:174
 #, js-format
 msgid "You've changed the Next-Gen Format to %s, please run Bulk Optimization"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:237
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:241
 #, js-format
 msgid "Generated %s files deleted."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:245
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:249
 msgid "Files deleted"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:247
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:251
 msgid "All AVIF files have been deleted."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:248
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:252
 msgid "All WebP files have been deleted."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:258
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:262
 msgid "Failed to delete files"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:300
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:304
 msgid "Amazon S3 integration detected"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:302
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:306
 msgid "Amazon S3 offload is enabled. Offloaded images can’t be served in Next‑Gen formats. Smush will still generate local Next‑Gen copies. Disable Next‑Gen Formats if you don’t want local files created."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:307
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:311
 msgid "Disable Next-Gen"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:320
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:324
 msgid "WPMU DEV has already configured WebP for you. Run Bulk Optimization to generate WebP files for existing images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:323
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:327
 msgid "WebP is already set up by your host. Run Bulk Optimization to generate WebP files for existing images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:329
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:333
 msgid "WPMU DEV has already set up WebP. Run Bulk Optimization on each subsite to generate WebP files for existing images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:333
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:337
 msgid "WebP is already set up by your host. Run Bulk Optimization on each subsite to generate WebP files for existing images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:338
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:354
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:342
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:358
 msgid "Convert Now"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:346
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:350
 msgid "Your server is correctly serving WebP images. Run Bulk Optimization to generate WebP files for existing images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:350
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:354
 msgid "Your server is correctly serving WebP images. To generate WebP files for existing images, run Bulk Optimization on each subsite."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:387
-msgid "Automatically convert your JPEG and PNG images to WebP or AVIF formats, dramatically reducing their size while keeping fidelity."
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:397
+msgid "Automatically convert JPEG and PNG images to WebP or AVIF, reducing file size while preserving fidelity. <moreLink>Learn more</moreLink>"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:417
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:432
 #: _src/smush-ui/pages/settings/components/tools/Others.jsx:25
 msgid "Others"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:425
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:440
 msgid "Image formats that will be converted."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:436
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:451
 msgid "JavaScript fallback"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:437
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:452
 msgid "Enable JavaScript fallback for browser compatibility"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:455
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:470
 msgid "Revert conversion"
 msgstr ""
 
 #. translators: %s: selected next-gen image format label (WebP or AVIF).
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:460
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:475
 #, js-format
 msgid "Remove generated %s files to reclaim server space. Originals will revert to PNG or JPEG. CDN-converted WebP/AVIF files are unaffected."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:474
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:608
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:489
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:623
 msgid "Delete files"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:490
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:505
 msgid "Format / Type"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:492
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:507
 msgid "Select format type and conversion method."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:516
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:563
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:531
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:578
 msgid "Convert images directly on upload."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:517
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:532
 msgid "Recommended"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:537
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:552
 msgid "Configure server to serve converted images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:540
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:555
 msgid "Open WebP Setup Wizard"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:584
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:599
 msgid "Delete all AVIF files?"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:584
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:599
 msgid "Delete all WebP files?"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:589
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:604
 msgid "This will permanently delete all generated AVIF files. Your original images will not be affected."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:590
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:605
 msgid "This will permanently delete all generated WebP files. Your original images will not be affected."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:608
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:623
 msgid "Deleting..."
 msgstr ""
 
@@ -5773,6 +5970,83 @@ msgstr ""
 
 #: _src/smush-ui/pages/settings/components/permissions/PermissionsSettings.jsx:151
 msgid "Sub-site admins can override all available Smush settings for their site."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:16
+msgid "Automatic Resizing enabled."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:16
+msgid "Automatic Resizing disabled."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:17
+msgid "Set image dimensions enabled."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:17
+msgid "Set image dimensions disabled."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:23
+msgid "Enable Lazy Load to auto resize your images."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:32
+msgid "Auto resize"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:47
+msgid "Auto-scale images to container size for faster loading"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellCard.jsx:23
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellModal.jsx:48
+msgid "Auto Resize"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellCard.jsx:31
+msgid "Serve perfectly sized images automatically."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellModal.jsx:19
+msgid "Automatic image resizing"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellModal.jsx:20
+msgid "Scale oversized images to fit their containers."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellModal.jsx:23
+msgid "Add image dimensions automatically"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellModal.jsx:24
+msgid "Add missing width and height attributes to stabilize page layout."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellModal.jsx:27
+msgid "Reduced layout shifts"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellModal.jsx:28
+msgid "Keep content from jumping as images load."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellModal.jsx:31
+msgid "Better Pagespeed performance"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellModal.jsx:32
+msgid "Fixes image sizing and dimensions automatically."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellModal.jsx:45
+msgid "Auto-size images perfectly"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellModal.jsx:46
+msgid "Serve correctly sized images and add missing dimensions to reduce load time and layout shifts."
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/tools/General.jsx:13
@@ -5846,34 +6120,6 @@ msgstr ""
 
 #: _src/smush-ui/pages/settings/components/tools/ImageSize.jsx:89
 msgid "All image sizes"
-msgstr ""
-
-#: _src/smush-ui/pages/settings/components/tools/ImageSizing.jsx:18
-msgid "Automatic Resizing enabled."
-msgstr ""
-
-#: _src/smush-ui/pages/settings/components/tools/ImageSizing.jsx:18
-msgid "Automatic Resizing disabled."
-msgstr ""
-
-#: _src/smush-ui/pages/settings/components/tools/ImageSizing.jsx:19
-msgid "Set image dimensions enabled."
-msgstr ""
-
-#: _src/smush-ui/pages/settings/components/tools/ImageSizing.jsx:19
-msgid "Set image dimensions disabled."
-msgstr ""
-
-#: _src/smush-ui/pages/settings/components/tools/ImageSizing.jsx:25
-msgid "Enable Lazy Load to auto resize your images."
-msgstr ""
-
-#: _src/smush-ui/pages/settings/components/tools/ImageSizing.jsx:34
-msgid "Image sizing"
-msgstr ""
-
-#: _src/smush-ui/pages/settings/components/tools/ImageSizing.jsx:52
-msgid "Auto-scale images to container size for faster loading"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/tools/LargeImage.jsx:15
@@ -5962,37 +6208,37 @@ msgstr ""
 msgid "Convert PNG images to JPEG format to reduce file size while maintaining quality."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:73
+#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:76
 msgid "Turn on Lazy load to automatically resize images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:106
+#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:109
 msgid "Image restoration stopped."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:162
+#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:165
 msgid "All images restored to their original state."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:212
+#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:223
 msgid "Bring all images back to their original state."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:223
-#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:264
+#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:234
+#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:275
 msgid "Restore"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:236
+#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:247
 msgid "Restore all images?"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:242
+#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:253
 #, js-format
 msgid "This action will restore all <strong>%d</strong> images to their original, non-optimized states. For more control, use the Media Library to restore specific images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:264
+#: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:275
 msgid "Restoring..."
 msgstr ""
 
