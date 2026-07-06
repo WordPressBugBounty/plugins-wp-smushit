@@ -50,26 +50,7 @@ class Smush_Controller extends Controller {
 			10,
 			2
 		);
-		$this->register_action(
-			'wp_smush_settings_updated',
-			array(
-				$this,
-				'maybe_mark_global_stats_as_outdated',
-			),
-			10,
-			2
-		);
 
-		// Bulk image sizes.
-		$this->register_action(
-			'wp_smush_image_sizes_updated',
-			array(
-				$this,
-				'mark_global_stats_as_outdated_on_image_sizes_change',
-			),
-			10,
-			2
-		);
 		$this->register_action( 'wp_smush_image_sizes_deleted', array( $this->global_stats, 'mark_as_outdated' ) );
 		$this->register_action( 'wp_smush_image_sizes_added', array( $this->global_stats, 'mark_as_outdated' ) );
 	}
@@ -102,36 +83,5 @@ class Smush_Controller extends Controller {
 		}
 
 		return $original;
-	}
-
-	public function maybe_mark_global_stats_as_outdated( $old_settings, $settings ) {
-		$old_lossy_status     = ! empty( $old_settings['lossy'] ) ? (int) $old_settings['lossy'] : 0;
-		$new_lossy_status     = ! empty( $settings['lossy'] ) ? (int) $settings['lossy'] : 0;
-		$lossy_status_changed = $old_lossy_status !== $new_lossy_status;
-
-		$old_exif_status     = ! empty( $old_settings['strip_exif'] );
-		$new_exif_status     = ! empty( $settings['strip_exif'] );
-		$exif_status_changed = $old_exif_status !== $new_exif_status;
-
-		if ( $lossy_status_changed || $exif_status_changed ) {
-			$this->global_stats->mark_as_outdated();
-		}
-	}
-
-	public function mark_global_stats_as_outdated_on_image_sizes_change( $old_image_sizes, $new_image_sizes ) {
-		if ( ! is_array( $old_image_sizes ) ) {
-			$old_image_sizes = array();
-		}
-
-		if ( ! is_array( $new_image_sizes ) ) {
-			$new_image_sizes = array();
-		}
-
-		$image_sizes_updated = count( $old_image_sizes ) !== count( $new_image_sizes )
-							   || array_diff( $old_image_sizes, $new_image_sizes );
-
-		if ( ! empty( $image_sizes_updated ) ) {
-			$this->global_stats->mark_as_outdated();
-		}
 	}
 }

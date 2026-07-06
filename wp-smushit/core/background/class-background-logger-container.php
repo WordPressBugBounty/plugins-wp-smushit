@@ -32,9 +32,12 @@ class Background_Logger_Container {
 
 	private function log( $message, $type ) {
 		if ( $this->logger && method_exists( $this->logger, $type ) ) {
-			$this->logger->$type(
-				$this->prepare_message( $message )
-			);
+			try {
+				call_user_func( array( $this->logger, $type ), $this->prepare_message( $message ) );
+			} catch ( \Exception $e ) {
+				error_log( $e->getMessage() );
+				error_log( $message );
+			}
 		}
 	}
 

@@ -15,6 +15,7 @@ use Smush\Core\Multisite_Utils;
 use Smush\Core\Product_Analytics\Product_Analytics;
 use Smush\Core\S3\WP_Offload_Media_Api;
 use Smush\Core\Settings;
+use Smush\Core\Stats\Global_Stats;
 use WP_Smush;
 
 /**
@@ -34,18 +35,23 @@ class Frontend_Controller extends Controller {
 	 */
 	private $whitelabel;
 
-    private static $instance = null;
+	private static $instance = null;
+	/**
+	 * @var Global_Stats
+	 */
+	private $global_stats;
 
-    public static function get_instance() {
-        if ( is_null( self::$instance ) ) {
-            self::$instance = new self();
-        }
+	public static function get_instance() {
+		if ( is_null( self::$instance ) ) {
+			self::$instance = new self();
+		}
 
-        return self::$instance;
-    }
+		return self::$instance;
+	}
 
 	public function __construct() {
-		$this->whitelabel = new WhiteLabel();
+		$this->whitelabel   = new WhiteLabel();
+		$this->global_stats = Global_Stats::get();
 
 		// Register AJAX endpoint for logged-in users
 		$this->register_action( 'wp_ajax_smush_frontend_poll', array( $this, 'ajax_frontend_poll' ) );
@@ -56,7 +62,12 @@ class Frontend_Controller extends Controller {
 		$this->register_action( 'wp_ajax_smush_ui_error', array( $this, 'ajax_ui_error' ) );
 
 		// Hide the new features modal.
-		add_action( 'wp_ajax_hide_new_features', array( $this, 'hide_new_features_modal' ) );
+		$this->register_action( 'wp_ajax_hide_new_features', array( $this, 'hide_new_features_modal' ) );
+
+		// Handle skip quick setup action.
+		$this->register_action( 'wp_ajax_skip_smush_setup', array( $this, 'skip_smush_setup' ) );
+		// Handle resume quick setup action.
+		$this->register_action( 'wp_ajax_resume_smush_setup', array( $this, 'resume_smush_setup' ) );
 
 		$this->register_action( 'admin_menu', array( $this, 'add_menu_pages' ) );
 		$this->register_action( 'admin_head', array( $this, 'print_pro_menu_badge_style' ) );
@@ -65,7 +76,8 @@ class Frontend_Controller extends Controller {
 		$this->register_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		$this->register_action( 'admin_enqueue_scripts', array( $this, 'enqueue_global_scripts' ) );
 
-		$this->register_filter( 'admin_body_class', array( $this, 'smush_body_classes' ) );
+		// Run late so third-party callbacks that overwrite classes don't remove Smush classes.
+		$this->register_filter( 'admin_body_class', array( $this, 'smush_body_classes' ), 9999 );
 		$this->register_filter( 'admin_title', array( $this, 'smush_admin_title' ), 20, 2 );
 
 		$this->register_filter( 'admin_footer_text', array( $this, 'smush_admin_footer_text' ) );
@@ -77,6 +89,43 @@ class Frontend_Controller extends Controller {
 		$this->register_filter( 'plugin_action_links_' . WP_SMUSH_BASENAME, array( $this, 'plugin_action_links' ) );
 		$this->register_filter( 'network_admin_plugin_action_links_' . WP_SMUSH_BASENAME, array( $this, 'plugin_action_links' ) );
 		$this->register_filter( 'plugin_row_meta', array( $this, 'add_plugin_meta_links' ), 10, 2 );
+
+		// Handle the smush dismiss notice ajax.
+		$this->register_action( 'wp_ajax_smush_dismiss_notice', array( $this, 'dismiss_notice' ) );
+		// Hide API message. TODO: Check if we need to implement this, otherwise remove it.
+		$this->register_action( 'wp_ajax_hide_api_message', array( $this, 'hide_api_message' ) );
+	}
+
+	/***************************************
+	 *
+	 * QUICK SETUP
+	 */
+
+	/**
+	 * Process ajax action for skipping Smush setup.
+	 */
+	public function skip_smush_setup() {
+		check_ajax_referer( 'smush_quick_setup' );
+		// Check capability.
+		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
+		}
+		update_option( 'skip-smush-setup', true );
+		wp_send_json_success();
+	}
+
+	/**
+	 * Process ajax action for resuming Smush setup.
+	 */
+	public function resume_smush_setup() {
+		check_ajax_referer( 'wp-smush-ajax' );
+		// Check capability.
+		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
+		}
+
+		delete_option( 'skip-smush-setup' );
+		wp_send_json_success();
 	}
 
 	/**
@@ -248,8 +297,9 @@ class Frontend_Controller extends Controller {
 
 		wp_send_json_success(
 			array(
-				'message'  => __( 'Settings saved successfully', 'wp-smushit' ),
-				'settings' => $saved_settings,
+				'message'    => __( 'Settings saved successfully', 'wp-smushit' ),
+				'settings'   => $saved_settings,
+				'isOutdated' => $this->global_stats->is_outdated(),
 			)
 		);
 	}
@@ -299,7 +349,7 @@ class Frontend_Controller extends Controller {
 			}
 		}
 
-        $this->add_upgrade_submenu_page();
+		$this->add_upgrade_submenu_page();
 	}
 
 	public function hide_admin_notices() {
@@ -342,16 +392,17 @@ class Frontend_Controller extends Controller {
 				text-align: center;
 				margin-left: 5px;
 			}
-			
+
 			[dir="rtl"] #adminmenu .smush-admin-menu-pro-tag {
 				margin-left: 0;
 				margin-right: 5px;
 			}
+
 			<?php endif; ?>
 		</style>
 		<?php
 
-        $this->print_upgrade_submenu_script();
+		$this->print_upgrade_submenu_script();
 	}
 
 	public function enqueue_scripts() {
@@ -427,12 +478,12 @@ class Frontend_Controller extends Controller {
 		}
 
 		return array(
-			'isMultisite'        => $is_multisite,
-			'isNetworkAdmin'     => $is_multisite && is_network_admin(),
-			'canManageNetwork'   => $is_multisite && Multisite_Utils::can_manage_network(),
-			'isWpmudevHost'      => isset( $_SERVER['WPMUDEV_HOSTED'] ),
-			'showUpgradeModal'   => $this->should_show_upgrade_modal(),
-			'dismissedNotices'   => array_keys( array_filter( get_option( 'wp-smush-dismissed-notices', array() ) ) ),
+			'isMultisite'         => $is_multisite,
+			'isNetworkAdmin'      => $is_multisite && is_network_admin(),
+			'canManageNetwork'    => $is_multisite && Multisite_Utils::can_manage_network(),
+			'isWpmudevHost'       => isset( $_SERVER['WPMUDEV_HOSTED'] ),
+			'showUpgradeModal'    => $this->should_show_upgrade_modal(),
+			'dismissedNotices'    => array_keys( array_filter( get_option( 'wp-smush-dismissed-notices', array() ) ) ),
 			'profileData'         => array(
 				// The initials are not "Personally Identifiable Information" (PII).
 				'initials'               => $this->get_user_initials(),
@@ -442,38 +493,43 @@ class Frontend_Controller extends Controller {
 				'email'                  => $this->get_user_email(),
 				'displayName'            => $this->get_user_display_name(),
 			),
-			'pageUrls'           => $this->get_page_urls(),
-			'hideBranding'       => apply_filters( 'wpmudev_branding_hide_branding', false ),
-			'isPro'              => $membership->is_pro(),
-			'isProPlugin'        => 'wp-smush-pro/wp-smush.php' === WP_SMUSH_BASENAME,
-			'dashboardActive'    => class_exists( 'WPMUDEV_Dashboard' ),
+			'pageUrls'            => $this->get_page_urls(),
+			'hideBranding'        => apply_filters( 'wpmudev_branding_hide_branding', false ),
+			'isPro'               => $membership->is_pro(),
+			'isProPlugin'         => 'wp-smush-pro/wp-smush.php' === WP_SMUSH_BASENAME,
+			'dashboardActive'     => class_exists( 'WPMUDEV_Dashboard' ),
 			'dashboardNoticeData' => $this->get_dashboard_notice_data( $membership ),
-			'resetNonce'         => wp_create_nonce( 'wp_smush_reset' ),
-			'updateNotification' => $update_data,
-			'metaData'           => array(
+			'resetNonce'          => wp_create_nonce( 'wp_smush_reset' ),
+			'updateNotification'  => $update_data,
+			'metaData'            => array(
 				'cdnPopLocations' => Admin::get_cdn_pop_locations(),
 			),
-			'wpAjax'             => array(
+			'wpAjax'              => array(
 				'url'   => admin_url( 'admin-ajax.php' ),
 				'nonce' => wp_create_nonce( 'wp-smush-ajax' ),
 			),
-			'whiteLabel'         => $this->whitelabel->get_whitelabel_data(),
-			'smushDeactivated'   => $smush_deactivated,
-			's3NoticeData'       => $this->get_s3_notice_data(),
-			'pluginConflictData' => $this->get_plugin_conflict_data(),
+			'whiteLabel'          => $this->whitelabel->get_whitelabel_data(),
+			'smushDeactivated'    => $smush_deactivated,
+			's3NoticeData'        => $this->get_s3_notice_data(),
+			'pluginConflictData'  => $this->get_plugin_conflict_data(),
 		);
 	}
 
 	private function get_plugin_conflict_data() {
-		$conflict_plugins = get_transient( 'wp-smush-conflict_check' );
+		$conflict_plugins = get_transient( 'wp-smush-conflict-plugins' );
 
 		if ( ! is_array( $conflict_plugins ) || empty( $conflict_plugins ) ) {
 			return array();
 		}
 
+		$optimizations_plugins = isset( $conflict_plugins['optimization'] ) ? $conflict_plugins['optimization'] : array();
+		$lazyload_plugins      = isset( $conflict_plugins['lazyload'] ) ? $conflict_plugins['lazyload'] : array();
+
 		return array(
-			'plugins'        => array_values( $conflict_plugins ),
-			'pluginsPageUrl' => admin_url( 'plugins.php' ),
+			// Re-index with array_values so the JSON output is an array, not an object.
+			'plugins'         => array_values( array_unique( array_merge( $optimizations_plugins, $lazyload_plugins ) ) ),
+			'lazyloadPlugins' => array_values( $lazyload_plugins ),
+			'pluginsPageUrl'  => admin_url( 'plugins.php' ),
 		);
 	}
 
@@ -527,15 +583,15 @@ class Frontend_Controller extends Controller {
 	protected function get_global_localization() {
 		$data = array(
 			// General AJAX nonce used by most Smush requests.
-			'nonce'          => wp_create_nonce( 'wp-smush-ajax' ),
+			'nonce'   => wp_create_nonce( 'wp-smush-ajax' ),
 			// Dedicated nonce for unified settings sync endpoint (expects 'wp_smush_ajax').
-			'strings'        => array(
-				'stats_label'         => $this->whitelabel->replace_branding_terms( esc_html__( 'Smush', 'wp-smushit' ) ),
+			'strings' => array(
+				'stats_label'          => $this->whitelabel->replace_branding_terms( esc_html__( 'Smush', 'wp-smushit' ) ),
 				'filter_all'           => $this->whitelabel->replace_branding_terms( esc_html__( 'Smush: All images', 'wp-smushit' ) ),
 				'filter_not_processed' => $this->whitelabel->replace_branding_terms( esc_html__( 'Smush: Not processed', 'wp-smushit' ) ),
 				'filter_excl'          => $this->whitelabel->replace_branding_terms( esc_html__( 'Smush: Bulk ignored', 'wp-smushit' ) ),
 				'filter_failed'        => $this->whitelabel->replace_branding_terms( esc_html__( 'Smush: Failed Processing', 'wp-smushit' ) ),
-				'gb'                  => array(
+				'gb'                   => array(
 					'stats'        => $this->whitelabel->replace_branding_terms( esc_html__( 'Smush Stats', 'wp-smushit' ) ),
 					'select_image' => $this->whitelabel->replace_branding_terms( esc_html__( 'Select an image to view Smush stats.', 'wp-smushit' ) ),
 					'size'         => esc_html__( 'Image size', 'wp-smushit' ),
@@ -582,35 +638,34 @@ class Frontend_Controller extends Controller {
 	 */
 	private function get_update_notification_data() {
         $updates          = get_site_transient( 'update_plugins' );
-		$hide_notice      = (bool) get_site_option( 'wp-smush-hide_update_info', false );
-		$can_update_smush = current_user_can( 'update_plugins' );
+        $hide_notice      = (bool)get_site_option( 'wp-smush-hide_update_info', false );
+        $can_update_smush = current_user_can( 'update_plugins' );
+        $has_update       = false;
+        $latest_version   = '';
+        $update_url       = $this->get_plugin_update_url();
+        $changelog_url    = 'https://wpmudev.com/project/wp-smush-pro/#changelog_all';
 
-        $has_update     = false;
-        $latest_version = '';
-		$update_url     = wp_nonce_url(
-			admin_url( 'update.php?action=upgrade-plugin&plugin=' . rawurlencode( WP_SMUSH_BASENAME ) ),
-			'upgrade-plugin_' . WP_SMUSH_BASENAME
-		);
-        $changelog_url  = 'https://wpmudev.com/project/wp-smush-pro/#changelog_all';
+		if ( is_object( $updates ) && isset( $updates->response ) && is_array( $updates->response ) ) {
+			$plugin_update = isset( $updates->response[ WP_SMUSH_BASENAME ] ) ? $updates->response[ WP_SMUSH_BASENAME ] : null;
+			if ( is_object( $plugin_update ) ) {
+				$latest_version = isset( $plugin_update->new_version ) ? (string) $plugin_update->new_version : '';
+				$has_update     = ! empty( $latest_version ) && version_compare( WP_SMUSH_VERSION, $latest_version, '<' );
+			}
+		}
 
-        if ( is_object( $updates ) && isset( $updates->response ) && is_array( $updates->response ) ) {
-            $plugin_update = isset( $updates->response[ WP_SMUSH_BASENAME ] ) ? $updates->response[ WP_SMUSH_BASENAME ] : null;
-            if ( is_object( $plugin_update ) ) {
-                $latest_version = isset( $plugin_update->new_version ) ? (string) $plugin_update->new_version : '';
-                $has_update     = ! empty( $latest_version ) && version_compare( WP_SMUSH_VERSION, $latest_version, '<' );
-            }
-        }
-
-        $release_date = defined( 'WP_SMUSH_RELEASE_DATE' ) ? WP_SMUSH_RELEASE_DATE : '';
+		$release_date_raw = defined( 'WP_SMUSH_RELEASE_DATE' ) ? WP_SMUSH_RELEASE_DATE : '';
+		$timestamp        = strtotime( $release_date_raw );
+		$release_date     = false !== $timestamp
+			? date_i18n( get_option( 'date_format' ), $timestamp )
+			: '';
 
 		$dashboard_active    = class_exists( 'WPMUDEV_Dashboard' );
 		$dashboard_installed = $dashboard_active || file_exists( WP_PLUGIN_DIR . '/wpmudev-updates/update-notifications.php' );
-
 		return array(
 			'hasUpdate'            => $has_update,
 			'currentVersion'       => WP_SMUSH_VERSION,
 			'latestVersion'        => $latest_version,
-			'shouldShow'           => $has_update && ! $hide_notice && $can_update_smush,
+			'shouldShow'           => $has_update && $can_update_smush,
 			'updateUrl'            => $update_url,
 			'changelogUrl'         => $changelog_url,
 			'releaseDate'          => $release_date,
@@ -636,17 +691,21 @@ class Frontend_Controller extends Controller {
 	private function get_active_dashboard_url( $dashboard_installed ) {
 		if ( $dashboard_installed ) {
 			$plugin_basename = 'wpmudev-updates/update-notifications.php';
-			$activate_url    = self_admin_url( 'plugins.php?action=activate&plugin=' . $plugin_basename );
+			$base_url        = is_multisite()
+				? network_admin_url( 'plugins.php?action=activate&plugin=' . $plugin_basename )
+				: admin_url( 'plugins.php?action=activate&plugin=' . $plugin_basename );
 			$action          = 'activate-plugin_' . $plugin_basename;
-			return add_query_arg( '_wpnonce', wp_create_nonce( $action ), $activate_url );
+			return add_query_arg( '_wpnonce', wp_create_nonce( $action ), $base_url );
 		}
 
-		return self_admin_url( 'plugins.php' );
+		return is_multisite() ? network_admin_url( 'plugins.php' ) : admin_url( 'plugins.php' );
 	}
 
 	private function get_install_dashboard_url() {
 		if ( class_exists( 'WPMUDEV_Dashboard_Notice' ) ) {
-			$action_url = self_admin_url( 'update.php?action=install-plugin&plugin=install_wpmudev_dash' );
+			$action_url = is_multisite()
+				? network_admin_url( 'update.php?action=install-plugin&plugin=install_wpmudev_dash' )
+				: admin_url( 'update.php?action=install-plugin&plugin=install_wpmudev_dash' );
 			$action     = 'install-plugin_install_wpmudev_dash';
 			return add_query_arg( '_wpnonce', wp_create_nonce( $action ), $action_url );
 		}
@@ -655,13 +714,13 @@ class Frontend_Controller extends Controller {
 	}
 
 	private function get_s3_notice_data() {
-		$wp_offload_media = new WP_Offload_Media_Api();
+		$wp_offload_media  = new WP_Offload_Media_Api();
 		$wp_offload_active = function_exists( 'as3cf_init' ) || function_exists( 'as3cf_pro_init' );
 		$is_s3_active      = Settings::get_instance()->is_s3_active();
 		$can_interact      = $wp_offload_active
-			&& $wp_offload_media->is_plugin_setup() !== null
-			&& $wp_offload_media->get_plugin_page_url() !== null;
-		$integrations_url = add_query_arg( array( 'view' => 'integrations' ), Helper::get_page_url( self::PAGE_SETTINGS ) );
+		                     && $wp_offload_media->is_plugin_setup() !== null
+		                     && $wp_offload_media->get_plugin_page_url() !== null;
+		$integrations_url  = add_query_arg( array( 'view' => 'integrations' ), Helper::get_page_url( self::PAGE_SETTINGS ) );
 
 		return array(
 			'wpOffloadMediaActive'     => $wp_offload_active,
@@ -792,7 +851,7 @@ class Frontend_Controller extends Controller {
 					// This data is only used for the directory page, so we can keep it here for now.
 					// but if we need to add more data for other pages, we can move it to the global data.
 					'requestsData' => array(
-						'directoryStats'           => array(
+						'directoryStats' => array(
 							'dirList' => $dir_list,
 						),
 					),
@@ -1095,6 +1154,17 @@ class Frontend_Controller extends Controller {
 	/**
 	 * @return string
 	 */
+	private function get_plugin_update_url() {
+		return add_query_arg(
+			array(
+				'action'   => 'upgrade-plugin',
+				'plugin'   => WP_SMUSH_BASENAME,
+				'_wpnonce' => wp_create_nonce( 'upgrade-plugin_' . WP_SMUSH_BASENAME ),
+			),
+			self_admin_url( 'update.php' )
+		);
+	}
+
 	private function get_current_page() {
 		return isset( $_GET['page'] ) ? sanitize_text_field( $_GET['page'] ) : '';
 	}
@@ -1155,9 +1225,9 @@ class Frontend_Controller extends Controller {
 	/**
 	 * Load an admin view.
 	 *
-	 * @param string $name  View name = file name.
-	 * @param array  $args  Arguments.
-	 * @param string $dir   Directory for the views. Default: views.
+	 * @param string $name View name = file name.
+	 * @param array $args Arguments.
+	 * @param string $dir Directory for the views. Default: views.
 	 */
 	private function view( $name, $args = array(), $dir = 'views' ) {
 		$file    = WP_SMUSH_DIR . "app/{$dir}/{$name}.php";
@@ -1207,6 +1277,7 @@ class Frontend_Controller extends Controller {
 
 	/**
 	 * Provide translations for JavaScript files.
+	 *
 	 * @param mixed $translations
 	 * @param mixed $file
 	 * @param mixed $handle
@@ -1217,7 +1288,7 @@ class Frontend_Controller extends Controller {
 			return $translations;
 		}
 
-		static $served      = false;
+		static $served = false;
 		static $cached_json = null;
 
 		if ( $served ) {
@@ -1283,6 +1354,7 @@ class Frontend_Controller extends Controller {
 	 * This only affects display (the plugin file/slug stays the same).
 	 *
 	 * @param array $plugins All plugins.
+	 *
 	 * @return array
 	 */
 	public function maybe_whitelabel_plugin_name_in_plugins_list( $plugins ) {
@@ -1307,7 +1379,7 @@ class Frontend_Controller extends Controller {
 		}
 
 		// Whitelabel the plugin description.
-		$whitelabel_description = $this->whitelabel->replace_branding_terms(
+		$whitelabel_description                      = $this->whitelabel->replace_branding_terms(
 			$this->whitelabel->remove_brand_links( $plugins[ WP_SMUSH_BASENAME ]['Description'] )
 		);
 		$plugins[ WP_SMUSH_BASENAME ]['Description'] = $whitelabel_description;
@@ -1325,7 +1397,7 @@ class Frontend_Controller extends Controller {
 	/**
 	 * Adds action links on plugin page.
 	 *
-	 * @param array $links  Current links.
+	 * @param array $links Current links.
 	 *
 	 * @return array|string
 	 */
@@ -1344,7 +1416,7 @@ class Frontend_Controller extends Controller {
 			$using_free_version = 'wp-smush-pro/wp-smush.php' !== WP_SMUSH_BASENAME;
 			if ( $using_free_version ) {
 				$label = __( 'Upgrade to Smush Pro', 'wp-smushit' );
-				$text = __( 'Get Smush Pro', 'wp-smushit' );
+				$text  = __( 'Get Smush Pro', 'wp-smushit' );
 			} else {
 				$label = __( 'Renew Membership', 'wp-smushit' );
 				$text  = __( 'Renew Membership', 'wp-smushit' );
@@ -1380,8 +1452,8 @@ class Frontend_Controller extends Controller {
 	/**
 	 * Add additional links next to the plugin version.
 	 *
-	 * @param array  $links  Links array.
-	 * @param string $file   Plugin basename.
+	 * @param array $links Links array.
+	 * @param string $file Plugin basename.
 	 *
 	 * @return array
 	 */
@@ -1425,24 +1497,71 @@ class Frontend_Controller extends Controller {
 		return $links;
 	}
 
-    public function print_upgrade_submenu_script() {
+	/**
+	 * Dismiss the plugin conflicts notice.
+	 */
+	public function dismiss_notice() {
+		check_ajax_referer( 'wp-smush-ajax' );
 
-    }
+		// Check capability.
+		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
+		}
 
-    /**
-     * @return void
-     */
-    public function add_upgrade_submenu_page() {
-        add_submenu_page(
-                self::PAGE_DASHBOARD,
-                __( 'Upgrade to Smush Pro', 'wp-smushit' ),
-                sprintf(
-                        '%1$s<span class="smush-admin-menu-upgrade-pro-tag">%2$s</span><span class="smush-admin-menu-upgrade-icon" aria-hidden="true"></span>',
-                        __( 'Upgrade', 'wp-smushit' ),
-                        __( 'Pro', 'wp-smushit' )
-                ),
-                $this->get_permission_level_for_menus(),
-                esc_url( 'https://wpmudev.com/project/wp-smush-pro/?utm_source=smush&utm_medium=plugin&utm_campaign=smush_new-submenu_upsell#dev-pricing' )
-        );
-    }
+		if ( empty( $_REQUEST['key'] ) ) {
+			wp_send_json_error();
+		}
+
+		$this->set_notice_dismissed( sanitize_key( $_REQUEST['key'] ) );
+		wp_send_json_success();
+	}
+
+	private function set_notice_dismissed( $notice ) {
+		$option_id                    = 'wp-smush-dismissed-notices';
+		$dismissed_notices            = get_option( $option_id, array() );
+		$dismissed_notices[ $notice ] = true;
+		update_option( $option_id, $dismissed_notices );
+	}
+
+	/**
+	 * Hide API Message
+	 */
+	public function hide_api_message() {
+		check_ajax_referer( 'wp-smush-ajax' );
+
+		// Check capability.
+		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
+		}
+
+		$api_message = get_site_option( 'wp-smush-api_message', array() );
+		if ( ! empty( $api_message ) && is_array( $api_message ) ) {
+			$api_message[ key( $api_message ) ]['status'] = 'hide';
+			update_site_option( 'wp-smush-api_message', $api_message );
+		}
+
+		wp_send_json_success();
+	}
+
+	public function print_upgrade_submenu_script() {
+
+	}
+
+	/**
+	 * @return void
+	 */
+	public function add_upgrade_submenu_page() {
+		add_submenu_page(
+			self::PAGE_DASHBOARD,
+			__( 'Upgrade to Smush Pro', 'wp-smushit' ),
+			sprintf(
+				'%1$s<span class="smush-admin-menu-upgrade-pro-tag">%2$s</span><span class="smush-admin-menu-upgrade-icon" aria-hidden="true"></span>',
+				__( 'Upgrade', 'wp-smushit' ),
+				__( 'Pro', 'wp-smushit' )
+			),
+			$this->get_permission_level_for_menus(),
+			esc_url( 'https://wpmudev.com/project/wp-smush-pro/?utm_source=smush&utm_medium=plugin&utm_campaign=smush_new-submenu_upsell#dev-pricing' )
+		);
+	}
 }
+

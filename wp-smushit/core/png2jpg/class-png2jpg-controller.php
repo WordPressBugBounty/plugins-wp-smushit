@@ -72,11 +72,7 @@ class Png2Jpg_Controller extends Controller {
 			'add_png2jpg_optimization',
 		), self::$png2jpg_optimization_order, 2 );
 		$this->register_filter( 'wp_smush_global_optimization_stats', array( $this, 'add_png2jpg_global_stats' ) );
-
-		$this->register_action( 'wp_smush_settings_updated', array(
-			$this,
-			'maybe_mark_global_stats_as_outdated',
-		), 10, 2 );
+		$this->register_filter( 'wp_smush_global_stats_digest_keys', array( $this, 'add_digest_keys' ) );
 
 		$this->register_filter( 'wp_smush_scan_library_slice_handle_attachment', array(
 			$this,
@@ -198,12 +194,10 @@ class Png2Jpg_Controller extends Controller {
 		return $stats;
 	}
 
-	public function maybe_mark_global_stats_as_outdated( $old_settings, $settings ) {
-		$png_to_jpg_old = ! empty( $old_settings['png_to_jpg'] );
-		$png_to_jpg_new = ! empty( $settings['png_to_jpg'] );
-		if ( $png_to_jpg_old !== $png_to_jpg_new ) {
-			$this->global_stats->mark_as_outdated();
-		}
+	public function add_digest_keys( $keys ) {
+		$keys[] = 'png_to_jpg';
+
+		return $keys;
 	}
 
 	public function maybe_update_transparent_status_during_scan( $slice_data, $attachment_id ) {

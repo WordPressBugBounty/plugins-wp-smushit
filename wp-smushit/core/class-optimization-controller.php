@@ -41,10 +41,6 @@ class Optimization_Controller extends Controller {
 		$this->optimizer        = Optimizer::get_instance();
 
 		$this->register_action( 'wp_smush_image_sizes_changed', array( $this, 'mark_global_stats_as_outdated' ) );
-		$this->register_action( 'wp_smush_settings_updated', array(
-			$this,
-			'maybe_mark_global_stats_as_outdated',
-		), 10, 2 );
 
 		$this->register_action( 'wp_ajax_optimize_attachment', array( $this, 'optimize_attachment' ) );
 		$this->register_action( 'wp_async_wp_generate_attachment_metadata', array(
@@ -70,15 +66,6 @@ class Optimization_Controller extends Controller {
 
 	public function mark_global_stats_as_outdated() {
 		$this->global_stats->mark_as_outdated();
-	}
-
-	public function maybe_mark_global_stats_as_outdated( $old_settings, $settings ) {
-		$old_original            = ! empty( $old_settings['original'] );
-		$new_original            = ! empty( $settings['original'] );
-		$original_status_changed = $old_original !== $new_original;
-		if ( $original_status_changed ) {
-			$this->mark_global_stats_as_outdated();
-		}
 	}
 
 	public function optimize_attachment() {

@@ -2,7 +2,7 @@
 
 namespace Smush\Core\Bulk;
 
-class Smush_Background_Task implements \Serializable {
+class Smush_Background_Task implements \Serializable, \JsonSerializable {
 	private static $task_type_smush = 'SMUSH';
 	private static $task_type_resmush = 'RESMUSH';
 	private static $task_type_error = 'ERROR';
@@ -121,4 +121,29 @@ class Smush_Background_Task implements \Serializable {
 		return self::$task_type_smush;
 	}
 
+	/**
+	 * @smush-keep-signature
+	 *
+	 * @return mixed
+	 */
+	public function jsonSerialize(): mixed {
+		return $this->__serialize();
+	}
+
+	/**
+	 * Create instance from JSON string or decoded array.
+	 *
+	 * @param string|array $data JSON string or associative array.
+	 *
+	 * @return self
+	 */
+	public static function from_json( $data ) {
+		if ( is_string( $data ) ) {
+			$data = json_decode( $data, true );
+		}
+		$instance = new self( '', 0 );
+		$instance->__unserialize( (array) $data );
+
+		return $instance;
+	}
 }

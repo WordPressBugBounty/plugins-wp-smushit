@@ -14,9 +14,9 @@ namespace Smush\Core\Integrations;
 
 use Smush\Core\CDN\CDN_Helper;
 use Smush\Core\Helper;
-use Smush\Core\Modules\Helpers\Parser;
 use Smush\Core\Modules\Smush;
 use Smush\Core\Optimizer;
+use Smush\Core\Parser\Parser;
 use WP_Smush;
 
 if ( ! defined( 'WPINC' ) ) {
@@ -415,7 +415,8 @@ class Common {
 		 *      images as well which doesn't uses placeholder.
 		 */
 		if ( false !== strpos( $src, 'buddyboss-platform' ) && false !== strpos( $src, 'placeholder.png' ) ) {
-			$new_src = Parser::get_attribute( $image, 'data-src' );
+			$parser  = new Parser();
+			$new_src = $parser->get_element_attribute_value( $image, 'data-src' );
 
 			if ( ! empty( $new_src ) ) {
 				$src = $new_src;

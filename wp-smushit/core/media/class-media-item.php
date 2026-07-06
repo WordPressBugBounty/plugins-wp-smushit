@@ -828,13 +828,13 @@ class Media_Item extends Smush_File {
 			$errors->add(
 				'file_not_found',
 				/* translators: %s: The missing file name */
-				sprintf( esc_html__( 'Skipped (%s), File not found.', 'wp-smushit' ), basename( $original_file ) )
+				sprintf( esc_html__( 'Skipped (%s). File not found.', 'wp-smushit' ), basename( $original_file ) )
 			);
 		} elseif ( ! $this->files_exist() ) {
 			$errors->add(
 				'file_not_found',
 				/* translators: %s: The missing file name */
-				sprintf( esc_html__( 'Skipped (%s), File not found.', 'wp-smushit' ), $this->get_missing_file_name() )
+				sprintf( esc_html__( 'Skipped (%s). File not found.', 'wp-smushit' ), $this->get_missing_file_name() )
 			);
 		}
 
@@ -842,7 +842,7 @@ class Media_Item extends Smush_File {
 			$errors->add(
 				'size_limit',
 				/* translators: 1: Exceeded size limit file name, 2: Image size limit */
-				sprintf( esc_html__( 'Skipped (%1$s), file size limit of %2$s exceeded', 'wp-smushit' ), $this->get_file_name_exceeding_limit(), $this->get_human_size_limit() )
+				sprintf( esc_html__( 'Skipped (%1$s). File size limit of %2$s exceeded', 'wp-smushit' ), $this->get_file_name_exceeding_limit(), $this->get_human_size_limit() )
 			);
 		}
 

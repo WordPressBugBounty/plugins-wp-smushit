@@ -3,13 +3,14 @@
 namespace Smush\Core\Media_Library;
 
 use Smush\Core\Array_Utils;
-use Smush\Core\Background\Mutex;
+use Smush\Core\Bulk\Background_Bulk_Smush_Controller;
 use Smush\Core\Controller;
 use Smush\Core\Helper;
 use Smush\Core\Settings;
+use Smush\Core\Threads\JSON_Record;
 
 class Media_Library_Last_Process extends Controller {
-	private static $process_key = 'wp_smush_media_library_last_process';
+	private static $process_key = 'wp_smush_media_library_last_process_json';
 	private static $start_time = 'start_time';
 	private static $end_time = 'end_time';
 	private static $last_attachment = 'last_attachment';
@@ -20,6 +21,10 @@ class Media_Library_Last_Process extends Controller {
 	 * @var Array_Utils
 	 */
 	private $array_utils;
+	/**
+	 * @var JSON_Record
+	 */
+	private $record;
 
 	/**
 	 * Static instance
@@ -38,6 +43,7 @@ class Media_Library_Last_Process extends Controller {
 
 	public function __construct() {
 		$this->array_utils = new Array_Utils();
+		$this->record      = new JSON_Record( self::$process_key );
 		// Register actions to cache data for displaying stuck notice of background process.
 		$this->register_action( 'wp_smush_bulk_smush_start', array( $this, 'record_process_start_time' ), 5 );
 		$this->register_action( 'wp_smush_before_smush_file', array( $this, 'record_bulk_smush_last_processed_attachment' ), 5 );
@@ -52,6 +58,12 @@ class Media_Library_Last_Process extends Controller {
 
 		$this->register_action( 'wp_smush_after_smush_file', array( $this, 'record_last_processed_attachment_elapsed_time' ), 5 );
 		$this->register_action( 'wp_ajax_bulk_smush_get_status', array( $this, 'check_bulk_smush_process_stuck_on_ajax_get_status' ), 5 );
+
+		// Background Bulk Smush.
+		$this->register_action( 'wp_smush_bulk_smush_dead', array( $this, 'record_process_end_time' ), 5 );
+
+		$bulk_smush_background_process = Background_Bulk_Smush_Controller::get_instance()->get_background_process();
+		$this->register_action( $bulk_smush_background_process->action_name( 'cron' ), array( $this, 'check_bulk_smush_process' ), 5 );
 	}
 
 	public function should_run() {
@@ -216,7 +228,7 @@ class Media_Library_Last_Process extends Controller {
 	}
 
 	private function reset_process_option() {
-		delete_option( self::$process_key );
+		$this->record->delete();
 		wp_cache_delete( self::$process_key, 'options' );
 	}
 
@@ -250,22 +262,13 @@ class Media_Library_Last_Process extends Controller {
 	}
 
 	private function set_process_item( $item, $value ) {
-		( new Mutex( self::$process_key ) )->execute(
-			function () use ( $item, $value ) {
-				$process_option          = $this->get_process_option();
-				$process_option[ $item ] = $value;
-				$this->update_process_option( $process_option );
-			}
-		);
+		$this->record->set_values( array( $item => $value ) );
 	}
 
 	private function get_process_option() {
-		$last_process = get_option( self::$process_key, array() );
+		// JSON_Record::get() queries DB directly (bypasses cache) and json_decodes.
+		$last_process = $this->record->get( array() );
 
 		return $this->array_utils->ensure_array( $last_process );
-	}
-
-	private function update_process_option( $last_process_option ) {
-		update_option( self::$process_key, $last_process_option, false );
 	}
 }

@@ -667,7 +667,9 @@ div.wp-smush-info.notice {
 		min-width: 80px;
 		padding: 5px 14px;
 		letter-spacing: -0.25px;
-		font-size:13px
+		font-size:13px;
+		min-height: 28px;
+		border-radius: 4px;
 	}
 
 	.smush-dismiss-notice-button {

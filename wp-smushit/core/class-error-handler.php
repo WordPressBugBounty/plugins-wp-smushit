@@ -263,13 +263,13 @@ class Error_Handler {
 				'empty_response' => esc_html__( 'Webp no response was received.', 'wp-smushit' ),
 				'not_processed'  => esc_html__( 'Not processed', 'wp-smushit' ),
 				/* translators: %s: image size */
-				'size_limit'     => __( 'Skipped (%s), file size limit of 5mb exceeded', 'wp-smushit' ),
+				'size_limit'     => __( 'Skipped (%s). File size limit of 5MB exceeded.', 'wp-smushit' ),
 				/* translators: %s: image size */
-				'size_pro_limit' => __( 'Skipped (%s), file size limit of 256mb exceeded', 'wp-smushit' ),
+				'size_pro_limit' => __( 'Skipped (%s). File size limit of 256MB exceeded.', 'wp-smushit' ),
 				/* translators: %s: Directory path */
 				'not_writable'   => __( '%s is not writable', 'wp-smushit' ),
 				/* translators: %s: File path */
-				'file_not_found' => __( 'Skipped (%s), File not found.', 'wp-smushit' ),
+				'file_not_found' => __( 'Skipped (%s). File not found.', 'wp-smushit' ),
 			)
 		);
 	}

@@ -131,14 +131,14 @@ class Lazy_Load_Transform implements Transform {
 
 	private function update_iframe_element_attributes_for_lazy_load( $iframe_element ) {
 		$this->remove_native_lazy_loading_attribute( $iframe_element );
-		$this->update_element_attributes_for_lazy_load( $iframe_element, array( 'src' ) );
-		$iframe_element->add_attribute( new Element_Attribute( 'data-load-mode', '1' ) );
+		$this->update_element_attributes_for_lazy_load( $iframe_element, array( 'src' ), 'about:blank' );
+		$iframe_element->add_attribute( new Element_Attribute( 'data-load-mode', '0' ) );
 	}
 
-	private function update_element_attributes_for_lazy_load( $element, $replace_attributes ) {
+	private function update_element_attributes_for_lazy_load( $element, $replace_attributes, $placeholder = null ) {
 		$this->replace_attributes_with_data_attributes( $element, $replace_attributes );
 		// We are adding a new src below, the original src is gone because we replaced it.
-		$element->add_attribute( new Element_Attribute( 'src', self::$temp_src ) );
+		$element->add_attribute( new Element_Attribute( 'src', $placeholder ?? self::$temp_src ) );
 		$this->add_lazy_load_class( $element );
 	}
 

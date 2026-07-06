@@ -77,7 +77,7 @@ class Membership {
 	 * @return bool
 	 */
 	public function has_access_to_hub() {
-		if ( class_exists( 'WPMUDEV_Dashboard' ) && method_exists( 'WPMUDEV_Dashboard_Api', 'get_membership_status' ) ) {
+		if ( Hub_Connector::is_wpmudev_dashboard_connected() && method_exists( \WPMUDEV_Dashboard::$api, 'get_membership_status' ) ) {
 			// Possible values: full, single, free, expired, paused, unit.
 			$plan = \WPMUDEV_Dashboard::$api->get_membership_status();
 		} elseif ( Hub_Connector::has_access() && class_exists( '\WPMUDEV\Hub\Connector\Data' ) ) {

@@ -84,7 +84,7 @@ class Lazy_Load_Video_Embed {
 
 		$this->iframe_element->set_wrapper_markup( $wrapper_before, $wrapper_after );
 		$this->convert_src_to_data_src();
-		$this->iframe_element->add_attribute( new Element_Attribute( 'src', Lazy_Load_Transform::get_temp_src() ) );
+		$this->iframe_element->add_attribute( new Element_Attribute( 'src', 'about:blank' ) );
 	}
 
 	private function generate_video_wrapper_parts() {

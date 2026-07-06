@@ -1,5 +1,5 @@
 @import url(https://fonts.bunny.net/css?family=Roboto:400,500,700);
-/*! tailwindcss v4.3.1 | MIT License | https://tailwindcss.com */
+/*! tailwindcss v4.3.2 | MIT License | https://tailwindcss.com */
 .sui-2-12-23 .sui-wrap .sui-box-selector input,.sui-2-12-23 .sui-wrap .sui-checkbox input,.sui-2-12-23 .sui-wrap .sui-radio input,.sui-2-12-23 .sui-wrap .sui-multi-checkbox label input,.sui-2-12-23 .sui-wrap .sui-screen-reader-text,.sui-2-12-23 .sui-screen-reader-text {
   width: 1px;
   min-width: 1px;
@@ -6282,4 +6282,19 @@ html.sui-has-modal,html.sui-has-overlay {
 }
 .sui-2-12-23 .sui-wrap .sui-box-selector.sui-box-selector-vertical input+span img {
   margin: 0 auto;
+}
+[dir=rtl] .wp-smush-deactivation-survey-modal .sui-box-header .sui-actions-right {
+  margin-left: 0;
+  margin-right: auto;
+}
+[dir=rtl] .wp-smush-deactivation-survey-modal .sui-radio {
+  margin-right: 0px;
+}
+[dir=rtl] .wp-smush-deactivation-survey-modal .sui-radio span:first-of-type {
+  margin-right: 0;
+  margin-left: 10px;
+}
+[dir=rtl] .wp-smush-deactivation-survey-modal .sui-box-footer .sui-actions-right {
+  margin-left: 0;
+  margin-right: auto;
 }

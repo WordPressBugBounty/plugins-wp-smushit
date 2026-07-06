@@ -848,6 +848,7 @@ class Settings {
 		$this->delete_setting( 'wp-smush-resize_sizes' );
 		$this->delete_setting( 'wp-smush-cdn_status' );
 		$this->delete_setting( 'wp-smush-lazy_load' );
+		$this->delete_setting( 'wp-smush-preload' );
 		$this->delete_setting( 'wp-smush-cdn-advanced-settings' );
 		$this->delete_setting( 'wp-smush-hide-tutorials' );
 		$this->delete_setting( self::$dir_settings_option_id );
@@ -922,6 +923,7 @@ class Settings {
 		delete_option( 'wp-smush-resize_sizes' );
 		delete_option( 'wp-smush-cdn_status' );
 		delete_option( 'wp-smush-lazy_load' );
+		delete_option( 'wp-smush-preload' );
 		delete_option( 'wp-smush-cdn-advanced-settings' );
 		delete_option( 'wp-smush-hide-tutorials' );
 		delete_option( 'skip-smush-setup' );

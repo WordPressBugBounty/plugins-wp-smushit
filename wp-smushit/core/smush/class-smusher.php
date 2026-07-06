@@ -6,7 +6,7 @@ use Smush\Core\Array_Utils;
 use Smush\Core\File_System;
 use Smush\Core\Helper;
 use Smush\Core\Product_Analytics\Product_Analytics;
-use Smush\Core\Threads\Thread_Safe_Options;
+use Smush\Core\Threads\JSON_Record;
 use Smush\Core\Timer;
 use Smush\Core\Upload_Dir;
 use Smush_Vendor\GuzzleHttp\Client;
@@ -74,9 +74,9 @@ class Smusher {
 	 */
 	private $product_analytics;
 	/**
-	 * @var Thread_Safe_Options
+	 * @var JSON_Record
 	 */
-	private $thread_safe_options;
+	private $error_counts;
 	/**
 	 * @var int|null
 	 */
@@ -91,7 +91,7 @@ class Smusher {
 		$this->upload_dir          = new Upload_Dir();
 		$this->array_utils         = new Array_Utils();
 		$this->product_analytics   = Product_Analytics::get_instance();
-		$this->thread_safe_options = new Thread_Safe_Options();
+		$this->error_counts        = new JSON_Record( self::$option_id_smush_error_counts );
 
 		$this->smush_parallel    = $options->is_parallel_optimization_enabled();
 		$this->streaming_enabled = $options->is_streaming_enabled();
@@ -267,7 +267,8 @@ class Smusher {
 			/* translators: %s: file path */
 			return new WP_Error(
 				'file_not_found',
-				sprintf( __( 'Skipped (%s), File not found.', 'wp-smushit' ), basename( $file_path ) )
+				/* translators: %s: file path */
+				sprintf( __( 'Skipped (%s). File not found.', 'wp-smushit' ), basename( $file_path ) )
 			);
 		}
 
@@ -276,6 +277,7 @@ class Smusher {
 			/* translators: %s: directory name */
 			return new WP_Error(
 				'not_writable',
+				/* translators: %s: directory name */
 				sprintf( __( '%s is not writable', 'wp-smushit' ), $dir_name )
 			);
 		}
@@ -286,7 +288,8 @@ class Smusher {
 		if ( 0 === (int) $file_size ) {
 			return new WP_Error(
 				'file_not_found',
-				sprintf( __( 'Skipped (%s), File not found.', 'wp-smushit' ), basename( $file_path ) )
+				/* translators: %s: file path */
+				sprintf( __( 'Skipped (%s). File not found.', 'wp-smushit' ), basename( $file_path ) )
 			);
 		}
 
@@ -298,7 +301,8 @@ class Smusher {
 			/* translators: %s: image size */
 			return new WP_Error(
 				$size_limit_code,
-				sprintf( __( 'Skipped (%s), file size limit of 5mb exceeded', 'wp-smushit' ), size_format( $file_size, 1 ) ),
+				/* translators: %s: file path */
+				sprintf( __( 'Skipped (%s). File size limit of 5MB exceeded', 'wp-smushit' ), size_format( $file_size, 1 ) ),
 				array( 'file_name' => basename( $file_path ) )
 			);
 		}
@@ -871,7 +875,7 @@ class Smusher {
 			return;
 		}
 
-		$error_counts    = $this->thread_safe_options->get_site_option( self::$option_id_smush_error_counts, array() );
+		$error_counts    = $this->error_counts->get( array() );
 		$max_occurrences = empty( $error_counts ) ? 0 : max( $error_counts );
 		if ( $max_occurrences < 3 ) {
 			$this->count_error_types();
@@ -982,12 +986,12 @@ class Smusher {
 		}
 
 		if ( ! empty( $increment_keys ) ) {
-			$this->thread_safe_options->increment_values_in_site_option( self::$option_id_smush_error_counts, array_values( $increment_keys ) );
+			$this->error_counts->increment_values( array_values( $increment_keys ) );
 		}
 	}
 
 	public function reset_error_counts() {
-		$this->thread_safe_options->delete_site_option( Smusher::get_smush_error_counts_option_id() );
+		$this->error_counts->delete();
 	}
 
 	/**

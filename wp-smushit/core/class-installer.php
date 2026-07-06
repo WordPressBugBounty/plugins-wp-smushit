@@ -204,6 +204,10 @@ class Installer {
 				self::upgrade_4_0_0();
 			}
 
+			if ( version_compare( $version, '4.2.0', '<' ) ) {
+				self::upgrade_4_2_0();
+			}
+
 			if ( version_compare( $version, '4.0', '<' ) ) {
 				$hide_new_feature_highlight_modal = apply_filters( 'wpmudev_branding_hide_doc_link', false );
 				if ( ! $hide_new_feature_highlight_modal ) {
@@ -354,6 +358,91 @@ class Installer {
 		if ( $changed ) {
 			$settings->set_setting( 'wp-smush-lazy_load', $lazy_options );
 		}
+	}
+
+	/**
+	 * Upgrade to 4.2.0
+	 *
+	 * Migrates options that moved from PHP-serialized arrays / comma-separated
+	 * strings to raw JSON strings so that the new JSON_Record / JSON_Scalar_Array
+	 * classes can read them without a full reset.
+	 *
+	 * @return void
+	 * @since 4.2.0
+	 */
+	private static function upgrade_4_2_0() {
+		// Global_Stats option: PHP-serialized array → JSON object.
+		self::migrate_serialized_option_to_json( 'wp_smush_global_stats', 'wp_smush_global_stats_json' );
+
+		// Attachment_Id_List options: comma-separated string → JSON array.
+		$attachment_id_list_options = array(
+			'wp-smush-optimize-list',
+			'wp-smush-reoptimize-list',
+			'wp-smush-error-items-list',
+			'wp-smush-ignored-items-list',
+			'wp-smush-animated-items-list',
+		);
+		foreach ( $attachment_id_list_options as $option_id ) {
+			self::migrate_comma_separated_option_to_json_array( $option_id, $option_id . '-json' );
+		}
+	}
+
+	/**
+	 * Read an option whose value was written by update_option() as a
+	 * PHP-serialized array and re-save it as a raw JSON string.
+	 *
+	 * @param string $option_id WP option name.
+	 * @param $new_option_id
+	 *
+	 * @return void
+	 */
+	private static function migrate_serialized_option_to_json( $option_id, $new_option_id ) {
+		$value = get_option( $option_id, null );
+		// get_option() calls maybe_unserialize; PHP-serialized array → array.
+		if ( null === $value || ! is_array( $value ) ) {
+			return;
+		}
+		update_option( $new_option_id, wp_json_encode( $value ), false );
+	}
+
+	/**
+	 * Read an option whose value was written as a comma-separated string of
+	 * attachment IDs (e.g. "123,456,789") and re-save it as a JSON array
+	 * (e.g. [123,456,789]) so that JSON_Scalar_Array can read it.
+	 *
+	 * @param string $option_id WP option name.
+	 * @param $new_option_id
+	 *
+	 * @return void
+	 */
+	private static function migrate_comma_separated_option_to_json_array( $option_id, $new_option_id ) {
+		$value = get_option( $option_id, null );
+		if ( null === $value ) {
+			return;
+		}
+
+		// If get_option() already returned an array (e.g. PHP-serialized), encode directly.
+		if ( is_array( $value ) ) {
+			$ids = array_values( array_map( 'intval', $value ) );
+			update_option( $new_option_id, wp_json_encode( $ids ), false );
+			return;
+		}
+
+		$str = (string) $value;
+
+		// Skip if value is already a valid JSON array.
+		if ( '' !== $str && '[' === $str[0] ) {
+			return;
+		}
+
+		if ( '' === trim( $str ) ) {
+			update_option( $new_option_id, '[]', false );
+			return;
+		}
+
+		// Convert "123,456,789" → [123,456,789].
+		$ids = array_values( array_filter( array_map( 'intval', explode( ',', $str ) ) ) );
+		update_option( $new_option_id, wp_json_encode( $ids ), false );
 	}
 
 	/**

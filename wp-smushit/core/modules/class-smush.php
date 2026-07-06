@@ -88,28 +88,6 @@ class Smush extends Abstract_Module {
 		return false;
 	}
 
-	/**
-	 * Remove the Update info.
-	 *
-	 * @param bool $remove_notice  Remove notice.
-	 */
-	public function dismiss_update_info( $remove_notice = false ) {
-		// From URL arg.
-		if ( isset( $_GET['dismiss_smush_update_info'] ) && 1 == $_GET['dismiss_smush_update_info'] ) {
-			$remove_notice = true;
-		}
-
-		// From Ajax.
-		if ( ! empty( $_REQUEST['action'] ) && 'dismiss_update_info' === $_REQUEST['action'] ) {
-			$remove_notice = true;
-		}
-
-		// Update Db.
-		if ( $remove_notice ) {
-			update_site_option( 'wp-smush-hide_update_info', 1 );
-		}
-	}
-
 	public function __call( $method_name, $arguments ) {
 		_deprecated_function( esc_html( $method_name ), '4.1.0' );
 	}

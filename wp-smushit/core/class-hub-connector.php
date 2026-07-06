@@ -94,7 +94,8 @@ class Hub_Connector extends Controller {
 			'is_syncing'                   => self::is_syncing(),
 			// 'is_team_selection'         => false,
 			'has_access'                   => current_user_can( $permission_level ),
-			'is_logged_in'                 => self::is_logged_in(),
+			'is_logged_in'                 => Membership::get_instance()->has_access_to_hub(),
+			'is_free_account_connected'    => self::is_logged_in() && ! self::is_wpmudev_dashboard_connected(),
 			'should_redirect_to_dashboard' => self::should_redirect_to_dashboard(),
 			// Not being used for literal output / DB insert.
 			// phpcs:disable WordPress.Security.NonceVerification.Recommended
@@ -410,7 +411,6 @@ class Hub_Connector extends Controller {
 		$dashboard_api = WPMUDEV_Dashboard::$api ?? null;
 
 		return is_object( $dashboard_api ) &&
-				method_exists( $dashboard_api, 'get_membership_status' ) &&
 				method_exists( $dashboard_api, 'has_key' ) &&
 				$dashboard_api->has_key();
 	}
@@ -607,10 +607,10 @@ class Hub_Connector extends Controller {
 	}
 
 	/**
-	 * Renders the Hub Connector actions. dddddd
+	 * Renders the Hub Connector actions.
 	 */
 	public function render_hub_connector_actions() {
-		$is_site_connected          = self::is_logged_in();
+        $is_site_connected          = self::is_logged_in();
 		$is_required_api_hub_access = Membership::get_instance()->is_api_hub_access_required();
 		if ( ! $is_site_connected && ! $is_required_api_hub_access ) {
 			return;
@@ -924,7 +924,7 @@ class Hub_Connector extends Controller {
 						$error = sprintf(
 						// translators: %1$s Account detail URL, %2$s Reset URL.
 							__(
-								'Due to security improvements, you will need to re-link your Google account in the Hub. Please log in with your WPMU DEV email & password for now, then set up your preferred <strong>Login Method</strong> in <a href="%1$s" target="_blank">your WPMU DEV account</a>. Forgot your password? You can <a href="%2$s" target="_blank"><strong>reset it here</strong></a>.',
+								'Due to security improvements, you will need to re-link your Google account in The Hub. Please log in with your WPMU DEV email & password for now, then set up your preferred <strong>Login Method</strong> in <a href="%1$s" target="_blank">your WPMU DEV account</a>. Forgot your password? You can <a href="%2$s" target="_blank"><strong>reset it here</strong></a>.',
 								'wp-smushit'
 							),
 							$account_details_url,
@@ -986,7 +986,7 @@ class Hub_Connector extends Controller {
 						$error = sprintf(
 						// translators: %1$s Hub Account URL, %2$s: Switch to Free URL.
 							__(
-								'Login failed — your WPMU DEV membership has expired. Renew now to regain full access, or switch to our free plan to continue managing all your site in the Hub.<br/><br/><a class="sui-button sui-button-blue" href="%1$s" target="_blank">Renew Membership</a>&nbsp;<a class="sui-button sui-button-ghost" href="%2$s" target="_blank">Switch to Free</a>',
+								'Login failed — your WPMU DEV membership has expired. Renew now to regain full access, or switch to our free plan to continue managing all your site in The Hub.<br/><br/><a class="sui-button sui-button-blue" href="%1$s" target="_blank">Renew Membership</a>&nbsp;<a class="sui-button sui-button-ghost" href="%2$s" target="_blank">Switch to Free</a>',
 								'wp-smushit'
 							),
 							\WPMUDEV\Hub\Connector\Data::get()->server_url( 'hub2/account/ ' ),
@@ -1040,26 +1040,25 @@ class Hub_Connector extends Controller {
 	 * @return WP_Error|array
 	 */
 	private function get_profile_data() {
-		if (
-			( ! self::is_logged_in() && ! Membership::get_instance()->is_pro() ) ||
-			! class_exists( '\WPMUDEV\Hub\Connector\Data' )
-		) {
-			return new WP_Error(
-				'not_logged_in',
-				__( 'Authentication required. Please log in.', 'wp-smushit' )
-			);
+		// Hub Connector connected — use its profile data.
+		if ( self::is_logged_in() && class_exists( '\WPMUDEV\Hub\Connector\Data' ) ) {
+			$membership_data = Data::get()->profile_data( true );
+			if ( is_array( $membership_data ) && ! empty( $membership_data['user_name'] ) ) {
+				return $membership_data;
+			}
 		}
 
-		// Get membership data.
-		$membership_data = Data::get()->profile_data( true );
-
-		if ( ! is_array( $membership_data ) || empty( $membership_data['user_name'] ) ) {
-			return new WP_Error(
-				'invalid_profile_data',
-				__( 'Unable to retrieve valid profile data.', 'wp-smushit' )
-			);
+		// Dashboard connected — use Dashboard profile.
+		if ( self::is_wpmudev_dashboard_connected() && method_exists( WPMUDEV_Dashboard::$api, 'get_profile' ) ) {
+			$profile = WPMUDEV_Dashboard::$api->get_profile();
+			if ( ! empty( $profile['profile'] ) && is_array( $profile['profile'] ) ) {
+				return $profile['profile'];
+			}
 		}
 
-		return $membership_data;
+		return new WP_Error(
+			'not_logged_in',
+			__( 'Authentication required. Please log in.', 'wp-smushit' )
+		);
 	}
 }

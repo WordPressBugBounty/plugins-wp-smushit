@@ -1,4 +1,5 @@
 /* global ajaxurl */
+import { getResetNonce } from '../../smush-ui/core-ui/utils/smushData';
 
 /**
  * Wrapper function for ajax calls to WordPress.
@@ -81,6 +82,13 @@ function SmushFetcher() {
 			},
 
 			/**
+			 * Reset background process status.
+			 */
+			resetStatus: () => {
+				return request( 'bulk_smush_reset_status' );
+			},
+
+			/**
 			 * Initial State - Get stats on the first time.
 			 */
 			initState: () => {
@@ -94,10 +102,6 @@ function SmushFetcher() {
 				return request( 'bulk_smush_get_status' );
 			},
 
-			getStats: () => {
-				return request( 'bulk_smush_get_global_stats' );
-			},
-
 			backgroundHealthyCheck: () => {
 				return request( 'smush_start_background_pre_flight_check' );
 			},
@@ -107,16 +111,6 @@ function SmushFetcher() {
 			}
 		},
 		smush: {
-			/**
-			 * Sync stats.
-			 *
-			 * @param  data
-			 */
-			syncStats: ( data ) => {
-				data = data || {};
-				return request( 'get_stats', data );
-			},
-
 			/**
 			 * Ignore All.
 			 *
@@ -197,10 +191,6 @@ function SmushFetcher() {
 				} );
 			},
 
-			remindReviewPrompt: () => {
-				return request( 'wp_smush_review_prompts_remind_later' );
-			},
-
 			/**
 			 * Hide the new features modal.
 			 *
@@ -248,6 +238,13 @@ function SmushFetcher() {
 					_ajax_nonce,
 				} );
 			},
+
+			resetStatus: () => {
+				const _ajax_nonce = window.smushUIData.scanStatus.nonce;
+				return request( 'wp_smush_reset_background_scan_status', {
+					_ajax_nonce,
+				} );
+			}
 		},
 
 		webp: {
@@ -300,6 +297,17 @@ function SmushFetcher() {
 			 */
 			checkApiStatus: () => {
 				return request( 'recheck_api_status' );
+			},
+
+			/**
+			 * Reset all plugin settings to factory defaults.
+			 *
+			 * @return {Promise}
+			 */
+			resetSettings: () => {
+				return request( 'reset_settings', {
+					_ajax_nonce: getResetNonce(),
+				} );
 			},
 		},
 

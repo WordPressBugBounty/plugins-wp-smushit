@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Smush Pro 4.1.2\n"
+"Project-Id-Version: Smush Pro 4.2.0\n"
 "Report-Msgid-Bugs-To: https://wpmudev.com\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-06-22T13:26:57+00:00\n"
+"POT-Creation-Date: 2026-07-02T16:33:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wp-smushit\n"
@@ -17,7 +17,7 @@ msgstr ""
 #. Plugin Name of the plugin
 #: wp-smush.php
 #: core/bulk/class-mail.php:64
-#: core/frontend/class-frontend-controller.php:261
+#: core/frontend/class-frontend-controller.php:311
 #: _src/smush-ui/pages/settings/components/general/SmushInfoCard.jsx:8
 msgid "Smush Pro"
 msgstr ""
@@ -43,110 +43,48 @@ msgstr ""
 msgid "https://wpmudev.com/"
 msgstr ""
 
-#: app/class-admin.php:159
-#: app/views/deactivation-survey.php:33
-#: core/bulk/class-mail.php:64
-#: core/class-configs.php:128
-#: core/class-installer.php:333
-#: core/frontend/class-frontend-controller.php:261
-#: core/frontend/class-frontend-controller.php:265
-#: core/frontend/class-frontend-controller.php:268
-#: core/frontend/class-frontend-controller.php:533
-#: core/media-library/class-media-library-row.php:725
-#: core/smush/class-smush-optimization.php:102
-#: wp-smush.php:515
-#: _src/smush-ui/layout/PageHeader.jsx:47
-#: _src/smush-ui/pages/settings/components/general/SmushInfoCard.jsx:8
-msgid "Smush"
-msgstr ""
-
-#: app/class-admin.php:160
-#: app/class-media-library.php:504
-#: core/frontend/class-frontend-controller.php:534
-msgid "Smush: All images"
-msgstr ""
-
-#: app/class-admin.php:161
-#: app/class-media-library.php:505
-#: core/frontend/class-frontend-controller.php:535
-msgid "Smush: Not processed"
-msgstr ""
-
-#: app/class-admin.php:162
-#: app/class-media-library.php:506
-#: core/frontend/class-frontend-controller.php:536
-msgid "Smush: Bulk ignored"
-msgstr ""
-
-#: app/class-admin.php:163
-#: app/class-media-library.php:507
-#: core/frontend/class-frontend-controller.php:537
-msgid "Smush: Failed Processing"
-msgstr ""
-
-#: app/class-admin.php:165
-#: core/frontend/class-frontend-controller.php:539
-msgid "Smush Stats"
-msgstr ""
-
-#: app/class-admin.php:166
-#: core/frontend/class-frontend-controller.php:540
-msgid "Select an image to view Smush stats."
-msgstr ""
-
-#: app/class-admin.php:167
-#: core/frontend/class-frontend-controller.php:541
-#: core/media-library/class-media-library-row.php:666
-msgid "Image size"
-msgstr ""
-
-#: app/class-admin.php:168
-#: core/frontend/class-frontend-controller.php:542
-msgid "Savings"
-msgstr ""
-
-#: app/class-admin.php:242
+#: app/class-admin.php:145
 msgid "Plugin: Smush"
 msgstr ""
 
-#: app/class-admin.php:244
+#: app/class-admin.php:147
 msgid "Note: Smush does not interact with end users on your website. The only input option Smush has is to a newsletter subscription for site admins only. If you would like to notify your users of this in your privacy policy, you can use the information below."
 msgstr ""
 
-#: app/class-admin.php:246
+#: app/class-admin.php:149
 msgid "Smush sends images to the WPMU DEV servers to optimize them for web use. This includes the transfer of EXIF data. The EXIF data will either be stripped or returned as it is. It is not stored on the WPMU DEV servers."
 msgstr ""
 
 #. translators: %1$s - opening <a>, %2$s - closing </a>
-#: app/class-admin.php:249
+#: app/class-admin.php:152
 #, php-format
 msgid "Smush uses the Stackpath Content Delivery Network (CDN). Stackpath may store web log information of site visitors, including IPs, UA, referrer, Location and ISP info of site visitors for 7 days. Files and images served by the CDN may be stored and served from countries other than your own. Stackpath's privacy policy can be found %1$shere%2$s."
 msgstr ""
 
-#: app/class-admin.php:257
+#: app/class-admin.php:160
 msgid "Smush uses a third-party email service (Drip) to send informational emails to the site administrator. The administrator's email address is sent to Drip and a cookie is set by the service. Only administrator information is collected by Drip."
 msgstr ""
 
-#: app/class-admin.php:261
+#: app/class-admin.php:164
 msgid "WP Smush"
 msgstr ""
 
-#: app/class-admin.php:354
-#: _src/smush-ui/layout/GlobalNotices/PluginConflictNotice.jsx:24
+#: app/class-admin.php:281
+#: _src/smush-ui/layout/GlobalNotices/PluginConflictNotice.jsx:26
 msgid "You have multiple image optimization plugins installed that could conflict with Smush and cause issues. For best results, we recommend deactivating the following plugin(s):"
 msgstr ""
 
-#: app/class-admin.php:360
-#: _src/smush-ui/layout/GlobalNotices/PluginConflictNotice.jsx:56
+#: app/class-admin.php:287
+#: _src/smush-ui/layout/GlobalNotices/PluginConflictNotice.jsx:58
 msgid "Manage Plugins"
 msgstr ""
 
-#: app/class-admin.php:366
-#: app/class-admin.php:528
-#: app/class-admin.php:572
+#: app/class-admin.php:293
+#: app/class-admin.php:411
+#: app/class-admin.php:455
 #: core/cache/class-cache-controller.php:67
-#: core/class-core.php:304
-#: _src/smush-ui/layout/GlobalNotices/PluginConflictNotice.jsx:47
+#: core/class-core.php:289
+#: _src/smush-ui/layout/GlobalNotices/PluginConflictNotice.jsx:49
 #: _src/smush-ui/pages/settings/components/integrations/S3SupportNotice.jsx:101
 #: _src/smush-ui/pages/settings/components/integrations/S3SupportNotice.jsx:140
 #: _src/smush-ui/pages/settings/components/integrations/S3SupportNotice.jsx:170
@@ -154,7 +92,7 @@ msgid "Dismiss"
 msgstr ""
 
 #. translators: 1. opening strong tag, 2: unsmushed images count,3. closing strong tag.
-#: app/class-admin.php:387
+#: app/class-admin.php:314
 #, php-format
 msgid "%1$s%2$d attachment%3$s that needs smushing"
 msgid_plural "%1$s%2$d attachments%3$s that need smushing"
@@ -162,7 +100,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1. opening strong tag, 2: re-smush images count,3. closing strong tag.
-#: app/class-admin.php:398
+#: app/class-admin.php:325
 #, php-format
 msgid "%1$s%2$d attachment%3$s that needs re-smushing"
 msgid_plural "%1$s%2$d attachments%3$s that need re-smushing"
@@ -170,220 +108,190 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1. username, 2. unsmushed images message, 3. 'and' text for when having both unsmushed and re-smush images, 4. re-smush images message.
-#: app/class-admin.php:407
+#: app/class-admin.php:334
 #, php-format
 msgid "%1$s, you have %2$s%3$s%4$s!"
 msgstr ""
 
-#: app/class-admin.php:410
+#: app/class-admin.php:337
 msgid " and "
 msgstr ""
 
-#: app/class-admin.php:449
-#: core/cli/class-cli.php:316
-msgid "Yay! All images are optimized as per your current settings."
-msgstr ""
-
-#. translators: %1$d - number of images, %2$s - opening a tag, %3$s - closing a tag
-#: app/class-admin.php:455
-#, php-format
-msgid "Image check complete, you have %1$d images that need smushing. %2$sBulk smush now!%3$s"
-msgstr ""
-
 #. translators: %s: <strong>curl_multi_exec()</strong>
-#: app/class-admin.php:511
+#: app/class-admin.php:394
 #, php-format
 msgid "Smush was unable to activate parallel processing on your site as your web hosting provider has disabled the %s function on your server. We highly recommend contacting your hosting provider to enable that function to optimize images on your site faster."
 msgstr ""
 
-#: app/class-admin.php:521
+#: app/class-admin.php:404
 msgid "Smush images faster with parallel image optimization"
 msgstr ""
 
 #. translators: 1: Current MYSQL version, 2: Required MYSQL version
-#: app/class-admin.php:555
+#: app/class-admin.php:438
 #, php-format
 msgid "Smush was unable to activate background processing on your site as your web hosting provider is using an old version of MySQL on your server (version %1$s). We highly recommend contacting your hosting provider to upgrade MySQL to version %2$s or higher to optimize images in the background."
 msgstr ""
 
-#: app/class-admin.php:565
+#: app/class-admin.php:448
 msgid "Smush images in the background"
 msgstr ""
 
 #. translators: 1: Open a link, 2: Close the link
-#: app/class-admin.php:593
+#: app/class-admin.php:476
 #, php-format
 msgid "If you wish to also convert your original uploaded images to .%1$s format, please enable the %2$sOptimize original images%3$s setting below."
 msgstr ""
 
-#: app/class-admin.php:634
-#: app/class-admin.php:672
-#: app/class-admin.php:715
+#: app/class-admin.php:517
+#: app/class-admin.php:555
+#: app/class-admin.php:598
 msgid "Smush review prompts icon"
 msgstr ""
 
 #. translators: %d: optimized images count
-#: app/class-admin.php:641
+#: app/class-admin.php:524
 #, php-format
 msgid "You’ve optimized %d images! 🎉"
 msgstr ""
 
-#: app/class-admin.php:644
+#: app/class-admin.php:527
 msgid "Seeing faster speeds? We’d really appreciate a quick review. It keeps us growing and helps more WordPress users discover Smush."
 msgstr ""
 
-#: app/class-admin.php:647
-#: app/class-admin.php:690
-#: app/class-admin.php:723
-#: core/frontend/class-frontend-controller.php:1394
+#: app/class-admin.php:530
+#: app/class-admin.php:573
+#: app/class-admin.php:606
+#: core/frontend/class-frontend-controller.php:1466
 #: _src/smush-ui/pages/dashboard/components/RatingNotification/RatingNotification.jsx:106
 msgid "Rate Smush"
 msgstr ""
 
-#: app/class-admin.php:648
-#: app/class-admin.php:691
-#: app/class-admin.php:724
+#: app/class-admin.php:531
+#: app/class-admin.php:574
+#: app/class-admin.php:607
 #: _src/smush-ui/pages/dashboard/components/RatingNotification/RatingNotification.jsx:115
 msgid "Remind me later"
 msgstr ""
 
-#: app/class-admin.php:649
-#: app/class-admin.php:692
-#: app/class-admin.php:725
+#: app/class-admin.php:532
+#: app/class-admin.php:575
+#: app/class-admin.php:608
 msgid "I already did"
 msgstr ""
 
-#: app/class-admin.php:676
+#: app/class-admin.php:559
 msgid "100% of your images are now optimized! 🎉"
 msgstr ""
 
 #. translators: 1: <br>, 2: Open the link <a>, 3: Close the link </a>
-#: app/class-admin.php:681
+#: app/class-admin.php:564
 #, php-format
 msgid "Your site’s faster and lighter than ever. Plus, Smush will keep every new image optimized, free for life. %1$sHappy with the results? Share the love with a 5-star review on %2$sWordPress.org%3$s."
 msgstr ""
 
-#: app/class-admin.php:719
+#: app/class-admin.php:602
 msgid "Thanks for choosing Smush! 💙"
 msgstr ""
 
-#: app/class-admin.php:720
+#: app/class-admin.php:603
 msgid "If your site’s feeling faster, we’d be so grateful for a quick 5-star review. It really helps us out!"
-msgstr ""
-
-#: app/class-ajax.php:132
-#: app/class-ajax.php:145
-#: app/class-ajax.php:160
-#: app/class-ajax.php:221
-#: app/class-ajax.php:285
-#: app/class-ajax.php:302
-#: app/class-ajax.php:314
-#: app/class-ajax.php:329
-#: app/class-ajax.php:348
-#: app/class-ajax.php:364
-#: app/class-ajax.php:425
-#: app/class-ajax.php:453
-#: app/class-ajax.php:534
-#: app/class-ajax.php:660
-#: app/class-media-library.php:739
-#: core/backups/class-backups-controller.php:147
-#: core/backups/class-backups-controller.php:187
-#: core/bulk/class-background-bulk-smush-controller.php:181
-#: core/cache/class-cache-controller.php:45
-#: core/class-hub-connector.php:655
-#: core/class-hub-connector.php:692
-#: core/class-settings.php:837
-#: core/frontend/class-frontend-controller.php:1201
-#: core/membership/class-membership-controller.php:23
-#: core/modules/class-dir.php:195
-#: core/modules/class-dir.php:212
-#: core/modules/class-dir.php:237
-#: core/modules/class-dir.php:268
-#: core/modules/class-dir.php:540
-#: core/modules/class-dir.php:551
-#: core/modules/class-dir.php:560
-#: core/modules/class-dir.php:567
-#: core/modules/class-dir.php:823
-#: core/modules/class-dir.php:940
-#: core/rating-notification/class-rating-notification-controller.php:28
-#: core/rating-notification/class-rating-notification-controller.php:48
-#: core/rating-notification/class-rating-notification-controller.php:67
-#: core/rating-notification/class-rating-notification-controller.php:86
-msgid "Unauthorized"
-msgstr ""
-
-#: app/class-ajax.php:400
-#: core/avif/class-avif-controller.php:180
-#: core/bulk/class-ajax-bulk-smush-controller.php:47
-#: core/class-settings.php:944
-#: core/media/class-media-item-controller.php:80
-#: core/webp/class-webp-controller.php:197
-msgid "You don't have permission to do this."
-msgstr ""
-
-#: app/class-ajax.php:502
-#: core/cdn/class-cdn-controller.php:155
-#: core/webp/class-webp-controller.php:178
-msgid "User can not modify options"
-msgstr ""
-
-#: app/class-ajax.php:622
-msgid "Missing config ID"
 msgstr ""
 
 #: app/class-media-library.php:111
 msgid "Smush restore"
 msgstr ""
 
-#: app/class-media-library.php:216
+#. translators: 1: opening strong tag, 2: restored count, 3: total count, 4: closing strong tag
+#: app/class-media-library.php:218
 #, php-format
-msgid "%1$s%2$d/%3$d images were restored successfully%4$s. %5$d couldn't be restored as no backup exists, and %6$d due to a backup copy error. Ensure %7$sBackup original images%8$s is enabled to keep copies of your originals."
-msgstr ""
-
-#: app/class-media-library.php:232
-#, php-format
-msgid "%1$s%2$d/%3$d images were restored successfully%4$s. %5$d couldn't be restored as no backup exists. Ensure %6$sBackup original images%7$s is enabled to keep copies of your originals."
-msgstr ""
-
-#: app/class-media-library.php:247
-#, php-format
-msgid "%1$s%2$d/%3$d images were restored successfully%4$s. %5$d couldn't be restored due to a backup copy error. Ensure %6$sBackup original images%7$s is enabled to keep copies of your originals."
-msgstr ""
+msgid "%1$s%2$d/%3$d image was restored successfully%4$s."
+msgid_plural "%1$s%2$d/%3$d images were restored successfully%4$s."
+msgstr[0] ""
+msgstr[1] ""
 
 #. translators: %1$d: restored count, %2$d: total count
-#: app/class-media-library.php:262
+#: app/class-media-library.php:234
 #, php-format
 msgid "All selected images were restored successfully (%1$d/%2$d)."
 msgstr ""
 
-#: app/class-media-library.php:501
+#. translators: 1: link start tag, 2: link end tag
+#: app/class-media-library.php:242
+#, php-format
+msgid "Ensure %1$sBackup original images%2$s is enabled to keep copies of your originals."
+msgstr ""
+
+#. translators: %d: number of images
+#: app/class-media-library.php:252
+#, php-format
+msgid "%d image couldn't be restored as no backup exists"
+msgid_plural "%d images couldn't be restored as no backup exists"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: %d: number of images
+#: app/class-media-library.php:267
+#, php-format
+msgid "%d image couldn't be restored due to a backup copy error"
+msgid_plural "%d images couldn't be restored due to a backup copy error"
+msgstr[0] ""
+msgstr[1] ""
+
+#. translators: 1: first failure clause, 2: second failure clause
+#: app/class-media-library.php:281
+#, php-format
+msgid "%1$s, and %2$s."
+msgstr ""
+
+#: app/class-media-library.php:527
 msgid "Filter by Smush status"
 msgstr ""
 
-#: app/class-media-library.php:563
-#: app/class-media-library.php:565
-#: core/class-core.php:279
+#: app/class-media-library.php:530
+#: core/frontend/class-frontend-controller.php:590
+msgid "Smush: All images"
+msgstr ""
+
+#: app/class-media-library.php:531
+#: core/frontend/class-frontend-controller.php:591
+msgid "Smush: Not processed"
+msgstr ""
+
+#: app/class-media-library.php:532
+#: core/frontend/class-frontend-controller.php:592
+msgid "Smush: Bulk ignored"
+msgstr ""
+
+#: app/class-media-library.php:533
+#: core/frontend/class-frontend-controller.php:593
+msgid "Smush: Failed Processing"
+msgstr ""
+
+#: app/class-media-library.php:589
+#: app/class-media-library.php:591
+#: core/class-core.php:277
 msgid "Smushing..."
 msgstr ""
 
-#: app/class-media-library.php:563
-#: app/class-media-library.php:565
+#: app/class-media-library.php:589
+#: app/class-media-library.php:591
 msgid "Optimizing..."
 msgstr ""
 
-#: app/class-media-library.php:564
-#: core/class-core.php:278
+#: app/class-media-library.php:590
+#: core/class-core.php:276
 msgid "Restoring image..."
 msgstr ""
 
-#: app/class-media-library.php:566
-#: core/class-core.php:301
+#: app/class-media-library.php:592
+#: core/class-core.php:286
 msgid "Ignored"
 msgstr ""
 
-#: app/class-media-library.php:567
-#: app/class-media-library.php:808
-#: core/class-core.php:302
+#: app/class-media-library.php:593
+#: app/class-media-library.php:834
+#: core/class-core.php:287
 #: core/class-error-handler.php:264
 #: core/class-rest.php:82
 #: core/media-library/class-media-library-row.php:102
@@ -391,58 +299,107 @@ msgstr ""
 msgid "Not processed"
 msgstr ""
 
-#: app/class-media-library.php:631
+#: app/class-media-library.php:657
 msgid "Smushing in progress..."
 msgstr ""
 
-#: app/class-media-library.php:632
+#: app/class-media-library.php:658
 msgid "Smush Now!"
 msgstr ""
 
-#: app/class-media-library.php:663
+#: app/class-media-library.php:689
 msgid "Unlock 2X Smush instantly!"
 msgstr ""
 
 #. translators: %s - strong tags
-#: app/class-media-library.php:668
+#: app/class-media-library.php:694
 #, php-format
 msgid "Connect your site to WPMU DEV for %1$sfree%2$s and start Smushing with Super 2X—takes just a few seconds, no credit card or API key needed."
 msgstr ""
 
-#: app/class-media-library.php:676
+#: app/class-media-library.php:702
 msgid "Connect my site"
 msgstr ""
 
-#: app/class-media-library.php:678
+#: app/class-media-library.php:704
 msgid "I'm happy with 1X Smush"
 msgstr ""
 
+#: app/class-media-library.php:765
+#: core/backups/class-backups-controller.php:147
+#: core/backups/class-backups-controller.php:187
+#: core/bulk/class-background-bulk-smush-controller.php:185
+#: core/cache/class-cache-controller.php:45
+#: core/class-hub-connector.php:655
+#: core/class-hub-connector.php:692
+#: core/class-settings.php:837
+#: core/frontend/class-frontend-controller.php:111
+#: core/frontend/class-frontend-controller.php:124
+#: core/frontend/class-frontend-controller.php:1271
+#: core/frontend/class-frontend-controller.php:1508
+#: core/frontend/class-frontend-controller.php:1534
+#: core/membership/class-membership-controller.php:23
+#: core/modules/class-dir.php:201
+#: core/modules/class-dir.php:218
+#: core/modules/class-dir.php:243
+#: core/modules/class-dir.php:274
+#: core/modules/class-dir.php:546
+#: core/modules/class-dir.php:557
+#: core/modules/class-dir.php:566
+#: core/modules/class-dir.php:573
+#: core/modules/class-dir.php:829
+#: core/modules/class-dir.php:946
+#: core/modules/class-dir.php:1385
+#: core/rating-notification/class-rating-notification-controller.php:28
+#: core/rating-notification/class-rating-notification-controller.php:48
+#: core/rating-notification/class-rating-notification-controller.php:67
+#: core/rating-notification/class-rating-notification-controller.php:86
+#: core/s3/class-s3-controller.php:557
+msgid "Unauthorized"
+msgstr ""
+
 #. translators: %s: number of thumbnails
-#: app/class-media-library.php:761
+#: app/class-media-library.php:787
 #, php-format
 msgid "When you upload an image to WordPress it automatically creates %s thumbnail sizes that are commonly used in your pages. WordPress also stores the original full-size image, but because these are not usually embedded on your site we don’t Smush them. Pro users can override this."
 msgstr ""
 
-#: app/class-media-library.php:767
+#: app/class-media-library.php:793
 msgid "Image couldn't be smushed as it exceeded the 5Mb size limit, Pro users can smush images without any size restriction."
 msgstr ""
 
-#: app/class-media-library.php:774
+#: app/class-media-library.php:800
 msgid "PRO"
 msgstr ""
 
-#: app/class-media-library.php:808
+#: app/class-media-library.php:834
 msgid "Image not found!"
 msgstr ""
 
-#: app/class-media-library.php:824
+#: app/class-media-library.php:850
 msgid "Show in bulk optimization"
 msgstr ""
 
-#: app/class-media-library.php:826
-#: core/class-core.php:280
+#: app/class-media-library.php:852
+#: core/class-core.php:278
 #: core/media-library/class-media-library-row.php:217
 msgid "Ignore"
+msgstr ""
+
+#: app/views/deactivation-survey.php:33
+#: core/bulk/class-mail.php:64
+#: core/class-configs.php:128
+#: core/class-installer.php:337
+#: core/frontend/class-frontend-controller.php:311
+#: core/frontend/class-frontend-controller.php:315
+#: core/frontend/class-frontend-controller.php:318
+#: core/frontend/class-frontend-controller.php:589
+#: core/media-library/class-media-library-row.php:725
+#: core/smush/class-smush-optimization.php:102
+#: wp-smush.php:518
+#: _src/smush-ui/layout/PageHeader.jsx:47
+#: _src/smush-ui/pages/settings/components/general/SmushInfoCard.jsx:8
+msgid "Smush"
 msgstr ""
 
 #: app/views/deactivation-survey.php:34
@@ -450,7 +407,6 @@ msgid "Deactivate Smush?"
 msgstr ""
 
 #: app/views/deactivation-survey.php:39
-#: _src/react/modules/configs.jsx:36
 msgid "Close this dialog window"
 msgstr ""
 
@@ -566,7 +522,7 @@ msgid "Includes better GIF performance"
 msgstr ""
 
 #: app/views/email/upsell-cdn.php:60
-#: core/frontend/class-frontend-controller.php:1347
+#: core/frontend/class-frontend-controller.php:1419
 msgid "Get Smush Pro"
 msgstr ""
 
@@ -594,19 +550,19 @@ msgstr ""
 #: core/avif/class-avif-optimization.php:77
 #: core/class-configs-pro.php:123
 #: core/class-configs.php:745
-#: core/class-settings.php:1403
+#: core/class-settings.php:1405
 #: _src/smush-ui/pages/cdn/components/FormatOptions.jsx:13
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:31
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:22
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:189
 msgid "AVIF"
 msgstr ""
 
-#: core/avif/class-avif-controller.php:205
+#: core/avif/class-avif-controller.php:182
 msgid "This user can not delete all AVIF images."
 msgstr ""
 
 #. translators: %s: Cron interval in minutes
-#: core/background/class-background-process.php:359
+#: core/background/class-background-process.php:334
 #, php-format
 msgid "Every %d Minutes"
 msgstr ""
@@ -620,7 +576,7 @@ msgid "Image not restored, nonce verification failed."
 msgstr ""
 
 #: core/backups/class-backups-controller.php:65
-#: core/class-optimization-controller.php:99
+#: core/class-optimization-controller.php:86
 #: core/media/class-media-item-controller.php:29
 #: core/media/class-media-item-controller.php:56
 msgid "You don't have permission to work with uploaded files."
@@ -640,23 +596,33 @@ msgstr ""
 msgid "Error getting file name"
 msgstr ""
 
-#: core/bulk/class-background-bulk-smush-controller.php:101
-#: core/class-optimization-controller.php:105
+#: core/bulk/class-ajax-bulk-smush-controller.php:47
+#: core/class-settings.php:946
+#: core/media/class-media-item-controller.php:80
+msgid "You don't have permission to do this."
+msgstr ""
+
+#: core/bulk/class-background-bulk-smush-controller.php:105
+#: core/class-optimization-controller.php:92
 msgid "A WPMU DEV Hub connection is required to optimize images."
 msgstr ""
 
-#: core/bulk/class-background-bulk-smush-controller.php:343
+#: core/bulk/class-background-bulk-smush-controller.php:114
+msgid "You need to run a scan before bulk Smush can be started."
+msgstr ""
+
+#: core/bulk/class-background-bulk-smush-controller.php:347
 msgid "Enable the email notification"
 msgstr ""
 
 #. translators: %s: a link
-#: core/bulk/class-background-bulk-smush-controller.php:347
+#: core/bulk/class-background-bulk-smush-controller.php:351
 #, php-format
 msgid "Feel free to close this page while Smush works its magic in the background. %s to receive an email when the process finishes."
 msgstr ""
 
 #. translators: %s: Email address
-#: core/bulk/class-background-bulk-smush-controller.php:353
+#: core/bulk/class-background-bulk-smush-controller.php:357
 #, php-format
 msgid "Feel free to close this page while Smush works its magic in the background. We’ll email you at <strong>%s</strong> when it’s done."
 msgstr ""
@@ -682,7 +648,6 @@ msgstr ""
 
 #: core/bulk/class-mail.php:95
 #: core/class-hub-connector.php:501
-#: _src/react/modules/configs.jsx:146
 #: _src/smush-ui/pages/settings/components/permissions/PermissionsSettings.jsx:53
 msgid "Bulk Smush"
 msgstr ""
@@ -750,8 +715,12 @@ msgid "Next-Gen conversion method has been updated.<br/>If you have a page cachi
 msgstr ""
 
 #: core/cdn/class-cdn-controller.php:115
-#: core/cdn/class-cdn-srcset-controller.php:526
 msgid "Too many requests, please try again in a moment."
+msgstr ""
+
+#: core/cdn/class-cdn-controller.php:155
+#: core/webp/class-webp-controller.php:172
+msgid "User can not modify options"
 msgstr ""
 
 #: core/cdn/class-cdn-settings-ui-controller.php:40
@@ -760,7 +729,7 @@ msgstr ""
 
 #: core/cdn/class-cdn-settings-ui-controller.php:41
 #: core/class-configs.php:764
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:42
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:52
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:216
 msgid "Background Images"
 msgstr ""
@@ -799,7 +768,7 @@ msgstr ""
 
 #: core/cdn/class-cdn-settings-ui-controller.php:56
 #: core/class-configs.php:767
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:64
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:88
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:219
 msgid "REST API"
 msgstr ""
@@ -840,9 +809,9 @@ msgstr ""
 
 #: core/class-activity-log-controller.php:125
 #: core/class-activity-log-controller.php:155
-#: core/frontend/class-frontend-controller.php:211
-#: core/frontend/class-frontend-controller.php:222
-#: core/frontend/class-frontend-controller.php:1118
+#: core/frontend/class-frontend-controller.php:260
+#: core/frontend/class-frontend-controller.php:271
+#: core/frontend/class-frontend-controller.php:1188
 msgid "Insufficient permissions"
 msgstr ""
 
@@ -879,6 +848,10 @@ msgstr ""
 msgid "CDN setup complete."
 msgstr ""
 
+#: core/class-configs-controller.php:83
+msgid "Missing config ID"
+msgstr ""
+
 #: core/class-configs-pro.php:75
 #: core/class-configs-pro.php:137
 #: core/class-configs.php:631
@@ -900,7 +873,7 @@ msgstr ""
 #: core/class-configs-pro.php:104
 #: core/class-configs.php:893
 #: _src/smush-ui/pages/dashboard/components/LazyloadCard.jsx:29
-#: _src/smush-ui/pages/lazy-preload/components/lazyload/LazyloadCard.jsx:18
+#: _src/smush-ui/pages/lazy-preload/components/lazyload/LazyloadCard.jsx:61
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/LazyloadSettings.jsx:20
 #: _src/smush-ui/pages/lazy-preload/components/Maincontent.jsx:14
 #: _src/smush-ui/pages/lazy-preload/components/Maincontent.jsx:15
@@ -916,36 +889,34 @@ msgstr ""
 
 #: core/class-configs-pro.php:123
 #: core/class-configs.php:744
-#: core/class-settings.php:1402
+#: core/class-settings.php:1404
 #: core/webp/class-webp-configuration.php:54
 #: core/webp/class-webp-optimization.php:81
 #: _src/smush-ui/pages/cdn/components/FormatOptions.jsx:14
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:30
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:21
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:188
 msgid "WebP"
 msgstr ""
 
 #: core/class-configs-pro.php:125
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:530
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:577
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:512
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:559
 msgid "Direct Conversion"
 msgstr ""
 
 #: core/class-configs-pro.php:125
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:551
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:533
 msgid "Server Configuration"
 msgstr ""
 
 #: core/class-configs-pro.php:128
-#: core/frontend/class-frontend-controller.php:821
-#: _src/react/modules/configs.jsx:151
-#: _src/react/views/webp/free-content.jsx:18
-#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:81
+#: core/frontend/class-frontend-controller.php:880
+#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:84
 #: _src/smush-ui/pages/settings/components/Maincontent.jsx:50
 #: _src/smush-ui/pages/settings/components/Maincontent.jsx:51
 #: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:75
 #: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:102
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:388
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:370
 msgid "Next-Gen Formats"
 msgstr ""
 
@@ -1008,30 +979,30 @@ msgid "The given config ID does not exist"
 msgstr ""
 
 #: core/class-configs.php:738
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:70
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:40
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:73
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:35
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:178
 msgid "Basic 1X"
 msgstr ""
 
 #: core/class-configs.php:739
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:71
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:41
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:74
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:36
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:179
 msgid "Super 2X"
 msgstr ""
 
 #: core/class-configs.php:740
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:72
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:75
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:47
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:42
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:37
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:180
 msgid "Ultra 5X"
 msgstr ""
 
 #: core/class-configs.php:743
 #: _src/smush-ui/pages/cdn/components/FormatOptions.jsx:12
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:29
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:20
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:187
 msgid "Original"
 msgstr ""
@@ -1127,8 +1098,6 @@ msgstr ""
 
 #: core/class-configs.php:772
 #: core/class-settings.php:350
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:119
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:125
 #: _src/smush-ui/pages/onboarding-wizard/components/DefaultSettings.jsx:173
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:228
 #: _src/smush-ui/pages/settings/components/tools/General.jsx:56
@@ -1137,9 +1106,7 @@ msgstr ""
 
 #: core/class-configs.php:773
 #: core/class-settings.php:355
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:121
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:123
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:243
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:270
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:229
 msgid "Backup original images"
 msgstr ""
@@ -1151,7 +1118,7 @@ msgstr ""
 #: core/class-configs.php:775
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ImageSizing.jsx:46
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:231
-#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:50
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:68
 msgid "Set image dimensions"
 msgstr ""
 
@@ -1191,21 +1158,21 @@ msgstr ""
 #: core/class-configs.php:783
 #: core/class-settings.php:408
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:243
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:30
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:36
 msgid "Gutenberg Support"
 msgstr ""
 
 #: core/class-configs.php:784
 #: core/class-settings.php:403
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:244
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:39
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:49
 msgid "WPBakery Page Builder"
 msgstr ""
 
 #: core/class-configs.php:785
 #: core/class-settings.php:398
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:245
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:48
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:62
 msgid "Gravity Forms"
 msgstr ""
 
@@ -1213,7 +1180,7 @@ msgstr ""
 #: core/class-configs.php:837
 #: core/class-settings.php:386
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:246
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:57
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:71
 msgid "Amazon S3"
 msgstr ""
 
@@ -1222,13 +1189,12 @@ msgid "Usage tracking"
 msgstr ""
 
 #: core/class-configs.php:838
-#: core/frontend/class-frontend-controller.php:775
-#: core/frontend/class-frontend-controller.php:820
-#: _src/react/modules/configs.jsx:150
+#: core/frontend/class-frontend-controller.php:834
+#: core/frontend/class-frontend-controller.php:879
 #: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:83
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:94
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:149
-#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:79
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:86
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:144
+#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:80
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:210
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:278
 #: _src/smush-ui/pages/settings/components/permissions/PermissionsSettings.jsx:54
@@ -1318,7 +1284,7 @@ msgid "All"
 msgstr ""
 
 #: core/class-configs.php:1023
-#: core/class-settings.php:1401
+#: core/class-settings.php:1403
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/DisplayAnimation/DisplayAnimation.jsx:17
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/DisplayAnimation/DisplayAnimation.jsx:66
 #: _src/smush-ui/pages/settings/components/permissions/PermissionsSettings.jsx:16
@@ -1326,120 +1292,63 @@ msgid "None"
 msgstr ""
 
 #: core/class-core.php:271
-msgid "Your settings have been updated"
-msgstr ""
-
-#: core/class-core.php:272
 msgid "Super-Smush"
 msgstr ""
 
+#: core/class-core.php:272
+msgid "{{smushed}}/{{total}} images optimized successfully, {{errors}} images were not optimized, find out why and how to resolve the issue(s) below."
+msgstr ""
+
 #: core/class-core.php:273
-msgid "Smush Now"
+msgid "All of your images failed to optimize. Find out why and how to resolve the issue(s) below."
 msgstr ""
 
 #: core/class-core.php:274
-msgid "{{smushed}}/{{total}} images smushed successfully, {{errors}} images were not optimized, find out why and how to resolve the issue(s) below."
-msgstr ""
-
-#: core/class-core.php:275
-msgid "All of your images failed to smush. Find out why and how to resolve the issue(s) below."
-msgstr ""
-
-#: core/class-core.php:276
 msgid "All images are fully optimized."
 msgstr ""
 
-#: core/class-core.php:277
-msgid "All attachments have been smushed. Awesome!"
+#: core/class-core.php:275
+msgid "All attachments have been optimized. Awesome!"
 msgstr ""
 
-#: core/class-core.php:281
+#: core/class-core.php:279
 msgid "View Details"
 msgstr ""
 
+#: core/class-core.php:280
+msgid "Images optimized successfully. No further action required."
+msgstr ""
+
 #: core/class-core.php:282
-msgid "We successfully verified your membership, all the Pro features should work completely. "
-msgstr ""
-
-#: core/class-core.php:283
-msgid "Your membership couldn't be verified."
-msgstr ""
-
-#: core/class-core.php:284
-msgid "Missing file path."
-msgstr ""
-
-#: core/class-core.php:285
-msgid "Images smushed successfully, No further action required"
-msgstr ""
-
-#: core/class-core.php:287
-msgid "image could not be smushed."
-msgstr ""
-
-#: core/class-core.php:288
-msgid "images could not be smushed."
-msgstr ""
-
-#: core/class-core.php:289
-msgid "Already Optimized"
-msgstr ""
-
-#: core/class-core.php:290
-msgid "Ajax Error"
-msgstr ""
-
-#: core/class-core.php:291
 msgid "Something went wrong with the request. Please reload the page and try again."
 msgstr ""
 
-#: core/class-core.php:292
-msgid "All Done!"
-msgstr ""
-
-#: core/class-core.php:293
-msgid "Give us a moment while we sync the stats."
-msgstr ""
-
-#: core/class-core.php:295
-msgid "images optimized"
-msgstr ""
-
-#: core/class-core.php:296
-msgid "Resume scan"
-msgstr ""
-
-#: core/class-core.php:297
-msgid "Stop current bulk smush process."
-msgstr ""
-
-#: core/class-core.php:299
+#: core/class-core.php:284
 msgid "Ignore this image from bulk smushing"
 msgstr ""
 
-#: core/class-core.php:305
-#: _src/react/modules/configs.jsx:63
+#: core/class-core.php:290
 msgid "Dismiss notice"
 msgstr ""
 
-#: core/class-core.php:312
-#: _src/react/bulk/media-library-scanner-modal.js:25
-#: _src/react/modules/configs.jsx:37
+#: core/class-core.php:297
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/BulkSmushFailedModal.jsx:33
 #: _src/smush-ui/core-ui/components/MediaLibraryDashboard/LoopbackErrorModal.jsx:34
-#: _src/smush-ui/pages/dashboard/components/DashboardRequiredModal.jsx:57
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/ScanFailedModal.jsx:33
+#: _src/smush-ui/layout/GlobalNotices/DashboardRequiredModal.jsx:77
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:211
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:224
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:332
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:362
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:372
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigStatus.jsx:204
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:201
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:615
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:190
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:597
 #: _src/smush-ui/pages/settings/components/tools/ToolsSettings.jsx:261
 msgid "Cancel"
 msgstr ""
 
-#: core/class-core.php:313
+#: core/class-core.php:298
 msgid "Cancelling ..."
 msgstr ""
 
@@ -1481,33 +1390,34 @@ msgstr ""
 
 #. translators: %s: image size
 #: core/class-error-handler.php:266
-#: core/smush/class-smusher.php:301
 #, php-format
-msgid "Skipped (%s), file size limit of 5mb exceeded"
+msgid "Skipped (%s). File size limit of 5MB exceeded."
 msgstr ""
 
 #. translators: %s: image size
 #: core/class-error-handler.php:268
 #, php-format
-msgid "Skipped (%s), file size limit of 256mb exceeded"
+msgid "Skipped (%s). File size limit of 256MB exceeded."
 msgstr ""
 
 #. translators: %s: Directory path
+#. translators: %s: directory name
 #: core/class-error-handler.php:270
-#: core/smush/class-smusher.php:279
+#: core/smush/class-smusher.php:281
 #, php-format
 msgid "%s is not writable"
 msgstr ""
 
 #. translators: %s: File path
 #. translators: %s: The missing file name
+#. translators: %s: file path
 #: core/class-error-handler.php:272
 #: core/media/class-media-item.php:831
 #: core/media/class-media-item.php:837
-#: core/smush/class-smusher.php:270
-#: core/smush/class-smusher.php:289
+#: core/smush/class-smusher.php:271
+#: core/smush/class-smusher.php:292
 #, php-format
-msgid "Skipped (%s), File not found."
+msgid "Skipped (%s). File not found."
 msgstr ""
 
 #: core/class-helper.php:348
@@ -1518,11 +1428,11 @@ msgstr ""
 msgid "Timeout error. You can increase the request timeout to make sure Smush has enough time to process larger files. `define('WP_SMUSH_TIMEOUT', 150);`"
 msgstr ""
 
-#: core/class-hub-connector.php:198
+#: core/class-hub-connector.php:199
 msgid "Required library is missing. Please reinstall the plugin."
 msgstr ""
 
-#: core/class-hub-connector.php:199
+#: core/class-hub-connector.php:200
 msgid "Library Error"
 msgstr ""
 
@@ -1539,7 +1449,6 @@ msgid "Log in with your WPMU DEV account credentials to activate %s."
 msgstr ""
 
 #: core/class-hub-connector.php:505
-#: _src/react/modules/configs.jsx:153
 msgid "Subsite Controls"
 msgstr ""
 
@@ -1552,12 +1461,11 @@ msgid "Connects your site to the WPMU DEV Free Plan, unlocking the plugin's Free
 msgstr ""
 
 #: core/class-hub-connector.php:631
-#: _src/smush-ui/layout/GlobalNotices/DisconnectSiteModal/DisconnectSiteModal.jsx:54
+#: _src/smush-ui/layout/GlobalNotices/DisconnectSiteModal/DisconnectSiteModal.jsx:80
 msgid "Disconnect site"
 msgstr ""
 
 #: core/class-hub-connector.php:637
-#: _src/smush-ui/pages/dashboard/components/BulkSmushInProgressingPopup/BulkSmushInProgressingPopup.jsx:79
 msgid "Connect site"
 msgstr ""
 
@@ -1584,7 +1492,7 @@ msgstr ""
 #. translators: %1$s Account detail URL, %2$s Reset URL.
 #: core/class-hub-connector.php:926
 #, php-format
-msgid "Due to security improvements, you will need to re-link your Google account in the Hub. Please log in with your WPMU DEV email & password for now, then set up your preferred <strong>Login Method</strong> in <a href=\"%1$s\" target=\"_blank\">your WPMU DEV account</a>. Forgot your password? You can <a href=\"%2$s\" target=\"_blank\"><strong>reset it here</strong></a>."
+msgid "Due to security improvements, you will need to re-link your Google account in The Hub. Please log in with your WPMU DEV email & password for now, then set up your preferred <strong>Login Method</strong> in <a href=\"%1$s\" target=\"_blank\">your WPMU DEV account</a>. Forgot your password? You can <a href=\"%2$s\" target=\"_blank\"><strong>reset it here</strong></a>."
 msgstr ""
 
 #: core/class-hub-connector.php:938
@@ -1624,7 +1532,7 @@ msgstr ""
 #. translators: %1$s Hub Account URL, %2$s: Switch to Free URL.
 #: core/class-hub-connector.php:988
 #, php-format
-msgid "Login failed — your WPMU DEV membership has expired. Renew now to regain full access, or switch to our free plan to continue managing all your site in the Hub.<br/><br/><a class=\"sui-button sui-button-blue\" href=\"%1$s\" target=\"_blank\">Renew Membership</a>&nbsp;<a class=\"sui-button sui-button-ghost\" href=\"%2$s\" target=\"_blank\">Switch to Free</a>"
+msgid "Login failed — your WPMU DEV membership has expired. Renew now to regain full access, or switch to our free plan to continue managing all your site in The Hub.<br/><br/><a class=\"sui-button sui-button-blue\" href=\"%1$s\" target=\"_blank\">Renew Membership</a>&nbsp;<a class=\"sui-button sui-button-ghost\" href=\"%2$s\" target=\"_blank\">Switch to Free</a>"
 msgstr ""
 
 #: core/class-hub-connector.php:1000
@@ -1653,20 +1561,16 @@ msgstr ""
 msgid "Your API Key was invalid. Please try again."
 msgstr ""
 
-#: core/class-hub-connector.php:1049
+#: core/class-hub-connector.php:1061
 msgid "Authentication required. Please log in."
 msgstr ""
 
-#: core/class-hub-connector.php:1059
-msgid "Unable to retrieve valid profile data."
-msgstr ""
-
-#: core/class-optimization-controller.php:87
+#: core/class-optimization-controller.php:74
 msgid "No attachment ID was provided."
 msgstr ""
 
-#: core/class-optimization-controller.php:93
-#: core/webp/class-webp-controller.php:170
+#: core/class-optimization-controller.php:80
+#: core/webp/class-webp-controller.php:164
 msgid "Nonce verification failed"
 msgstr ""
 
@@ -1828,7 +1732,7 @@ msgid "Enable Gravity Forms integration"
 msgstr ""
 
 #: core/class-settings.php:399
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:51
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:65
 msgid "Allow compressing images uploaded with Gravity Forms."
 msgstr ""
 
@@ -1837,7 +1741,6 @@ msgid "Enable WPBakery Page Builder integration"
 msgstr ""
 
 #: core/class-settings.php:404
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:42
 msgid "Allow smushing images resized in WPBakery Page Builder editor."
 msgstr ""
 
@@ -1846,31 +1749,30 @@ msgid "Show Smush stats in Gutenberg blocks"
 msgstr ""
 
 #: core/class-settings.php:409
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:33
 msgid "Add statistics and the manual smush button to Gutenberg blocks that display images."
 msgstr ""
 
-#: core/class-settings.php:958
+#: core/class-settings.php:960
 msgid "The page these settings belong to is missing."
 msgstr ""
 
-#: core/class-settings.php:1027
+#: core/class-settings.php:1029
 msgid "The tab these settings belong to is missing."
 msgstr ""
 
-#: core/class-settings.php:1516
+#: core/class-settings.php:1518
 #: _src/smush-ui/core-ui/components/BulkSmushStatusCard/SelectCompression/SelectCompression.jsx:25
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:22
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:26
 msgid "Basic"
 msgstr ""
 
-#: core/class-settings.php:1517
+#: core/class-settings.php:1519
 #: _src/smush-ui/core-ui/components/BulkSmushStatusCard/SelectCompression/SelectCompression.jsx:36
 msgid "Super"
 msgstr ""
 
-#: core/class-settings.php:1518
+#: core/class-settings.php:1520
 #: _src/smush-ui/core-ui/components/BulkSmushStatusCard/SelectCompression/SelectCompression.jsx:47
 #: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:61
 msgid "Ultra"
@@ -1920,7 +1822,7 @@ msgid "All of your images failed to restore. Find out why and how to resolve the
 msgstr ""
 
 #: core/cli/class-cli-optimizer.php:142
-msgid "{{smushed}}/{{total}} images restored successfully, {{errors}} images were not restored, find out why and how to resolve the issue(s) below."
+msgid "{{smushed}}/{{total}} images restored successfully, {{errors}} images were not restored. Find out why and how to resolve the issue(s) below."
 msgstr ""
 
 #: core/cli/class-cli-optimizer.php:147
@@ -2041,94 +1943,113 @@ msgstr ""
 msgid "Resmush Count"
 msgstr ""
 
-#. translators: 1. opening strong tag, 2: unsmushed images count,3. closing strong tag.
-#: core/cli/class-cli.php:323
+#: core/cli/class-cli.php:316
+msgid "Yay! All images are optimized as per your current settings."
+msgstr ""
+
+#. translators: %d - number of attachments.
+#: core/cli/class-cli.php:324
 #, php-format
 msgid "Found %d attachment that needs smushing"
-msgid_plural "Found %1$d attachments that need smushing"
+msgid_plural "Found %d attachments that need smushing"
 msgstr[0] ""
 msgstr[1] ""
 
-#. translators: 1. opening strong tag, 2: re-smush images count,3. closing strong tag.
-#: core/cli/class-cli.php:332
+#. translators: %d - number of attachments.
+#: core/cli/class-cli.php:340
 #, php-format
 msgid "Found %d attachment that needs re-smushing"
 msgid_plural "Found %d attachments that need re-smushing"
 msgstr[0] ""
 msgstr[1] ""
 
-#: core/cli/class-cli.php:339
+#: core/cli/class-cli.php:353
 msgid "Run \"wp smush compress\" to smush all images."
 msgstr ""
 
 #. translators: 1. unsmushed images message, 2. 'and' text for when having both unsmushed and re-smush images, 3. re-smush images message.
-#: core/cli/class-cli.php:344
+#: core/cli/class-cli.php:358
 #, php-format
 msgid "You have %1$s%2$s%3$s. %4$s"
 msgstr ""
 
-#: core/cli/class-cli.php:346
+#: core/cli/class-cli.php:360
 msgid ", and "
 msgstr ""
 
 #. translators: %s is the admin page title (e.g. "Dashboard", "Settings").
-#: core/frontend/class-frontend-controller.php:140
+#: core/frontend/class-frontend-controller.php:189
 #, php-format
 msgid "Smush - %s"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:155
+#: core/frontend/class-frontend-controller.php:204
 msgid "Security verification failed."
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:244
+#: core/frontend/class-frontend-controller.php:293
 msgid "No handler found for the provided settings context"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:251
+#: core/frontend/class-frontend-controller.php:300
 msgid "Settings saved successfully"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:266
-#: core/frontend/class-frontend-controller.php:1442
-#: _src/react/views/webp/steps-bar.jsx:52
+#: core/frontend/class-frontend-controller.php:316
+#: core/frontend/class-frontend-controller.php:1560
 #: _src/smush-ui/core-ui/components/MemberStatusBadge/MemberStatusBadge.jsx:17
-#: _src/smush-ui/core-ui/components/SelectorToggleCard/SelectorToggleCard.jsx:135
+#: _src/smush-ui/core-ui/components/SelectorToggleCard/SelectorToggleCard.jsx:137
 #: _src/smush-ui/layout/PageHeader.jsx:69
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:41
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigStatus.jsx:153
 msgid "Pro"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:731
-#: core/frontend/class-frontend-controller.php:1369
+#: core/frontend/class-frontend-controller.php:595
+msgid "Smush Stats"
+msgstr ""
+
+#: core/frontend/class-frontend-controller.php:596
+msgid "Select an image to view Smush stats."
+msgstr ""
+
+#: core/frontend/class-frontend-controller.php:597
+#: core/media-library/class-media-library-row.php:666
+msgid "Image size"
+msgstr ""
+
+#: core/frontend/class-frontend-controller.php:598
+msgid "Savings"
+msgstr ""
+
+#: core/frontend/class-frontend-controller.php:790
+#: core/frontend/class-frontend-controller.php:1441
 msgid "Dashboard"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:753
-#: _src/react/modules/configs.jsx:149
+#: core/frontend/class-frontend-controller.php:812
 #: _src/smush-ui/pages/onboarding-wizard/components/DefaultSettings.jsx:155
 #: _src/smush-ui/pages/settings/components/permissions/PermissionsSettings.jsx:56
 msgid "Lazy Load & Preload"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:810
-#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:46
+#: core/frontend/class-frontend-controller.php:869
+#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:55
 #: _src/smush-ui/pages/settings/components/permissions/PermissionsSettings.jsx:57
 msgid "Directory Optimization"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:810
-#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:46
+#: core/frontend/class-frontend-controller.php:869
+#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:55
 #: _src/smush-ui/pages/settings/components/permissions/PermissionsSettings.jsx:57
 msgid "Directory Smush"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:818
+#: core/frontend/class-frontend-controller.php:877
 msgid "Lazyload"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:819
+#: core/frontend/class-frontend-controller.php:878
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:35
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:58
 #: _src/smush-ui/pages/lazy-preload/components/Maincontent.jsx:20
@@ -2139,8 +2060,7 @@ msgstr ""
 msgid "Preload"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:822
-#: _src/react/modules/configs.jsx:147
+#: core/frontend/class-frontend-controller.php:881
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:240
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:276
 #: _src/smush-ui/pages/settings/components/Maincontent.jsx:57
@@ -2149,76 +2069,75 @@ msgstr ""
 msgid "Integrations"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:823
+#: core/frontend/class-frontend-controller.php:882
 #: _src/smush-ui/pages/settings/components/tools/General.jsx:24
 msgid "General"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:824
+#: core/frontend/class-frontend-controller.php:883
 msgid "Data & Settings"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:825
+#: core/frontend/class-frontend-controller.php:884
 #: _src/smush-ui/pages/settings/components/general/Accessibility.jsx:39
 msgid "Accessibility"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:893
-#: _src/react/modules/configs.jsx:152
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:16
+#: core/frontend/class-frontend-controller.php:952
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:24
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:250
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:279
 msgid "Settings"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1346
-#: core/frontend/class-frontend-controller.php:1438
+#: core/frontend/class-frontend-controller.php:1418
+#: core/frontend/class-frontend-controller.php:1556
 msgid "Upgrade to Smush Pro"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1349
-#: core/frontend/class-frontend-controller.php:1350
+#: core/frontend/class-frontend-controller.php:1421
+#: core/frontend/class-frontend-controller.php:1422
 msgid "Renew Membership"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1364
+#: core/frontend/class-frontend-controller.php:1436
 msgid "View Smush Documentation"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1364
+#: core/frontend/class-frontend-controller.php:1436
 msgid "Docs"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1369
+#: core/frontend/class-frontend-controller.php:1441
 msgid "Go to Smush Dashboard"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1395
+#: core/frontend/class-frontend-controller.php:1467
 #: _src/smush-ui/layout/PageFooter.jsx:69
 #: _src/smush-ui/layout/PageHeader.jsx:223
 msgid "Support"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1400
+#: core/frontend/class-frontend-controller.php:1472
 msgid "View details"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1404
+#: core/frontend/class-frontend-controller.php:1476
 msgid "Premium Support"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1418
+#: core/frontend/class-frontend-controller.php:1490
 #: _src/smush-ui/layout/PageFooter.jsx:58
 msgid "Roadmap"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1419
+#: core/frontend/class-frontend-controller.php:1491
 msgid "Rate our plugin"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1441
+#: core/frontend/class-frontend-controller.php:1559
 #: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:80
-#: _src/smush-ui/core-ui/components/SelectorToggleCard/SelectorToggleCard.jsx:134
+#: _src/smush-ui/core-ui/components/SelectorToggleCard/SelectorToggleCard.jsx:136
 #: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:111
 #: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:86
 #: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:98
@@ -2278,66 +2197,66 @@ msgstr ""
 msgid "LCP data is already up to date"
 msgstr ""
 
-#: core/media-library/class-background-media-library-scanner.php:92
+#: core/media-library/class-background-media-library-scanner.php:91
 msgid "Background scan is already in processing."
 msgstr ""
 
-#: core/media-library/class-background-media-library-scanner.php:153
+#: core/media-library/class-background-media-library-scanner.php:156
 #: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboard.jsx:162
 msgid "No scans yet"
 msgstr ""
 
-#: core/media-library/class-background-media-library-scanner.php:160
+#: core/media-library/class-background-media-library-scanner.php:163
 msgid "Scanned just now"
 msgstr ""
 
-#: core/media-library/class-background-media-library-scanner.php:163
+#: core/media-library/class-background-media-library-scanner.php:166
 msgid "Scanned a min ago"
 msgstr ""
 
 #. translators: Time difference between two dates, in minutes. %s: Number of minutes.
-#: core/media-library/class-background-media-library-scanner.php:168
+#: core/media-library/class-background-media-library-scanner.php:171
 #, php-format
 msgid "Scanned %d mins ago"
 msgstr ""
 
-#: core/media-library/class-background-media-library-scanner.php:171
+#: core/media-library/class-background-media-library-scanner.php:174
 msgid "Scanned 1h ago"
 msgstr ""
 
 #. translators: Time difference between two dates, in hours. %s: Number of hours.
-#: core/media-library/class-background-media-library-scanner.php:176
+#: core/media-library/class-background-media-library-scanner.php:179
 #, php-format
 msgid "Scanned %dh ago"
 msgstr ""
 
-#: core/media-library/class-background-media-library-scanner.php:180
+#: core/media-library/class-background-media-library-scanner.php:183
 msgid "Scanned a day ago"
 msgstr ""
 
 #. translators: Time difference between two dates, in days. %s: Number of days.
-#: core/media-library/class-background-media-library-scanner.php:186
+#: core/media-library/class-background-media-library-scanner.php:189
 #, php-format
 msgid "Scanned %d days ago"
 msgstr ""
 
-#: core/media-library/class-background-media-library-scanner.php:189
+#: core/media-library/class-background-media-library-scanner.php:192
 msgid "Scanned last week"
 msgstr ""
 
 #. translators: Time difference between two dates, in weeks. %s: Number of weeks.
-#: core/media-library/class-background-media-library-scanner.php:194
+#: core/media-library/class-background-media-library-scanner.php:197
 #, php-format
 msgid "Scanned %d weeks ago"
 msgstr ""
 
 #. translators: Time difference between two dates, in months. %s: Number of months.
-#: core/media-library/class-background-media-library-scanner.php:199
+#: core/media-library/class-background-media-library-scanner.php:202
 #, php-format
 msgid "Scanned %d mo ago"
 msgstr ""
 
-#: core/media-library/class-background-media-library-scanner.php:201
+#: core/media-library/class-background-media-library-scanner.php:204
 msgid "Scanned over a year ago"
 msgstr ""
 
@@ -2377,9 +2296,9 @@ msgid "We recommend regenerating the thumbnails."
 msgstr ""
 
 #: core/media-library/class-media-library-row.php:329
-#: _src/smush-ui/core-ui/components/SelectorToggleCard/SelectorToggleCard.jsx:122
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:119
-#: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:90
+#: _src/smush-ui/core-ui/components/SelectorToggleCard/SelectorToggleCard.jsx:124
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:111
+#: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:87
 #: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellCard.jsx:33
 msgid "Learn more"
 msgstr ""
@@ -2486,7 +2405,7 @@ msgstr ""
 #. translators: 1: Exceeded size limit file name, 2: Image size limit
 #: core/media/class-media-item.php:845
 #, php-format
-msgid "Skipped (%1$s), file size limit of %2$s exceeded"
+msgid "Skipped (%1$s). File size limit of %2$s exceeded"
 msgstr ""
 
 #. translators: %s: Smush image filter
@@ -2495,37 +2414,31 @@ msgstr ""
 msgid "Skipped with %s filter."
 msgstr ""
 
-#: core/modules/class-dir.php:286
+#: core/modules/class-dir.php:292
 msgid "Incorrect image id"
 msgstr ""
 
-#: core/modules/class-dir.php:302
+#: core/modules/class-dir.php:308
 msgid "Potential Phar PHP Object Injection detected"
 msgstr ""
 
-#: core/modules/class-dir.php:323
+#: core/modules/class-dir.php:329
 msgid "Image couldn't be optimized"
 msgstr ""
 
-#: core/modules/class-dir.php:747
+#: core/modules/class-dir.php:753
 msgid "There was a problem getting the selected directories"
 msgstr ""
 
-#: core/modules/class-dir.php:948
+#: core/modules/class-dir.php:954
 msgid "Empty Directory Path"
 msgstr ""
 
-#: core/modules/class-dir.php:963
+#: core/modules/class-dir.php:969
 msgid "We could not find any images in the selected directory."
 msgstr ""
 
-#. translators: %s: total number of images
-#: core/modules/class-dir.php:1268
-#, php-format
-msgid "You've smushed %d images in total."
-msgstr ""
-
-#: core/modules/class-dir.php:1345
+#: core/modules/class-dir.php:1310
 msgid "Directory smushing requires custom tables and it seems there was an error creating tables. For help, please contact our team on the support forums."
 msgstr ""
 
@@ -2596,79 +2509,85 @@ msgstr ""
 msgid "Could not find a suitable source image for resizing media item [%d]."
 msgstr ""
 
-#: core/s3/class-s3-controller.php:430
+#: core/s3/class-s3-controller.php:431
 msgid "To use this feature you need to install WP Offload Media and have an Amazon S3 account setup."
 msgstr ""
 
 #. translators: %1$s: opening a tag, %2$s: closing a tag
-#: core/s3/class-s3-controller.php:435
+#: core/s3/class-s3-controller.php:436
 #, php-format
 msgid "We are having trouble interacting with WP Offload Media, make sure the plugin is activated. Or you can %1$sreport a bug%2$s."
 msgstr ""
 
 #. translators: %1$s: opening a tag, %2$s: closing a tag
-#: core/s3/class-s3-controller.php:446
+#: core/s3/class-s3-controller.php:447
 #, php-format
 msgid "It seems you haven’t finished setting up WP Offload Media yet. %1$sConfigure it now%2$s to enable Amazon S3 support."
 msgstr ""
 
-#: core/s3/class-s3-controller.php:456
+#: core/s3/class-s3-controller.php:457
 msgid "Amazon S3 support is active."
 msgstr ""
 
 #. Translators: %1$s: opening strong tag, %2$s: closing strong tag, %s: settings link, %3$s: opening a and strong tags, %4$s: closing a and strong tags
-#: core/s3/class-s3-controller.php:507
+#: core/s3/class-s3-controller.php:508
 #, php-format
 msgid "We can see you have WP Offload Media installed. If you want to optimize your S3 images, you’ll need to enable the %3$sAmazon S3 Support%4$s feature in Smush’s Integrations."
 msgstr ""
 
 #. Translators: %1$s: opening strong tag, %2$s: closing strong tag, %s: settings link, %3$s: opening a and strong tags, %4$s: closing a and strong tags
-#: core/s3/class-s3-controller.php:522
+#: core/s3/class-s3-controller.php:523
 #, php-format
 msgid "We can see you have WP Offload Media installed. If you want to optimize your S3 images you'll need to %3$supgrade to Smush Pro%4$s"
 msgstr ""
 
+#. translators: %s: file path
+#: core/smush/class-smusher.php:305
+#, php-format
+msgid "Skipped (%s). File size limit of 5MB exceeded"
+msgstr ""
+
 #. translators: %s: Error message.
-#: core/smush/class-smusher.php:355
+#: core/smush/class-smusher.php:359
 #, php-format
 msgid "Smush was successful but we were unable to save from URL: %s."
 msgstr ""
 
 #. translators: %s: File path.
-#: core/smush/class-smusher.php:371
+#: core/smush/class-smusher.php:375
 #, php-format
 msgid "Smush was successful but we were unable to save the file due to a file system error: [%s]."
 msgstr ""
 
-#: core/smush/class-smusher.php:586
+#: core/smush/class-smusher.php:590
 msgid "Skipped due to a timeout error. You can increase the request timeout to make sure Smush has enough time to process larger files. define('WP_SMUSH_TIMEOUT', 150);"
 msgstr ""
 
 #. translators: %s: Error message.
-#: core/smush/class-smusher.php:598
+#: core/smush/class-smusher.php:602
 #, php-format
 msgid "Error posting to API: %s"
 msgstr ""
 
-#: core/smush/class-smusher.php:619
+#: core/smush/class-smusher.php:623
 msgid "The request is taking longer than expected. Please check back in a few moments."
 msgstr ""
 
 #. translators: 1: Error code, 2: Error message.
-#: core/smush/class-smusher.php:631
+#: core/smush/class-smusher.php:635
 #, php-format
 msgid "Error posting to API: %1$s %2$s"
 msgstr ""
 
-#: core/smush/class-smusher.php:649
+#: core/smush/class-smusher.php:653
 msgid "Image couldn't be smushed"
 msgstr ""
 
-#: core/smush/class-smusher.php:661
+#: core/smush/class-smusher.php:665
 msgid "Unknown API error"
 msgstr ""
 
-#: core/smush/class-smusher.php:685
+#: core/smush/class-smusher.php:689
 msgid "Smush data corrupted, try again."
 msgstr ""
 
@@ -2680,11 +2599,11 @@ msgstr ""
 msgid "We were unable to automatically remove the rules. We recommend trying to remove the rules manually. If you don’t have access to the .htaccess file to remove it manually, please consult with your hosting provider to change the configuration on the server."
 msgstr ""
 
-#: core/webp/class-webp-controller.php:218
+#: core/webp/class-webp-controller.php:191
 msgid "Either the nonce expired or you can't modify options. Please reload the page and try again."
 msgstr ""
 
-#: core/webp/class-webp-controller.php:259
+#: core/webp/class-webp-controller.php:232
 msgid "This user can not delete all WebP images."
 msgstr ""
 
@@ -2724,7 +2643,7 @@ msgid "We couldn't create the WebP directory \"%s\". This is probably due to you
 msgstr ""
 
 #: core/webp/class-webp-server-configuration.php:264
-msgid "Automatic updation of .htaccess rules failed. Please ensure the file permissions on your .htaccess file are set to 644, or switch to manual mode to add the rules yourself."
+msgid "Automatic update of .htaccess rules failed. Please ensure the file permissions on your .htaccess file are set to 644, or switch to manual mode to add the rules yourself."
 msgstr ""
 
 #: core/webp/class-webp-server-configuration.php:265
@@ -2737,490 +2656,6 @@ msgstr ""
 msgid "Your site is running an outdated version of PHP that is no longer supported or receiving security updates. Please update PHP to at least version %1$s at your hosting provider in order to activate Smush, or consider switching to <a href=\"%2$s\" target=\"_blank\" rel=\"noopener noreferrer\">WPMU DEV Hosting</a>."
 msgstr ""
 
-#: _src/js/common/progressbar.js:111
-msgid "minute"
-msgid_plural "minutes"
-msgstr[0] ""
-msgstr[1] ""
-
-#: _src/js/common/progressbar.js:114
-msgid "second"
-msgid_plural "seconds"
-msgstr[0] ""
-msgstr[1] ""
-
-#: _src/js/common/progressbar.js:156
-msgid "Cancel Scan"
-msgstr ""
-
-#: _src/js/modules/media-library-scanner-on-bulk-smush.js:64
-#: _src/js/modules/media-library-scanner-on-dashboard.js:50
-msgid "Waiting for Re-check to finish"
-msgstr ""
-
-#: _src/js/modules/media-library-scanner-on-bulk-smush.js:81
-msgid "Checking Images"
-msgstr ""
-
-#: _src/react/bulk/media-library-scanner-modal.js:34
-msgid "Start"
-msgstr ""
-
-#: _src/react/bulk/media-library-scanner-modal.js:42
-msgid "Scan Media Library"
-msgstr ""
-
-#: _src/react/bulk/media-library-scanner-modal.js:43
-msgid "Scans the media library to detect items to Smush."
-msgstr ""
-
-#: _src/react/bulk/media-library-scanner.js:25
-msgid "Scan completed successfully!"
-msgstr ""
-
-#: _src/react/bulk/media-library-scanner.js:35
-msgid "Re-Check Images"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:22
-msgid "You can easily apply configs to multiple sites at once via "
-msgstr ""
-
-#: _src/react/modules/configs.jsx:40
-msgid "Preset Configs"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:41
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboard.jsx:187
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:213
-msgid "Upload"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:42
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:283
-msgid "Save config"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:43
-msgid "Updating the config list…"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:44
-msgid "You don’t have any available config. Save preset configurations of Smush’s settings, then upload and apply them to your other sites in just a few clicks!"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:48
-msgid "Use configs to save preset configurations of Smush’s settings, then upload and apply them to your other sites in just a few clicks!"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:52
-msgid "Tired of saving, downloading and uploading your configs across your sites? WPMU DEV members use The Hub to easily apply configs to multiple sites at once… Try it today!"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:54
-msgid "Created or updated configs via the Hub?"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:58
-msgid "Check again"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:59
-#: _src/react/modules/configs.jsx:101
-msgid "Apply"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:60
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:271
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:343
-msgid "Download"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:61
-msgid "Name and Description"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:62
-#: _src/react/modules/configs.jsx:120
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:305
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:352
-msgid "Delete"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:64
-msgid "Try The Hub"
-msgstr ""
-
-#. translators: %s request status
-#: _src/react/modules/configs.jsx:67
-#, js-format
-msgid "Request failed. Status: %s. Please reload the page and try again."
-msgstr ""
-
-#. translators: %s request status
-#: _src/react/modules/configs.jsx:75
-#, js-format
-msgid "%s config has been uploaded successfully – you can now apply it to this site."
-msgstr ""
-
-#. translators: %s {pluginName}
-#: _src/react/modules/configs.jsx:83
-#, js-format
-msgid "The uploaded file is not a %s Config. Please make sure the uploaded file is correct."
-msgstr ""
-
-#: _src/react/modules/configs.jsx:92
-msgid "Apply Config"
-msgstr ""
-
-#. translators: %s config name
-#: _src/react/modules/configs.jsx:95
-#, js-format
-msgid "Are you sure you want to apply the %s config to this site? We recommend you have a backup available as your existing settings configuration will be overridden."
-msgstr ""
-
-#. translators: %s. config name
-#: _src/react/modules/configs.jsx:104
-#, js-format
-msgid "%s config has been applied successfully."
-msgstr ""
-
-#: _src/react/modules/configs.jsx:111
-msgid "Delete Configuration File"
-msgstr ""
-
-#. translators: %s config name
-#: _src/react/modules/configs.jsx:114
-#, js-format
-msgid "Are you sure you want to delete %s? You will no longer be able to apply it to this or other connected sites."
-msgstr ""
-
-#: _src/react/modules/configs.jsx:125
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:289
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:315
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigStatus.jsx:186
-msgid "Config name"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:126
-msgid "Description"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:127
-msgid "The config name is required"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:128
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:203
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:325
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigStatus.jsx:201
-msgid "Save"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:129
-msgid "Rename Config"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:130
-msgid "Change your config name to something recognizable."
-msgstr ""
-
-#: _src/react/modules/configs.jsx:134
-msgid "Save Config"
-msgstr ""
-
-#: _src/react/modules/configs.jsx:135
-msgid "Save your current settings configuration. You’ll be able to then download and apply it to your other sites."
-msgstr ""
-
-#. translators: %s. config name
-#: _src/react/modules/configs.jsx:141
-#, js-format
-msgid "%s config created successfully."
-msgstr ""
-
-#: _src/react/views/webp/free-content.jsx:27
-msgid "Smush WebP"
-msgstr ""
-
-#: _src/react/views/webp/free-content.jsx:32
-msgid "Fix the \"Serve images in next-gen format\" Google PageSpeed recommendation with a single click! Serve WebP and AVIF images directly from your server to supported browsers, while seamlessly switching to original images for those without WebP or AVIF support. All without relying on a CDN or any server configuration."
-msgstr ""
-
-#: _src/react/views/webp/free-content.jsx:44
-msgid "Activate the Next-Gen Formats feature with a single click; no server configuration required."
-msgstr ""
-
-#: _src/react/views/webp/free-content.jsx:54
-msgid "Fix “Serve images in next-gen format\" Google PageSpeed recommendation."
-msgstr ""
-
-#: _src/react/views/webp/free-content.jsx:64
-msgid "Serve WebP and AVIF version of images in the browsers that support it and fall back to JPEGs and PNGs for unsupported browsers."
-msgstr ""
-
-#: _src/react/views/webp/free-content.jsx:84
-msgid "UNLOCK NEXT-GEN FORMATS WITH PRO"
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:23
-#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepChooseServer.jsx:12
-msgid "Choose Server Type"
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:24
-msgid "Choose your server type. If you don’t know this, please contact your hosting provider."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:30
-#: _src/react/views/webp/steps-bar.jsx:39
-#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/LocalWebpSetupWizard.jsx:21
-msgid "Add Rules"
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:33
-msgid "Smush can automatically apply WebP conversion rules for Apache servers by writing to your .htaccess file. Alternatively, switch to Manual to apply these rules yourself."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:37
-msgid "The following configurations are for NGINX servers. If you do not have access to your NGINX config files you will need to contact your hosting provider to make these changes."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:43
-#: _src/react/views/webp/steps-bar.jsx:40
-#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/LocalWebpSetupWizard.jsx:22
-#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepFinishSetup.jsx:63
-#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/WizardFooter.jsx:179
-msgid "Finish Setup"
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:44
-#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepFinishSetup.jsx:65
-msgid "The rules have been applied successfully."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:62
-msgid "We noticed the Amazon S3 Integration is enabled. Offloaded images will not be served in WebP format, but Smush will create local WebP copies of all images. If this is undesirable, you can quit the setup."
-msgstr ""
-
-#. translators: 1: Opening <button> tag, 2: Closing button, 3: Opening support link, 4: Closing the link
-#: _src/react/views/webp/step-content.jsx:81
-#, js-format
-msgid "Please try the %1$sDirect Conversion%2$s method if you don’t have server access, or %3$scontact support%4$s for further assistance."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:116
-msgid "Since your site is hosted with WPMU DEV, we already have done the configurations steps for you. The only step for you would be to create WebP images below."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:120
-msgid "WebP conversion is active and working well. Your hosting has automatically pre-configured the conversion for you. The only step for you would be to create WebP images below."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:161
-msgid "Apache"
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:179
-#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepChooseServer.jsx:62
-msgid "NGINX"
-msgstr ""
-
-#. translators: server type
-#: _src/react/views/webp/step-content.jsx:195
-#, js-format
-msgid "We've automatically detected your server type is %s. If this is incorrect, manually select your server type to generate the relevant rules and instructions."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:217
-msgid "Insert the following in the server context of your configuration file (usually found in /etc/nginx/sites-available). “The server context” refers to the part of the configuration that starts with “server {” and ends with the matching “}”."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:223
-msgid "Copy the generated code found below and paste it inside your http or server blocks."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:237
-msgid "Reload NGINX."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:269
-#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepAddRules.jsx:130
-msgid "Automatic"
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:285
-#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepAddRules.jsx:141
-msgid "Manual"
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:305
-msgid "Please note: Some servers have both Apache and NGINX software which may not begin serving WebP images after applying the .htaccess rules. If errors occur after applying the rules, we recommend adding NGINX rules manually."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:324
-msgid "If you are unable to get the automated method working, follow these steps:"
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:333
-msgid "Copy the generated code below and paste it at the top of your .htaccess file (before any existing code) in the root directory."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:348
-msgid "Next, click Check Status button below to see if it's working."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:363
-msgid "Troubleshooting"
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:367
-msgid "If .htaccess does not work, and you have access to vhosts.conf or httpd.conf, try this:"
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:375
-msgid "Look for your site in the file and find the line that starts with <Directory> - add the code above that line and into that section and save the file."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:381
-msgid "Reload Apache."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:384
-msgid "If you don't know where those files are, or you aren't able to reload Apache, you would need to consult with your hosting provider or a system administrator who has access to change the configuration of your server."
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:414
-msgid "Convert Images to WebP"
-msgstr ""
-
-#: _src/react/views/webp/step-content.jsx:419
-msgid "Convert now"
-msgstr ""
-
-#. translators: currentStep/totalSteps indicator
-#: _src/react/views/webp/step-content.jsx:429
-#, js-format
-msgid "Step %s"
-msgstr ""
-
-#: _src/react/views/webp/step-footer.jsx:19
-#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/WizardFooter.jsx:60
-msgid "Something went wrong with the request."
-msgstr ""
-
-#: _src/react/views/webp/step-footer.jsx:72
-msgid "Quit setup"
-msgstr ""
-
-#: _src/react/views/webp/step-footer.jsx:75
-msgid "Quit"
-msgstr ""
-
-#: _src/react/views/webp/step-footer.jsx:95
-#: _src/react/views/webp/step-footer.jsx:103
-#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/WizardFooter.jsx:191
-msgid "Previous"
-msgstr ""
-
-#: _src/react/views/webp/step-footer.jsx:117
-#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/WizardFooter.jsx:136
-msgid "Next"
-msgstr ""
-
-#: _src/react/views/webp/step-footer.jsx:134
-msgid "Apply rules"
-msgstr ""
-
-#: _src/react/views/webp/step-footer.jsx:145
-msgid "Check status"
-msgstr ""
-
-#: _src/react/views/webp/step-footer.jsx:157
-msgid "Finish"
-msgstr ""
-
-#: _src/react/views/webp/step-footer.jsx:165
-msgid "Finishing setup…"
-msgstr ""
-
-#: _src/react/views/webp/steps-bar.jsx:38
-#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/LocalWebpSetupWizard.jsx:20
-msgid "Server Type"
-msgstr ""
-
-#: _src/react/views/webp/steps-bar.jsx:46
-msgid "Setup"
-msgstr ""
-
-#: _src/react/views/webp/steps-bar.jsx:49
-msgid "Local WebP"
-msgstr ""
-
-#: _src/react/views/webp/steps-bar.jsx:79
-msgid "This stage is already completed."
-msgstr ""
-
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:191
-msgid "Optimization complete."
-msgstr ""
-
-#. translators: 1: number of optimized images, 2: total bytes saved in human readable form.
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:195
-#, js-format
-msgid "You've optimized %1$s image and saved %2$s."
-msgid_plural "You've optimized %1$s images and saved %2$s."
-msgstr[0] ""
-msgstr[1] ""
-
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:233
-#: _src/smush-ui/hooks/useSmushScanAndBulk.js:93
-msgid "Bulk Smush Failed"
-msgstr ""
-
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:234
-#: _src/smush-ui/hooks/useSmushScanAndBulk.js:94
-msgid "The bulk smush process has encountered an error."
-msgstr ""
-
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:298
-msgid "Scan Started"
-msgstr ""
-
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:299
-msgid "The scan has started successfully."
-msgstr ""
-
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:326
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:377
-#: _src/smush-ui/hooks/useSmushScanAndBulk.js:185
-msgid "Scan Cancelled"
-msgstr ""
-
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:327
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:378
-#: _src/smush-ui/hooks/useSmushScanAndBulk.js:186
-msgid "The scan has been cancelled."
-msgstr ""
-
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:360
-msgid "Scan Completed"
-msgstr ""
-
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:361
-msgid "The scan has been completed successfully."
-msgstr ""
-
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:394
-#: _src/smush-ui/hooks/useSmushScanAndBulk.js:192
-msgid "Scan Failed"
-msgstr ""
-
-#: _src/smush-ui/context/bulk-smush/BulkSmushProgressContext.jsx:395
-#: _src/smush-ui/hooks/useSmushScanAndBulk.js:193
-msgid "The scan has failed."
-msgstr ""
-
 #: _src/smush-ui/context/BulkSmushProgress.jsx:89
 msgid "Bulk Optimization started."
 msgstr ""
@@ -3229,27 +2664,27 @@ msgstr ""
 msgid "Bulk Optimization cancelled."
 msgstr ""
 
-#: _src/smush-ui/context/CDNSettings.jsx:97
+#: _src/smush-ui/context/CDNSettings.jsx:98
 msgid "CDN disabled."
 msgstr ""
 
-#: _src/smush-ui/context/CDNSettings.jsx:103
+#: _src/smush-ui/context/CDNSettings.jsx:104
 msgid "CDN enabled."
 msgstr ""
 
-#: _src/smush-ui/context/CDNSettings.jsx:107
+#: _src/smush-ui/context/CDNSettings.jsx:108
 msgid "CDN setup in progress."
 msgstr ""
 
-#: _src/smush-ui/context/CDNSettings.jsx:116
+#: _src/smush-ui/context/CDNSettings.jsx:117
 msgid "CDN setup in progress"
 msgstr ""
 
-#: _src/smush-ui/context/CDNSettings.jsx:117
+#: _src/smush-ui/context/CDNSettings.jsx:118
 msgid "CDN changes may take up to 30 minutes to propagate."
 msgstr ""
 
-#: _src/smush-ui/context/CDNSettings.jsx:126
+#: _src/smush-ui/context/CDNSettings.jsx:127
 msgid "CDN could not be enabled."
 msgstr ""
 
@@ -3261,63 +2696,55 @@ msgstr ""
 msgid "Scan cancelled."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:88
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:89
 #: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboard.jsx:128
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:19
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:22
 #: _src/smush-ui/hooks/useSmushToast.js:58
 #: _src/smush-ui/hooks/useSmushToast.js:116
 #: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:196
 msgid "Optimize Images"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:101
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:131
+msgid "Hang tight — still optimizing in the background."
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:133
 msgid "Processing continues in the background. No need to wait, we'll email you when it's finished."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:102
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:134
 #: _src/smush-ui/core-ui/components/ProgressBar/ProgressBar.jsx:298
 msgid "Processing continues in the background."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:120
-msgid " is disabled, which means that enabling "
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:150
+msgid "<link><strong>Optimize original images</strong></link> is off. Backing up originals increases storage use without added benefits."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:122
-msgid " won't yield additional benefits and will use more storage space. We recommend enabling "
-msgstr ""
-
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:124
-msgid " only if "
-msgstr ""
-
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:126
-msgid " is also enabled."
-msgstr ""
-
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:136
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:69
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:163
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:60
 #: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:51
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:57
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:54
 msgid "Ok"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:218
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:245
 #: _src/smush-ui/pages/directory-smush/components/DirectoryStats.jsx:178
 msgid "Select compression"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:244
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:271
 msgid "Keep a backup of your original images so you can restore them anytime. Be aware this will increase the size of your uploads folder."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:278
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:305
 #: _src/smush-ui/layout/GlobalNotices/GlobalProgressOverlays.jsx:86
 #: _src/smush-ui/pages/directory-smush/components/Maincontent.jsx:85
 msgid "Optimizing"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:282
+#: _src/smush-ui/core-ui/components/BulkSmushStatusCard/BulkSmushStatusCard.jsx:309
 #: _src/smush-ui/core-ui/components/ProgressBar/ProgressBar.jsx:275
 #: _src/smush-ui/core-ui/components/ProgressBar/ProgressBar.jsx:284
 msgid "Stop"
@@ -3357,12 +2784,15 @@ msgid "Contact your Network Admin to enable Super 2x Compression."
 msgstr ""
 
 #: _src/smush-ui/core-ui/components/BulkSmushStatusCard/SelectCompression/SelectCompression.jsx:96
+#: _src/smush-ui/hooks/useS3NextGenNotice.js:33
 #: _src/smush-ui/hooks/useSmushScanAndBulk.js:45
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:128
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:160
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:214
 #: _src/smush-ui/pages/dashboard/components/BulkSmushCompletedModal/BulkSmushCompletedModal.jsx:92
 #: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:64
 #: _src/smush-ui/pages/dashboard/components/RequiredFunctionNotification/RequiredFunctionNotification.jsx:51
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:189
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:312
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:205
 msgid "OK"
 msgstr ""
 
@@ -3376,12 +2806,30 @@ msgstr ""
 msgid "Got it"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/InfoModal/InfoModal.jsx:90
+#: _src/smush-ui/core-ui/components/InfoModal/InfoModal.jsx:95
 #: _src/smush-ui/core-ui/components/SlideInModal/SlideInModal.jsx:92
 #: _src/smush-ui/core-ui/components/SlideInModal/SlideInModal.jsx:96
 #: _src/smush-ui/layout/GlobalNotices/HubConnectionFlow/HubConnectionFlow.jsx:59
 #: _src/smush-ui/pages/shared/components/SlideModal.jsx:308
 msgid "Close"
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/BulkSmushFailedModal.jsx:24
+msgid "Bulk Optimization failed due to problems on your site. Please retry or contact hosting support."
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/BulkSmushFailedModal.jsx:26
+msgid "Bulk Optimization failed due to problems on your site. Please retry or refer to our <link>troubleshooting guide</link> to help resolve this."
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/BulkSmushFailedModal.jsx:46
+msgid "Bulk Optimization Failed!"
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/BulkSmushFailedModal.jsx:50
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/LoopbackErrorModal.jsx:41
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/ScanFailedModal.jsx:50
+msgid "Retry"
 msgstr ""
 
 #: _src/smush-ui/core-ui/components/MediaLibraryDashboard/hooks/useOptInToast.js:25
@@ -3405,7 +2853,7 @@ msgid "Share Usage Data?"
 msgstr ""
 
 #: _src/smush-ui/core-ui/components/MediaLibraryDashboard/hooks/useOptInToast.js:59
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:135
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:123
 msgid "Help us improve by sending anonymous usage data. This is recommended."
 msgstr ""
 
@@ -3421,16 +2869,21 @@ msgstr ""
 msgid "Error Encountered!"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/LoopbackErrorModal.jsx:41
-msgid "Retry"
-msgstr ""
-
 #: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboard.jsx:44
 #: _src/smush-ui/pages/onboarding-wizard/components/GetStarted.jsx:167
 msgid "Scan site"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:23
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboard.jsx:143
+msgid "Media Library"
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboard.jsx:187
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:213
+msgid "Upload"
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:26
 #, js-format
 msgid "Optimize %s image"
 msgid_plural "Optimize %s images"
@@ -3438,34 +2891,46 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: compression level label.
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:77
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:80
 #, js-format
 msgid "Compression level changed to %s."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:81
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:84
 msgid "Backup original images enabled."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:81
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:84
 msgid "Backup original images disabled."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:290
-#: _src/smush-ui/hooks/useSmushScanAndBulk.js:149
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:297
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:245
 #, js-format
 msgid "You have <number>%d</number> image ready to optimize."
 msgid_plural "You have <number>%d</number> images ready to optimize."
 msgstr[0] ""
 msgstr[1] ""
 
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:307
-#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:25
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:314
+#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:32
 msgid "Optimize images"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:308
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/MediaLibraryDashboardContainer.jsx:315
 msgid "Not Now"
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/ScanFailedModal.jsx:24
+msgid "Scan failed due to limited resources. We've lowered usage for the next scan. Please retry or contact hosting support."
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/ScanFailedModal.jsx:26
+msgid "Scan failed due to limited resources. We've lowered usage for the next scan. Please retry or check our <link>troubleshooting guide</link>."
+msgstr ""
+
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/ScanFailedModal.jsx:46
+msgid "Scan failed!"
 msgstr ""
 
 #: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:33
@@ -3514,21 +2979,21 @@ msgstr ""
 msgid "Exit"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/ProfileMenu/ProfileMenu.jsx:155
+#: _src/smush-ui/core-ui/components/ProfileMenu/ProfileMenu.jsx:135
 msgid "Guest"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/ProfileMenu/ProfileMenu.jsx:189
+#: _src/smush-ui/core-ui/components/ProfileMenu/ProfileMenu.jsx:169
 msgid "Disconnect"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/ProfileMenu/ProfileMenu.jsx:221
+#: _src/smush-ui/core-ui/components/ProfileMenu/ProfileMenu.jsx:201
 #: _src/smush-ui/pages/dashboard/components/HubConnectInfoModal/HubConnectInfoModal.jsx:62
 #: _src/smush-ui/pages/onboarding-wizard/components/HubConnector.jsx:138
 msgid "Create free account"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/ProfileMenu/ProfileMenu.jsx:223
+#: _src/smush-ui/core-ui/components/ProfileMenu/ProfileMenu.jsx:203
 #: _src/smush-ui/pages/dashboard/components/HubConnectInfoModal/HubConnectInfoModal.jsx:66
 #: _src/smush-ui/pages/onboarding-wizard/components/HubConnector.jsx:144
 #: _src/smush-ui/pages/onboarding-wizard/components/HubConnectorLoginForm.jsx:211
@@ -3536,7 +3001,7 @@ msgstr ""
 msgid "or"
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/ProfileMenu/ProfileMenu.jsx:225
+#: _src/smush-ui/core-ui/components/ProfileMenu/ProfileMenu.jsx:205
 #: _src/smush-ui/pages/dashboard/components/HubConnectInfoModal/HubConnectInfoModal.jsx:75
 #: _src/smush-ui/pages/onboarding-wizard/components/HubConnector.jsx:154
 #: _src/smush-ui/pages/onboarding-wizard/components/HubConnectorLoginForm.jsx:193
@@ -3582,7 +3047,7 @@ msgstr ""
 #: _src/smush-ui/hooks/useSmushToast.js:59
 #: _src/smush-ui/hooks/useSmushToast.js:117
 #: _src/smush-ui/layout/GlobalNotices/HubConnectNotice.jsx:48
-#: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:98
+#: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:95
 #: _src/smush-ui/pages/dashboard/components/useSkipWizardFlow.js:52
 #: _src/smush-ui/pages/settings/components/configs/Configs.jsx:126
 #: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:186
@@ -3604,7 +3069,19 @@ msgstr ""
 msgid "%s has been deactivated."
 msgstr ""
 
-#: _src/smush-ui/hooks/useSettingsSync.js:16
+#: _src/smush-ui/hooks/useS3NextGenNotice.js:25
+msgid "Amazon S3 integration detected"
+msgstr ""
+
+#: _src/smush-ui/hooks/useS3NextGenNotice.js:27
+msgid "Amazon S3 offload is enabled. Offloaded images can’t be served in Next‑Gen formats. Smush will still generate local Next‑Gen copies. Disable Next‑Gen Formats if you don’t want local files created."
+msgstr ""
+
+#: _src/smush-ui/hooks/useS3NextGenNotice.js:32
+msgid "Disable Next-Gen"
+msgstr ""
+
+#: _src/smush-ui/hooks/useSettingsSync.js:17
 msgid "Auto-saved changes"
 msgstr ""
 
@@ -3620,8 +3097,59 @@ msgstr ""
 msgid "Everything looks good—no images to optimize."
 msgstr ""
 
-#: _src/smush-ui/hooks/useSmushScanAndBulk.js:164
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:117
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:155
+msgid "Connection Lost"
+msgstr ""
+
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:118
+msgid "Request Failed"
+msgstr ""
+
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:121
+msgid "We couldn't reach your site to confirm the status. The process may still be running in the background. Please reconnect and try again."
+msgstr ""
+
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:122
+msgid "We couldn't complete the request. Please try again."
+msgstr ""
+
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:129
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:161
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:213
+msgid "Reload Page"
+msgstr ""
+
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:156
+msgid "Update Failed"
+msgstr ""
+
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:158
+msgid "We couldn't refresh the latest status. Please check your internet connection and try again."
+msgstr ""
+
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:159
+msgid "We couldn't refresh the latest status. Please try again. If the issue persists, reload the page."
+msgstr ""
+
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:211
+msgid "Reload Required"
+msgstr ""
+
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:212
+msgid "The state of this page seems to be outdated. Please reload."
+msgstr ""
+
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:260
 msgid "Scan Complete"
+msgstr ""
+
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:282
+msgid "Scan Cancelled"
+msgstr ""
+
+#: _src/smush-ui/hooks/useSmushScanAndBulk.js:283
+msgid "The scan has been cancelled."
 msgstr ""
 
 #: _src/smush-ui/layout/ErrorBoundary/ErrorBoundaryFallback.jsx:40
@@ -3636,15 +3164,35 @@ msgstr ""
 msgid "Contact support"
 msgstr ""
 
-#: _src/smush-ui/layout/GlobalNotices/DisconnectSiteModal/DisconnectSiteModal.jsx:33
+#: _src/smush-ui/layout/GlobalNotices/DashboardRequiredModal.jsx:27
+msgid "Login to Dashboard"
+msgstr ""
+
+#: _src/smush-ui/layout/GlobalNotices/DashboardRequiredModal.jsx:30
+msgid "Activate Dashboard"
+msgstr ""
+
+#: _src/smush-ui/layout/GlobalNotices/DashboardRequiredModal.jsx:33
+msgid "Install Dashboard"
+msgstr ""
+
+#: _src/smush-ui/layout/GlobalNotices/DashboardRequiredModal.jsx:75
+msgid "Dashboard plugin required"
+msgstr ""
+
+#: _src/smush-ui/layout/GlobalNotices/DashboardRequiredModal.jsx:76
+msgid "Ensure you have installed, activated and logged into the WPMU DEV Dashboard."
+msgstr ""
+
+#: _src/smush-ui/layout/GlobalNotices/DisconnectSiteModal/DisconnectSiteModal.jsx:59
 msgid "Disconnect this site?"
 msgstr ""
 
-#: _src/smush-ui/layout/GlobalNotices/DisconnectSiteModal/DisconnectSiteModal.jsx:36
+#: _src/smush-ui/layout/GlobalNotices/DisconnectSiteModal/DisconnectSiteModal.jsx:62
 msgid "This will stop 2X image optimization and all WPMU DEV services. Your site will no longer be able to be managed from WPMU DEV."
 msgstr ""
 
-#: _src/smush-ui/layout/GlobalNotices/DisconnectSiteModal/DisconnectSiteModal.jsx:39
+#: _src/smush-ui/layout/GlobalNotices/DisconnectSiteModal/DisconnectSiteModal.jsx:65
 msgid "Keep site connected"
 msgstr ""
 
@@ -3664,7 +3212,7 @@ msgstr ""
 msgid "Connect"
 msgstr ""
 
-#: _src/smush-ui/layout/GlobalNotices/PluginConflictNotice.jsx:45
+#: _src/smush-ui/layout/GlobalNotices/PluginConflictNotice.jsx:47
 msgid "Incompatible plugin(s) detected"
 msgstr ""
 
@@ -3716,7 +3264,7 @@ msgstr ""
 
 #: _src/smush-ui/layout/GlobalNotices/WhatsNewModal/WhatsNewModal.jsx:56
 #: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:113
-#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:60
+#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:69
 #: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:88
 #: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:100
 msgid "Get started"
@@ -3776,7 +3324,7 @@ msgid "by"
 msgstr ""
 
 #: _src/smush-ui/layout/PageHeader.jsx:58
-#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:92
+#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:93
 msgid "wpmudev"
 msgstr ""
 
@@ -3818,7 +3366,7 @@ msgid "Free"
 msgstr ""
 
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:16
-msgid "Your current plan"
+msgid "Your Current Plan"
 msgstr ""
 
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:21
@@ -3844,7 +3392,7 @@ msgstr ""
 
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:42
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:113
-msgid "Find out more"
+msgid "Find Out More"
 msgstr ""
 
 #: _src/smush-ui/layout/ProFeaturesPopup.jsx:51
@@ -3859,8 +3407,9 @@ msgstr ""
 msgid "Upgrade your plan"
 msgstr ""
 
-#: _src/smush-ui/layout/ProFeaturesPopup.jsx:141
-msgid "-day <strong>money back</strong> guarantee"
+#. translators: <thirty/> is a 30-day icon. Use <space/> to keep words separated (e.g. around <thirty/> or <strong>) when reordering for your locale.
+#: _src/smush-ui/layout/ProFeaturesPopup.jsx:142
+msgid "<thirty/>-day<space/><strong>money back</strong><space/>guarantee"
 msgstr ""
 
 #: _src/smush-ui/layout/Sidecontent.jsx:14
@@ -3888,12 +3437,40 @@ msgstr ""
 msgid "No Activity log"
 msgstr ""
 
+#: _src/smush-ui/pages/cdn/components/CDNStatusNotice.jsx:13
+msgid "Your media is served from the WPMU DEV CDN. Bulk and Directory Smush continue to run separately."
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/CDNStatusNotice.jsx:14
+msgid "Your media is being served via CDN. Bulk and Directory Optimization continue to run separately."
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/CDNStatusNotice.jsx:20
+msgid "CDN is activating. Changes may take up to 30 minutes to propagate."
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/CDNStatusNotice.jsx:28
+msgid "Your CDN bandwidth limit has been reached. Upgrade your plan to reactivate CDN delivery. <upgradeLink>Upgrade plan</upgradeLink>"
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/CDNStatusNotice.jsx:33
+msgid "Your CDN bandwidth limit has been reached. Contact your administrator to reactivate CDN delivery."
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/CDNStatusNotice.jsx:41
+msgid "CDN bandwidth is almost exhausted. Upgrade your plan to avoid disruption. <upgradeLink>Upgrade plan</upgradeLink>"
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/CDNStatusNotice.jsx:46
+msgid "CDN bandwidth is almost exhausted. Contact your administrator to manage your plan."
+msgstr ""
+
 #: _src/smush-ui/pages/cdn/components/Exclusions.jsx:25
 msgid "CDN excluded keyword list updated."
 msgstr ""
 
 #: _src/smush-ui/pages/cdn/components/Exclusions.jsx:42
-msgid "Exclude image from CDN"
+msgid "Exclude images from CDN"
 msgstr ""
 
 #: _src/smush-ui/pages/cdn/components/Exclusions.jsx:44
@@ -3901,7 +3478,6 @@ msgid "Exclude images from being served via CDN based on keywords."
 msgstr ""
 
 #: _src/smush-ui/pages/cdn/components/Exclusions.jsx:54
-#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:148
 msgid "Keyword"
 msgstr ""
 
@@ -3910,7 +3486,7 @@ msgid "Exclude images by keywords."
 msgstr ""
 
 #: _src/smush-ui/pages/cdn/components/Exclusions.jsx:75
-#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:162
+#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:185
 msgid "Add one keyword per line. E.g. <strong>#image-id</strong> or <strong>.image-class</strong> or <strong>logo_image</strong> or <strong>go_imag</strong> or <strong>x.com/</strong> or <strong>@url-keyword</strong>."
 msgstr ""
 
@@ -3982,88 +3558,103 @@ msgstr ""
 msgid "WebP format with smaller file sizes."
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:40
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:31
 msgid "CDN file format changed to"
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:77
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:68
 #: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:59
-msgid "CDN status changed"
+msgid "CDN Status Changed"
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:78
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:69
 #: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:60
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:66
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:63
 msgid "If you’re using page or server caching, clear it to ensure everything works properly."
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:97
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:89
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/LazyloadSettings.jsx:23
 #: _src/smush-ui/pages/lazy-preload/components/preload/PreloadSettings.jsx:24
 #: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:107
 msgid "Do you want to turn it on?"
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:117
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:109
 #, js-format
 msgid "Serve your images from %d global locations.<moreLink>%s</moreLink>"
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:164
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:160
 msgid "Global CDN map"
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:180
+#: _src/smush-ui/pages/cdn/components/Maincontent.jsx:176
 msgid "Preferred CDN file format"
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:8
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:15
 msgid "Background images served from CDN."
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:8
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:15
 msgid "Background images excluded from CDN."
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:9
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:16
 msgid "Dynamic Resizing enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:9
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:16
 msgid "Dynamic Resizing disabled."
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:10
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:17
 msgid "REST API support enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:10
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:17
 msgid "REST API support disabled."
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:27
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:439
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:35
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:421
 msgid "Supported media types"
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:28
-msgid "Smush CDN can serve the included media types."
+#. translators: %s: Plugin name
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:38
+#, js-format
+msgid "%s CDN can serve the included media types."
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:43
-msgid "Serve background images from CDN."
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:38
+#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:19
+#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:37
+#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:37
+#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:75
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:79
+msgid "The plugin"
 msgstr ""
 
 #: _src/smush-ui/pages/cdn/components/Settings.jsx:53
+msgid "Serve background images from CDN."
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:65
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:217
 msgid "Dynamic Resizing"
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:54
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:66
 msgid "Generate extra image sizes on the fly so browsers can display the best size."
 msgstr ""
 
-#: _src/smush-ui/pages/cdn/components/Settings.jsx:65
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:76
+msgid "Eliminate image delivery PageSpeed warnings by auto-resizing images to fit their containers. <link>Go to Tools</link>"
+msgstr ""
+
+#: _src/smush-ui/pages/cdn/components/Settings.jsx:89
 msgid "Auto-replace image URLs when fetched via REST API endpoints."
 msgstr ""
 
@@ -4096,60 +3687,13 @@ msgid "Check failed images"
 msgstr ""
 
 #: _src/smush-ui/pages/dashboard/components/BulkSmushCompletedModal/BulkSmushCompletedModal.jsx:114
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:170
 msgid "Optimization complete!"
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/BulkSmushInProgressingPopup/BulkSmushInProgressingPopup.jsx:55
-msgid "Smush Running in Background"
-msgstr ""
-
-#: _src/smush-ui/pages/dashboard/components/BulkSmushInProgressingPopup/BulkSmushInProgressingPopup.jsx:56
-msgid "Be alerted by email when smush is finished"
-msgstr ""
-
-#: _src/smush-ui/pages/dashboard/components/BulkSmushInProgressingPopup/BulkSmushInProgressingPopup.jsx:60
-msgid "Send me an email notification"
-msgstr ""
-
-#: _src/smush-ui/pages/dashboard/components/BulkSmushInProgressingPopup/BulkSmushInProgressingPopup.jsx:63
-msgid "Email Notifications"
-msgstr ""
-
-#: _src/smush-ui/pages/dashboard/components/BulkSmushInProgressingPopup/BulkSmushInProgressingPopup.jsx:72
-msgid "Smush Running in 50 images patches"
-msgstr ""
-
-#: _src/smush-ui/pages/dashboard/components/BulkSmushInProgressingPopup/BulkSmushInProgressingPopup.jsx:73
-msgid "Connect for uninterrupted smushing"
-msgstr ""
-
-#: _src/smush-ui/pages/dashboard/components/BulkSmushInProgressingPopup/BulkSmushInProgressingPopup.jsx:88
-msgid "Close popup"
-msgstr ""
-
-#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:80
+#: _src/smush-ui/pages/dashboard/components/CdnCard.jsx:81
 #, js-format
 msgid "Serve your images from %d global locations"
-msgstr ""
-
-#: _src/smush-ui/pages/dashboard/components/DashboardRequiredModal.jsx:21
-msgid "Login to Dashboard"
-msgstr ""
-
-#: _src/smush-ui/pages/dashboard/components/DashboardRequiredModal.jsx:24
-msgid "Activate Dashboard"
-msgstr ""
-
-#: _src/smush-ui/pages/dashboard/components/DashboardRequiredModal.jsx:27
-msgid "Install Dashboard"
-msgstr ""
-
-#: _src/smush-ui/pages/dashboard/components/DashboardRequiredModal.jsx:55
-msgid "Dashboard plugin required"
-msgstr ""
-
-#: _src/smush-ui/pages/dashboard/components/DashboardRequiredModal.jsx:56
-msgid "Ensure you have installed, activated and logged into the WPMU DEV Dashboard."
 msgstr ""
 
 #: _src/smush-ui/pages/dashboard/components/HubConnectInfoModal/HubConnectInfoModal.jsx:49
@@ -4172,17 +3716,17 @@ msgid "Lazy Load disabled."
 msgstr ""
 
 #: _src/smush-ui/pages/dashboard/components/LazyloadCard.jsx:30
-#: _src/smush-ui/pages/lazy-preload/components/lazyload/LazyloadCard.jsx:19
+#: _src/smush-ui/pages/lazy-preload/components/lazyload/LazyloadCard.jsx:62
 msgid "Loads images when needed, speeding up your site"
 msgstr ""
 
 #: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:19
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:84
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:81
 msgid "Next-Gen Formats enabled."
 msgstr ""
 
 #: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:19
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:84
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:81
 msgid "Next-Gen Formats disabled."
 msgstr ""
 
@@ -4202,7 +3746,7 @@ msgstr ""
 msgid "Existing images will not be served as next-gen format. If you’re using page or server caching, clear it to ensure everything works properly."
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:82
+#: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:85
 msgid "Convert your images to modern & fast formats"
 msgstr ""
 
@@ -4246,20 +3790,20 @@ msgstr ""
 msgid "Stop Scan"
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:79
+#: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:76
 #, js-format
 msgid "Smush %s is here"
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:80
+#: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:77
 msgid "A Smush update is available"
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:106
+#: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:103
 msgid "Update now"
 msgstr ""
 
-#: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:117
+#: _src/smush-ui/pages/dashboard/components/SmushUpdateNotification/SmushUpdateNotification.jsx:114
 msgid "Update now for the latest improvements."
 msgstr ""
 
@@ -4328,24 +3872,28 @@ msgstr ""
 msgid "Visit Support Forum"
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:11
+#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:14
 msgid "Pick a folder"
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:13
-msgid "Select any directory on your server.<br/>Smush will scan for images in all folders."
+#. translators: %s: Plugin name
+#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:18
+#, js-format
+msgid "Select any directory on your server.<br/>%s will scan for images in all folders."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:18
+#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:25
 msgid "Set compression"
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:20
+#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:27
 msgid "Choose how aggressive you want to be.<br/>Reduce file size or keep higher image quality."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:27
-msgid "Run Smush and optimize everything in one go.<br/>It's that easy."
+#. translators: %s: Plugin name
+#: _src/smush-ui/pages/directory-smush/components/DirectoryWelcomeModal.jsx:36
+#, js-format
+msgid "Run %s and optimize everything in one go.<br/>It's that easy."
 msgstr ""
 
 #: _src/smush-ui/pages/directory-smush/components/Maincontent.jsx:85
@@ -4380,55 +3928,55 @@ msgstr ""
 msgid "Failed to start smush"
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:45
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:40
 msgid "Compression level changed to"
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:114
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:110
 msgid "We couldn't find any images in the selected directory."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:124
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:120
 msgid "Directory Optimization started."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:124
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:120
 msgid "Directory Smush started."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:136
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:132
 msgid "Smush limit exceeded. Please upgrade to Pro for unlimited smushing."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:157
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:154
 msgid "Directory Optimization completed."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:157
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:154
 msgid "Directory Smush completed."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:167
-msgid "Smush complete"
+#. translators: 1: number of optimized images, 2: bytes saved e.g. "5.9 MB"
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:176
+#, js-format
+msgid "You've optimized <strong>%1$s</strong> images and saved <strong>%2$s</strong>."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:170
-msgid "You've smushed "
+#. translators: %s: number of images that failed to be optimized
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:186
+#, js-format
+msgid "<strong>%s</strong> images failed to be optimized."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:172
-msgid " images and saved "
-msgstr ""
-
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:198
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:213
 msgid "An error occurred during smushing."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:213
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:229
 msgid "Directory Optimization cancelled."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:213
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:229
 msgid "Directory Smush cancelled."
 msgstr ""
 
@@ -4601,28 +4149,36 @@ msgstr ""
 msgid "Lazy loading exclusion keywords updated."
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:89
-msgid "Exclude content from Lazy Load"
-msgstr ""
-
-#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:96
+#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:101
 msgid "Post types to lazy load"
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:122
-msgid "Custom URL(s)"
+#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:108
+msgid "All post types"
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:123
+#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:131
+msgid "Exclude content from Lazy Load"
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:145
+msgid "Exclude custom URLs"
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:146
 msgid "Add URLs to the posts and/or pages you want to disable lazy loading on."
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:135
+#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:158
 #: _src/smush-ui/pages/lazy-preload/components/preload/Exclusions.jsx:62
 msgid "Add page or post URLs one per line in relative format."
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:149
+#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:171
+msgid "Exclude keywords"
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/lazyload/Exclusions.jsx:172
 msgid "Specify keywords from the image or iframe code - classes, IDs, filenames, source URLs or any string of characters - to exclude from lazy loading (case-sensitive)."
 msgstr ""
 
@@ -4631,13 +4187,13 @@ msgid "Image Sizing"
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ImageSizing.jsx:30
-#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:22
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:28
 msgid "Automatically resize, add dimensions, and generate dynamic sizes to ensure that the correct image size is loaded in every situation."
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ImageSizing.jsx:36
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:230
-#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:43
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:49
 msgid "Automatic Resizing"
 msgstr ""
 
@@ -4650,8 +4206,16 @@ msgid "Learn more."
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ImageSizing.jsx:50
-#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:54
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:73
 msgid "Add width and height attributes to prevent layout shifts."
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/lazyload/LazyloadCard.jsx:31
+msgid "<pluginLink/> includes Lazy Load functionality. To avoid conflicts, use only one Lazy Load at a time."
+msgstr ""
+
+#: _src/smush-ui/pages/lazy-preload/components/lazyload/LazyloadCard.jsx:48
+msgid "The following plugins include Lazy Load functionality. To avoid conflicts, use only one Lazy Load at a time:"
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/MediaTypes.jsx:16
@@ -4715,11 +4279,11 @@ msgid "Native Lazy Loading disabled."
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ScriptsNoscript.jsx:10
-msgid "Noscript Fallback enabled."
+msgid "NoScript Fallback enabled."
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ScriptsNoscript.jsx:10
-msgid "Noscript Fallback disabled."
+msgid "NoScript Fallback disabled."
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ScriptsNoscript.jsx:13
@@ -4753,43 +4317,47 @@ msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ScriptsNoscript.jsx:61
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:206
-msgid "Noscript Fallback"
+msgid "NoScript Fallback"
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/lazyload/ScriptsNoscript.jsx:62
 msgid "Add a fallback mechanism for lazy-loading in browsers that do not support JavaScript."
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:31
+#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:33
 msgid "LCP data cleared"
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:32
-msgid "Smush will redetect critical images on the next page load."
+#. translators: %s: Plugin name
+#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:36
+#, js-format
+msgid "%s will redetect critical images on the next page load."
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:36
+#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:42
 msgid "LCP data cleared."
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:44
+#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:50
 msgid "Failed to clear LCP data"
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:45
+#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:51
 #: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:263
 msgid "An error occurred. Please try again."
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:64
-msgid "Clear LCP data"
+#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:70
+msgid "Clear LCP Data"
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:66
-msgid "Clears all LCP data from the database so Smush can redetect critical images after optimization."
+#. translators: %s: Plugin name
+#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:74
+#, js-format
+msgid "Clears all LCP data from the database so %s can redetect critical images after optimization."
 msgstr ""
 
-#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:79
+#: _src/smush-ui/pages/lazy-preload/components/preload/ClearLcpData.jsx:89
 msgid "Clear"
 msgstr ""
 
@@ -4806,7 +4374,7 @@ msgid "By default Preloading is enabled for all content. Here you can define pag
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/preload/Exclusions.jsx:43
-msgid "Post, Pages & URL(s)"
+msgid "Posts, Pages & URLs"
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/preload/Exclusions.jsx:44
@@ -4886,11 +4454,11 @@ msgid "Optimized defaults in place"
 msgstr ""
 
 #: _src/smush-ui/pages/onboarding-wizard/components/DefaultSettings.jsx:123
-msgid "Ultra 5x compression"
+msgid "Ultra 5X Compression"
 msgstr ""
 
 #: _src/smush-ui/pages/onboarding-wizard/components/DefaultSettings.jsx:123
-msgid "Super 2X compression"
+msgid "Super 2X Compression"
 msgstr ""
 
 #: _src/smush-ui/pages/onboarding-wizard/components/DefaultSettings.jsx:127
@@ -5082,24 +4650,24 @@ msgstr ""
 
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:147
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:192
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:367
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:377
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:301
 msgid "Note"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:158
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:291
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:301
 msgid "Edit note"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:158
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:291
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:378
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:301
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:388
 msgid "Add note"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:168
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:388
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:398
 msgid "Date added"
 msgstr ""
 
@@ -5115,6 +4683,12 @@ msgstr ""
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:325
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigStatus.jsx:201
 msgid "Saving…"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:203
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:325
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigStatus.jsx:201
+msgid "Save"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:207
@@ -5136,20 +4710,35 @@ msgid "Confirm"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:263
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:337
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:347
 msgid "Apply this config"
 msgstr ""
 
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:271
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:353
+msgid "Download"
+msgstr ""
+
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:282
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:361
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:371
 msgid "Info"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:326
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:291
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigStatus.jsx:181
+msgid "Edit config name"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:315
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:362
+msgid "Delete"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:336
 msgid "Action"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:378
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigAction.jsx:388
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigStatus.jsx:105
 msgid "Edit"
 msgstr ""
@@ -5181,6 +4770,16 @@ msgstr ""
 
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:216
 msgid "Save New"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:283
+msgid "Save config"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:289
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:315
+#: _src/smush-ui/pages/settings/components/configs/Components/ConfigStatus.jsx:186
+msgid "Config name"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/configs/Components/ConfigList.jsx:316
@@ -5235,16 +4834,12 @@ msgstr ""
 msgid "STATUS"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/configs/Components/ConfigStatus.jsx:181
-msgid "Edit config name"
-msgstr ""
-
 #: _src/smush-ui/pages/settings/components/configs/Configs.jsx:116
 msgid "Tips"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/configs/Configs.jsx:117
-msgid "Manage and apply configs to multiple sites from the Hub"
+msgid "Manage and apply configs to multiple sites from The Hub"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/configs/Configs.jsx:134
@@ -5376,7 +4971,8 @@ msgid "Are you sure you want to reset Smush's settings back to the factory defau
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/data-settings/DataSettings.jsx:39
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:96
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:82
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:85
 msgid "Failed to reset settings. Please try again."
 msgstr ""
 
@@ -5405,89 +5001,91 @@ msgstr ""
 msgid "Choose your preferred accessibility mode"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:17
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:18
 msgid "Share usage data enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:17
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:18
 msgid "Share usage data disabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:18
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:19
 msgid "Preserve settings enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:18
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:19
 msgid "Preserve settings disabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:46
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:48
 msgid "API status updated: connection is valid."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:47
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:49
 msgid "API status updated: no valid Pro license detected."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:52
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:58
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:54
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:60
 msgid "Could not check API status. Please try again."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:91
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:79
 msgid "Settings reset to factory defaults."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:108
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:96
 msgid "API status"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:109
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:97
 msgid "Check and update API connection status."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:120
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:108
 msgid "Checking…"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:120
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:108
 msgid "Update"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:131
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:119
 msgid "Share Usage Data"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:132
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:120
 msgid "Help us improve by sharing anonymous usage data."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:154
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:142
 msgid "Preserve settings"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:155
-msgid "Keeps your Smush configurations saved in the database for easy re-installation. Switch this off if you want a complete data wipe upon uninstallation."
+#. translators: %s: Plugin name
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:145
+#, js-format
+msgid "Keeps your %s configurations saved in the database for easy reinstallation. Switch this off if you want a complete data wipe upon uninstallation."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:161
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:150
 msgid "Keep your configurations saved even if the plugin is uninstalled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:171
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:160
 msgid "Reset to factory settings"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:180
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:214
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:169
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:203
 msgid "Reset"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:193
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:182
 msgid "Reset to factory settings?"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:197
+#: _src/smush-ui/pages/settings/components/general/OtherSettings.jsx:186
 msgid "This will reset all Smush settings back to their factory defaults. This action cannot be undone."
 msgstr ""
 
@@ -5503,43 +5101,77 @@ msgstr ""
 msgid "Developer"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:20
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:26
 msgid "Gutenberg Support enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:20
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:26
 msgid "Gutenberg Support disabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:21
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:27
 msgid "WPBakery Page Builder enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:21
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:27
 msgid "WPBakery Page Builder disabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:22
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:28
 msgid "Gravity Forms enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:22
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:28
 msgid "Gravity Forms disabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:23
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:29
 msgid "Amazon S3 enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:23
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:29
 msgid "Amazon S3 disabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:62
-msgid "Storing your images on S3 buckets using WP Offload Media? Smush can detect and smush those assets for you, including when you're removing files from your host server."
+#. translators: %s: Plugin name
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:41
+#, js-format
+msgid "Add statistics and the manual %s button to Gutenberg blocks that display images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:121
+#. translators: %s: white
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:54
+#, js-format
+msgid "Allow %s images resized in WPBakery Page Builder editor."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:55
+msgid "smushing"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:55
+msgid "optimizing"
+msgstr ""
+
+#. translators: %s1: Plugin name, %s2: action
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:78
+#, js-format
+msgid "Storing your images on S3 buckets using WP Offload Media? %1$s can detect and %2$s those assets for you, including when you're removing files from your host server."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:80
+msgid "smush"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:80
+msgid "optimize"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:86
+msgid "<link>Next-Gen Formats</link> only processes local images, not offloaded images. Disable it if all images are offloaded."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/integrations/IntegrationsSettings.jsx:158
 msgid "Not in use"
 msgstr ""
 
@@ -5639,6 +5271,20 @@ msgstr ""
 msgid "Serve WebP or AVIF automatically, when supported."
 msgstr ""
 
+#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/LocalWebpSetupWizard.jsx:20
+msgid "Server Type"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/LocalWebpSetupWizard.jsx:21
+msgid "Add Rules"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/LocalWebpSetupWizard.jsx:22
+#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepFinishSetup.jsx:63
+#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/WizardFooter.jsx:179
+msgid "Finish Setup"
+msgstr ""
+
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/LocalWebpSetupWizard.jsx:92
 msgid "Local WebP Setup"
 msgstr ""
@@ -5689,8 +5335,16 @@ msgstr ""
 msgid "Add the WebP rules automatically, or copy and add them manually."
 msgstr ""
 
+#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepAddRules.jsx:130
+msgid "Automatic"
+msgstr ""
+
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepAddRules.jsx:132
 msgid "Automatically add the WebP rules to your .htaccess file."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepAddRules.jsx:141
+msgid "Manual"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepAddRules.jsx:143
@@ -5703,6 +5357,10 @@ msgstr ""
 
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepAddRules.jsx:195
 msgid "Open your .htaccess file (usually in your site's root folder) and paste these rules in."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepChooseServer.jsx:12
+msgid "Choose Server Type"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepChooseServer.jsx:14
@@ -5718,6 +5376,10 @@ msgstr ""
 msgid "Recommended (Detected)."
 msgstr ""
 
+#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepChooseServer.jsx:62
+msgid "NGINX"
+msgstr ""
+
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepChooseServer.jsx:84
 #, js-format
 msgid "Detected %s"
@@ -5729,8 +5391,8 @@ msgid "If this is incorrect, choose another server type."
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepFinishSetup.jsx:39
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:321
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:348
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:303
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:330
 msgid "WebP is now being served"
 msgstr ""
 
@@ -5746,14 +5408,22 @@ msgstr ""
 msgid "Finish & Convert Now"
 msgstr ""
 
+#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/StepFinishSetup.jsx:65
+msgid "The rules have been applied successfully."
+msgstr ""
+
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/useLocalWebpSetupWizard.js:41
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:36
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:33
 msgid "WebP conversion method set to Direct Conversion."
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/useLocalWebpSetupWizard.js:41
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:36
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:33
 msgid "WebP conversion method set to Server Configuration."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/WizardFooter.jsx:60
+msgid "Something went wrong with the request."
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/WizardFooter.jsx:86
@@ -5769,6 +5439,10 @@ msgstr ""
 msgid "Couldn’t apply the rules"
 msgstr ""
 
+#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/WizardFooter.jsx:136
+msgid "Next"
+msgstr ""
+
 #: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/WizardFooter.jsx:152
 msgid "Apply Rules"
 msgstr ""
@@ -5777,20 +5451,24 @@ msgstr ""
 msgid "Check Status"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:30
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:31
+#: _src/smush-ui/pages/settings/components/next-gen-formats/LocalWebpSetupWizard/WizardFooter.jsx:191
+msgid "Previous"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:27
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:28
 msgid "JavaScript fallback enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:30
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:31
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:27
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:28
 msgid "JavaScript fallback disabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:89
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:96
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:86
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:93
 #: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:221
-msgid "Next-Gen Formats status changed"
+msgid "Next-Gen Formats Status Changed"
 msgstr ""
 
 #. translators: %s: next-gen format label (WebP or AVIF).
@@ -5800,7 +5478,7 @@ msgid "Next-Gen Format changed from %1$s to %2$s."
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:171
-msgid "Require Action"
+msgid "Action Required"
 msgstr ""
 
 #. translators: %s: next-gen format label (WebP or AVIF).
@@ -5830,125 +5508,113 @@ msgstr ""
 msgid "Failed to delete files"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:304
-msgid "Amazon S3 integration detected"
-msgstr ""
-
 #: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:306
-msgid "Amazon S3 offload is enabled. Offloaded images can’t be served in Next‑Gen formats. Smush will still generate local Next‑Gen copies. Disable Next‑Gen Formats if you don’t want local files created."
-msgstr ""
-
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:311
-msgid "Disable Next-Gen"
-msgstr ""
-
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:324
 msgid "WPMU DEV has already configured WebP for you. Run Bulk Optimization to generate WebP files for existing images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:327
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:309
 msgid "WebP is already set up by your host. Run Bulk Optimization to generate WebP files for existing images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:333
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:315
 msgid "WPMU DEV has already set up WebP. Run Bulk Optimization on each subsite to generate WebP files for existing images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:337
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:319
 msgid "WebP is already set up by your host. Run Bulk Optimization on each subsite to generate WebP files for existing images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:342
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:358
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:324
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:340
 msgid "Convert Now"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:350
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:332
 msgid "Your server is correctly serving WebP images. Run Bulk Optimization to generate WebP files for existing images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:354
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:336
 msgid "Your server is correctly serving WebP images. To generate WebP files for existing images, run Bulk Optimization on each subsite."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:397
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:379
 msgid "Automatically convert JPEG and PNG images to WebP or AVIF, reducing file size while preserving fidelity. <moreLink>Learn more</moreLink>"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:432
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:414
 #: _src/smush-ui/pages/settings/components/tools/Others.jsx:25
 msgid "Others"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:440
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:422
 msgid "Image formats that will be converted."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:451
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:433
 msgid "JavaScript fallback"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:452
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:434
 msgid "Enable JavaScript fallback for browser compatibility"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:470
-msgid "Revert conversion"
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:452
+msgid "Revert Conversion"
 msgstr ""
 
 #. translators: %s: selected next-gen image format label (WebP or AVIF).
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:475
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:457
 #, js-format
 msgid "Remove generated %s files to reclaim server space. Originals will revert to PNG or JPEG. CDN-converted WebP/AVIF files are unaffected."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:489
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:623
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:471
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:605
 msgid "Delete files"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:505
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:487
 msgid "Format / Type"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:507
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:489
 msgid "Select format type and conversion method."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:531
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:578
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:513
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:560
 msgid "Convert images directly on upload."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:532
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:514
 msgid "Recommended"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:552
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:534
 msgid "Configure server to serve converted images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:555
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:537
 msgid "Open WebP Setup Wizard"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:599
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:581
 msgid "Delete all AVIF files?"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:599
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:581
 msgid "Delete all WebP files?"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:604
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:586
 msgid "This will permanently delete all generated AVIF files. Your original images will not be affected."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:605
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:587
 msgid "This will permanently delete all generated WebP files. Your original images will not be affected."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:623
+#: _src/smush-ui/pages/settings/components/next-gen-formats/NextGenFormats.jsx:605
 msgid "Deleting..."
 msgstr ""
 
@@ -5961,7 +5627,7 @@ msgid "Bulk Optimization"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/permissions/PermissionsSettings.jsx:126
-msgid "Choose modules that sub-sites can override"
+msgid "Choose modules that sub-site admins can override"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/permissions/PermissionsSettings.jsx:142
@@ -5972,32 +5638,36 @@ msgstr ""
 msgid "Sub-site admins can override all available Smush settings for their site."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:16
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:21
 msgid "Automatic Resizing enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:16
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:21
 msgid "Automatic Resizing disabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:17
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:22
 msgid "Set image dimensions enabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:17
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:22
 msgid "Set image dimensions disabled."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:23
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:29
 msgid "Enable Lazy Load to auto resize your images."
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:32
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:38
 msgid "Auto resize"
 msgstr ""
 
-#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:47
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:54
 msgid "Auto-scale images to container size for faster loading"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/tools/AutoResize.jsx:60
+msgid "Optimize performance even further by automatically generating additional image sizes with the Dynamic Resizing feature. <link>Go to CDN</link>"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellCard.jsx:23
@@ -6169,7 +5839,7 @@ msgid "Max height"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/tools/LargeImage.jsx:127
-msgid "Images are automatically resized on upload. For Retina displays, use double double the display dimensions. Animated GIFs aren’t resized—use a tool like"
+msgid "Images are automatically resized on upload. For Retina displays, use double the display dimensions. Animated GIFs aren’t resized—use a tool like"
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/tools/LargeImage.jsx:129

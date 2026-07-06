@@ -139,7 +139,7 @@ class CLI_Optimizer {
 			return esc_html__( 'All of your images failed to restore. Find out why and how to resolve the issue(s) below.', 'wp-smushit' );
 		} elseif ( $no_errors > 0 ) {
 			$no_restored          = $total_images - $no_errors;
-			$bulk_restore_message = esc_html__( '{{smushed}}/{{total}} images restored successfully, {{errors}} images were not restored, find out why and how to resolve the issue(s) below.', 'wp-smushit' );
+			$bulk_restore_message = esc_html__( '{{smushed}}/{{total}} images restored successfully, {{errors}} images were not restored. Find out why and how to resolve the issue(s) below.', 'wp-smushit' );
 			$bulk_restore_message = str_replace( array( '{{smushed}}', '{{total}}', '{{errors}}' ), array( $no_restored, $total_images, $no_errors ), $bulk_restore_message );
 			return $bulk_restore_message;
 		}

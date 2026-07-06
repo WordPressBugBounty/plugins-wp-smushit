@@ -37,6 +37,10 @@ class Bulk_Smush_Background_Process extends Background_Process {
 	 * @return boolean
 	 */
 	protected function task( $task ) {
+		if ( is_array( $task ) ) {
+			$task = Smush_Background_Task::from_json( $task );
+		}
+
 		if ( ! is_a( $task, Smush_Background_Task::class ) || ! $task->is_valid() ) {
 			Helper::logger()->error( 'An invalid background task was encountered.' );
 

@@ -1,13 +1,13 @@
 === Smush – Image Optimization, Compression, Lazy Load, WebP & CDN===
 Plugin Name: Smush – Image Optimization, Compression, Lazy Load, WebP & CDN
-Version: 4.1.2
+Version: 4.2.0
 Author: WPMU DEV
 Author URI: https://wpmudev.com/
 Contributors: WPMUDEV, alexdunae
 Tags: optimize images, convert webp, image optimization, compress images, image optimizer
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 4.1.0
+Stable tag: 4.2.0
 Requires PHP: 7.4
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -26,7 +26,7 @@ Get everything you need to optimize images and speed up your site. Smush works o
 
 [youtube https://www.youtube.com/watch?v=4E5PgBsi6eI&feature=youtu.be]
 
-### Compress images without losing quality ### 
+### Compress images without losing quality ###
 
 Reduce image file size automatically while keeping your images sharp and clear. Smush is an easy-to-use image optimizer which let’s you compress images using both lossless and lossy compression, giving you the best balance of quality and performance without extra work.
 
@@ -192,6 +192,23 @@ We take plugin security incredibly seriously; if you have a bug or vulnerability
 5. Serve images at lightning speed via our global CDN.
 
 == Changelog ==
+
+= 4.2.0 ( 2026-07-06 ) =
+- New: Full RTL language support across all Smush pages, modals, and UI components
+- Improvement: Improved bulk smush process reliability using atomic operations instead of MySQL locks
+- Improvement: Bulk smush health checks now run via Ajax for faster stall detection
+- Improvement: Visual feedback shown when the optimization process has stalled
+- Improvement: Updated Lazy Load exclusions UI/UX
+- Improvement: Missing feature notices implemented throughout the plugin
+- Improvement: Tooltips now displayed even when a feature is disabled
+- Improvement: Rescan only required when setting changes create new savings opportunities
+- Improvement: Translation improvements and fixes
+- Improvement: Removed unused code
+- Fix: Lazy load iframe causing issues with the browser back button
+- Fix: Smush failing to detect existing Hub connection when WPMU DEV Dashboard plugin is installed first
+- Fix: Site title missing in Bulk Smush completed email notifications
+- Fix: Progress bar infinite loop
+- Fix: Scan stuck at 0% and bulk smush freezing issues
 
 = 4.1.2 ( 2026-06-22 ) =
 - Improvement: UX improvements

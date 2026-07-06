@@ -2,14 +2,12 @@
 
 namespace Smush\Core\Media_Library;
 
+use Smush\Core\Background\Process_Status_DTO;
 use Smush\Core\Controller;
 use Smush\Core\Helper;
 use Smush\Core\Media\Media_Item_Query;
-use Smush\Core\Background\Process_Status_DTO;
-use WP_Error;
 use Smush\Core\Stats\Global_Stats;
-use Smush\Core\Background\Loopback_Request_Tester;
-use WP_Smush;
+use WP_Error;
 
 class Background_Media_Library_Scanner extends Controller {
 	private static $optimize_on_completed_option_key = 'wp_smush_run_optimize_on_scan_completed';
@@ -60,6 +58,7 @@ class Background_Media_Library_Scanner extends Controller {
 		$this->register_action( 'wp_ajax_wp_smush_start_background_scan', array( $this, 'start_background_scan' ) );
 		$this->register_action( 'wp_ajax_wp_smush_cancel_background_scan', array( $this, 'cancel_background_scan' ) );
 		$this->register_action( 'wp_ajax_wp_smush_get_background_scan_status', array( $this, 'send_status' ) );
+		$this->register_action( 'wp_ajax_wp_smush_reset_background_scan_status', array( $this, 'reset_background_scan_status' ) );
 		$this->register_action( "{$identifier}_completed", array( $this, 'background_process_completed' ) );
 		$this->register_action( "{$identifier}_dead", array( $this, 'background_process_dead' ) );
 
@@ -103,7 +102,9 @@ class Background_Media_Library_Scanner extends Controller {
 		$slice_size  = $this->scanner->get_slice_size();
 		$query       = new Media_Item_Query();
 		$slice_count = $query->get_slice_count( $slice_size );
-		$tasks       = range( 1, $slice_count );
+		$tasks       = array_map( function ( $slice_number ) {
+			return array( 'slice' => $slice_number );
+		}, range( 1, $slice_count ) );
 		$this->background_process->start( $tasks );
 
 		return $this->background_process->get_status()->to_array();
@@ -131,6 +132,8 @@ class Background_Media_Library_Scanner extends Controller {
 		if ( ! Helper::is_user_allowed() ) {
 			wp_send_json_error();
 		}
+
+		$this->background_process->maybe_do_healthcheck();
 
 		wp_send_json_success( $this->get_scan_status() );
 	}
@@ -241,9 +244,9 @@ class Background_Media_Library_Scanner extends Controller {
 	 * @return array
 	 */
 	public function localize_scan_stats( $script_data ) {
-		$scan_status          = $this->get_scan_data();
-		$scan_status['nonce'] = wp_create_nonce( 'wp_smush_media_library_scanner' );
-		$script_data['scanStatus'] = $scan_status;
+		$scan_status               = $this->get_scan_data();
+		$scan_status['nonce']      = wp_create_nonce( 'wp_smush_media_library_scanner' );
+		$script_data['scanStatus'] = Process_Status_DTO::to_react_props( $scan_status );
 
 		return $script_data;
 	}
@@ -266,18 +269,10 @@ class Background_Media_Library_Scanner extends Controller {
 	}
 
 	private function get_scan_status() {
-		$is_completed = $this->background_process->get_status()->is_completed();
-		$is_cancelled = $this->background_process->get_status()->is_cancelled();
-		$status       = $this->background_process->get_status()->to_array();
+		$status = $this->background_process->get_status()->to_array();
 
 		$status['optimize_on_scan_completed'] = $this->enabled_optimize_on_scan_completed();
-
-		// Add global stats on completed/cancelled.
-		if ( $is_completed || $is_cancelled ) {
-			$status['global_stats'] = WP_Smush::get_instance()->admin()->get_global_stats_with_bulk_smush_content_and_notice();
-		}
-
-		$status['lastScanRun'] = $this->get_last_scan_completed_human();
+		$status['lastScanRun']                = $this->get_last_scan_completed_human();
 
 		return $status;
 	}
@@ -333,5 +328,17 @@ class Background_Media_Library_Scanner extends Controller {
 		$status['scanDateTime'] = $this->get_last_scan_date_time();
 
 		return $status;
+	}
+
+	public function reset_background_scan_status() {
+		check_ajax_referer( 'wp_smush_media_library_scanner' );
+
+		if ( ! Helper::is_user_allowed() ) {
+			wp_send_json_error();
+		}
+
+		$this->background_process->get_status()->reset();
+
+		wp_send_json_success();
 	}
 }

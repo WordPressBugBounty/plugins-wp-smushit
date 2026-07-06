@@ -60,15 +60,19 @@ class Background_Bulk_Smush_Controller {
 		$this->register_ajax_handler( 'bulk_smush_pause', array( $this, 'bulk_smush_pause' ) );
 		$this->register_ajax_handler( 'bulk_smush_resume', array( $this, 'bulk_smush_resume' ) );
 		$this->register_ajax_handler( 'bulk_smush_get_status', array( $this, 'bulk_smush_get_status' ) );
-		$this->register_ajax_handler( 'bulk_smush_get_global_stats', array( $this, 'bulk_smush_get_global_stats' ) );
+		$this->register_ajax_handler( 'bulk_smush_reset_status', array( $this, 'bulk_smush_reset_status' ) );
 
 		$background_scan = Background_Media_Library_Scanner::get_instance();
-		$scan_identifier  = $background_scan->get_background_process()->get_identifier();
+		$scan_identifier = $background_scan->get_background_process()->get_identifier();
 		add_action( "{$scan_identifier}_completed", array( $this, 'on_scan_completed' ), 20 );
 
 		add_filter( 'wp_smush_frontend_poll_data', array( $this, 'add_bulk_smush_progress_to_poll' ) );
 		add_filter( 'wp_smush_localize_ui_script_data', array( $this, 'localize_background_stats' ), 10, 2 );
 		add_action( 'init', array( $this, 'cancel_programmatically' ) );
+	}
+
+	public function __call( $method_name, $arguments ) {
+		_deprecated_function( esc_html( $method_name ), '4.2.0' );
 	}
 
 	public function get_background_process() {
@@ -102,6 +106,13 @@ class Background_Bulk_Smush_Controller {
 				),
 				403
 			);
+		}
+
+		if ( $this->global_stats->is_outdated() ) {
+			wp_send_json_error( array(
+				'error'         => 'is_outdated',
+				'error_message' => esc_html__( 'You need to run a scan before bulk Smush can be started.', 'wp-smushit' ),
+			), 409 );
 		}
 
 		$process       = $this->background_process;
@@ -165,13 +176,6 @@ class Background_Bulk_Smush_Controller {
 				)
 			)
 		);
-	}
-
-	public function bulk_smush_get_global_stats() {
-		$this->check_ajax_referrer();
-
-		$stats = WP_Smush::get_instance()->admin()->get_global_stats_with_bulk_smush_content();
-		wp_send_json_success( $stats );
 	}
 
 	private function check_ajax_referrer() {
@@ -367,7 +371,7 @@ class Background_Bulk_Smush_Controller {
 		return true;
 
 		return $this->is_background_enabled()
-			   && $this->is_background_supported();
+		       && $this->is_background_supported();
 	}
 
 	public function is_background_supported() {
@@ -428,10 +432,16 @@ class Background_Bulk_Smush_Controller {
 	 * Add bulk smush progress data to frontend poll response
 	 *
 	 * @param array $data Polling data array.
+	 *
 	 * @return array Modified polling data with bulk smush progress.
 	 */
 	public function add_bulk_smush_progress_to_poll( $data ) {
 		$data['bulk-smush-progress'] = $this->get_process_data_for_ui();
+
+		if ( $this->background_process->get_status()->is_in_processing() ) {
+			$this->background_process->maybe_do_healthcheck();
+		}
+
 		return $data;
 	}
 
@@ -444,5 +454,13 @@ class Background_Bulk_Smush_Controller {
 		if ( $this->should_use_background() && Background_Media_Library_Scanner::get_instance()->enabled_optimize_on_scan_completed() ) {
 			$this->start_bulk_smush_direct();
 		}
+	}
+
+	public function bulk_smush_reset_status() {
+		$this->check_ajax_referrer();
+
+		$this->background_process->get_status()->reset();
+
+		wp_send_json_success();
 	}
 }

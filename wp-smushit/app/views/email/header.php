@@ -104,6 +104,13 @@
       color: #f5f5f5 !important;
     }
 
+    h2 a{
+      color: #0059FF !important;
+    }
+    h2 a:hover{
+      color: #0C33A9 !important;
+    }
+
     .hidden-img img {
       display: none !important;
     }

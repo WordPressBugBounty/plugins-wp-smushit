@@ -4,7 +4,7 @@ namespace Smush\Core;
 use Smush\Core\Bulk\Background_Bulk_Smush_Controller;
 use Smush\Core\Helper;
 use Smush\Core\Media_Library\Background_Media_Library_Scanner;
-use Smush\Core\Threads\Thread_Safe_Options;
+use Smush\Core\Threads\JSON_Object_Array;
 use Smush\Core\Modules\Helpers\WhiteLabel;
 
 class Activity_Log_Controller extends Controller {
@@ -42,9 +42,9 @@ class Activity_Log_Controller extends Controller {
 	protected $string_utils;
 
 	/**
-	 * @var Thread_Safe_Options
+	 * @var JSON_Object_Array
 	 */
-	private $thread_safe_options;
+	private $object_array;
 
 	/**
 	 * Activity_Log_Controller instance.
@@ -67,7 +67,7 @@ class Activity_Log_Controller extends Controller {
 
 	public function __construct() {
 		$this->string_utils            = new String_Utils();
-		$this->thread_safe_options     = new Thread_Safe_Options();
+		$this->object_array            = new JSON_Object_Array( self::$notification_data_key );
 		$this->whitelabel              = new WhiteLabel();
 		$this->scan_background_process = Background_Media_Library_Scanner::get_instance()->get_background_process();
 		$this->bulk_background_process = Background_Bulk_Smush_Controller::get_instance()->get_background_process();
@@ -260,7 +260,7 @@ class Activity_Log_Controller extends Controller {
 	 * @return array
 	 */
 	public function get_notifications() {
-		$notifications = $this->thread_safe_options->get_option( self::$notification_data_key, array() );
+		$notifications = $this->object_array->get( array() );
 
 		return is_array( $notifications ) ? $notifications : array();
 	}
@@ -281,10 +281,7 @@ class Activity_Log_Controller extends Controller {
 			return false;
 		}
 
-		$result = $this->thread_safe_options->append_object_to_array(
-			self::$notification_data_key,
-			$sanitized_notification
-		);
+		$result = $this->object_array->append( $sanitized_notification );
 
 		return $result !== false && $result > 0;
 	}
@@ -357,6 +354,6 @@ class Activity_Log_Controller extends Controller {
 		// Overwrite the option with the trimmed, sorted list.
 		// Uses replace_array() so the value is stored as JSON, keeping it
 		// consistent with the JSON-based read in get_notifications().
-		$this->thread_safe_options->replace_object_array( self::$notification_data_key, $notifications );
+		$this->object_array->unsafe_replace( $notifications );
 	}
 }

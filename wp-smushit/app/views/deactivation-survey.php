@@ -30,7 +30,7 @@ $docs_link             = $should_hide_docs_link ? '' : $docs_link;
 				<div class="sui-box" role="document">
 					<div class="sui-box-header">
 						<h3 class="sui-box-title" style="white-space: nowrap;">
-							<img style="margin-right:6px" src="<?php echo esc_url( WP_SMUSH_URL . 'app/assets/images/smush-config-icon.png' ); ?>" width="30" srcset="<?php echo esc_url( WP_SMUSH_URL . 'app/assets/images/smush-config-icon.png' ); ?> 2x" alt="<?php esc_attr_e( 'Smush', 'wp-smushit' ); ?>" aria-hidden="true" />
+							<img style="margin-inline-end:6px" src="<?php echo esc_url( WP_SMUSH_URL . 'app/assets/images/smush-config-icon.png' ); ?>" width="30" srcset="<?php echo esc_url( WP_SMUSH_URL . 'app/assets/images/smush-config-icon.png' ); ?> 2x" alt="<?php esc_attr_e( 'Smush', 'wp-smushit' ); ?>" aria-hidden="true" />
 							<?php esc_html_e( 'Deactivate Smush?', 'wp-smushit' ); ?>
 						</h3>
 						<div class="sui-actions-right">

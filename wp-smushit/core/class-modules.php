@@ -119,7 +119,7 @@ class Modules {
 		$media_library_watcher = new Media_Library_Watcher();
 		$media_library_watcher->init();
 
-		$global_stats_controller = new Global_Stats_Controller();
+		$global_stats_controller = Global_Stats_Controller::get_instance();
 		$global_stats_controller->init();
 
 		$plugin_settings_watcher = new Plugin_Settings_Watcher();
@@ -179,6 +179,9 @@ class Modules {
 
 		$activity_log_controller = Activity_Log_Controller::get_instance();
 		$activity_log_controller->init();
+
+		$configs_controller = Configs_Controller::get_instance();
+		$configs_controller->init();
 	}
 
 	protected function get_smush_module() {

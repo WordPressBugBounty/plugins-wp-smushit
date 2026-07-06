@@ -206,63 +206,89 @@ class Media_Library extends Abstract_Module {
 	 * @return string
 	 */
 	private function get_bulk_restore_message( $restored, $total, $missing_backup_count, $error_copy_count ) {
-		$backup_link = '<a href="' . esc_url( Helper::get_page_url( 'smush#smush-backup-setting-card' ) ) . '"><strong>';
+		$backup_link       = '<a href="' . esc_url( Helper::get_page_url( 'smush#smush-backup-setting-card' ) ) . '"><strong>';
 		$backup_link_close = '</strong></a>';
 
-		if ( $missing_backup_count > 0 && $error_copy_count > 0 ) {
-			// Mixed message.
-			/* translators: %1$d: restored count, %2$d: total count, %3$d: no backup count, %4$d: copy error count, %5$s: link start tag, %6$s: link end tag */
+		$restored = (int) $restored;
+		$total    = (int) $total;
+
+		// Success message (plural-aware).
+		$success = sprintf(
+			/* translators: 1: opening strong tag, 2: restored count, 3: total count, 4: closing strong tag */
+			_n(
+				'%1$s%2$d/%3$d image was restored successfully%4$s.',
+				'%1$s%2$d/%3$d images were restored successfully%4$s.',
+				$restored,
+				'wp-smushit'
+			),
+			'<strong>',
+			$restored,
+			$total,
+			'</strong>'
+		);
+
+		// No failures.
+		if ( $missing_backup_count <= 0 && $error_copy_count <= 0 ) {
 			return sprintf(
-				esc_html__(
-					'%1$s%2$d/%3$d images were restored successfully%4$s. %5$d couldn\'t be restored as no backup exists, and %6$d due to a backup copy error. Ensure %7$sBackup original images%8$s is enabled to keep copies of your originals.',
-					'wp-smushit'
-				),
-				'<strong>',
-				(int) $restored,
-				(int) $total,
-				'</strong>',
-				(int) $missing_backup_count,
-				(int) $error_copy_count,
-				$backup_link,
-				$backup_link_close
-			);
-		} elseif ( $missing_backup_count > 0 ) {
-			/* translators: %1$d: restored count, %2$d: total count, %3$d: failed count, %4$s: link start tag, %5$s: link end tag */
-			return sprintf(
-				esc_html__(
-					'%1$s%2$d/%3$d images were restored successfully%4$s. %5$d couldn\'t be restored as no backup exists. Ensure %6$sBackup original images%7$s is enabled to keep copies of your originals.',
-					'wp-smushit'
-				),
-				'<strong>',
-				(int) $restored,
-				(int) $total,
-				'</strong>',
-				(int) $missing_backup_count,
-				$backup_link,
-				$backup_link_close
-			);
-		} elseif ( $error_copy_count > 0 ) {
-			/* translators: %1$d: restored count, %2$d: total count, %3$d: failed count, %4$s: link start tag, %5$s: link end tag */
-			return sprintf(
-				esc_html__(
-					'%1$s%2$d/%3$d images were restored successfully%4$s. %5$d couldn\'t be restored due to a backup copy error. Ensure %6$sBackup original images%7$s is enabled to keep copies of your originals.',
-					'wp-smushit'
-				),
-				'<strong>',
-				(int) $restored,
-				(int) $total,
-				'</strong>',
-				(int) $error_copy_count,
-				$backup_link,
-				$backup_link_close
+				/* translators: %1$d: restored count, %2$d: total count */
+				esc_html__( 'All selected images were restored successfully (%1$d/%2$d).', 'wp-smushit' ),
+				$restored,
+				$total
 			);
 		}
-		return sprintf(
-			/* translators: %1$d: restored count, %2$d: total count */
-			esc_html__( 'All selected images were restored successfully (%1$d/%2$d).', 'wp-smushit' ),
-			(int) $restored,
-			(int) $total
+
+		$ensure_backup = sprintf(
+			/* translators: 1: link start tag, 2: link end tag */
+			esc_html__( 'Ensure %1$sBackup original images%2$s is enabled to keep copies of your originals.', 'wp-smushit' ),
+			$backup_link,
+			$backup_link_close
 		);
+
+		$no_backup_clause = '';
+		if ( $missing_backup_count > 0 ) {
+			$missing_backup_count = (int) $missing_backup_count;
+			$no_backup_clause     = sprintf(
+				/* translators: %d: number of images */
+				_n(
+					'%d image couldn\'t be restored as no backup exists',
+					'%d images couldn\'t be restored as no backup exists',
+					$missing_backup_count,
+					'wp-smushit'
+				),
+				$missing_backup_count
+			);
+		}
+
+		$copy_error_clause = '';
+		if ( $error_copy_count > 0 ) {
+			$error_copy_count  = (int) $error_copy_count;
+			$copy_error_clause = sprintf(
+				/* translators: %d: number of images */
+				_n(
+					'%d image couldn\'t be restored due to a backup copy error',
+					'%d images couldn\'t be restored due to a backup copy error',
+					$error_copy_count,
+					'wp-smushit'
+				),
+				$error_copy_count
+			);
+		}
+
+		$failures = '';
+		if ( $no_backup_clause && $copy_error_clause ) {
+			$failures = sprintf(
+				/* translators: 1: first failure clause, 2: second failure clause */
+				esc_html__( '%1$s, and %2$s.', 'wp-smushit' ),
+				$no_backup_clause,
+				$copy_error_clause
+			);
+		} elseif ( $no_backup_clause ) {
+			$failures = $no_backup_clause . '.';
+		} elseif ( $copy_error_clause ) {
+			$failures = $copy_error_clause . '.';
+		}
+
+		return $success . ' ' . $failures . ' ' . $ensure_backup;
 	}
 
 	/**

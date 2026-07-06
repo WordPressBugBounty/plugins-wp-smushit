@@ -33,9 +33,14 @@ class Mutex {
 		if ( $this->is_supported() ) {
 			$acquired = $this->acquire_lock();
 			if ( $acquired || ! $this->break_on_timeout() ) {
-				call_user_func( $operation );
+				try {
+					call_user_func( $operation );
+				} finally {
+					if ( $acquired ) {
+						$this->release_lock();
+					}
+				}
 			}
-			$this->release_lock();
 		} else {
 			call_user_func( $operation );
 		}

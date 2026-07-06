@@ -28,16 +28,20 @@ class Resize_Controller extends Controller {
 			'add_resize_optimization',
 		), self::$resize_optimization_order, 2 );
 		$this->register_filter( 'wp_smush_global_optimization_stats', array( $this, 'add_resize_global_stats' ) );
+		$this->register_filter( 'wp_smush_global_stats_digest_keys', array( $this, 'add_digest_keys' ) );
+		$this->register_filter( 'wp_smush_global_stats_digest_options', array( $this, 'add_digest_options' ) );
+	}
 
-		$this->register_action( 'wp_smush_settings_updated', array(
-			$this,
-			'mark_as_outdated_if_resize_turned_on',
-		), 10, 2 );
+	public function add_digest_keys( $keys ) {
+		$keys[] = 'resize';
 
-		$this->register_action( 'wp_smush_resize_sizes_updated', array(
-			$this,
-			'mark_as_outdated_if_resize_settings_changed',
-		), 10, 2 );
+		return $keys;
+	}
+
+	public function add_digest_options( $options ) {
+		$options[] = 'wp-smush-resize_sizes';
+
+		return $options;
 	}
 
 	public function add_resize_optimization( $optimizations, $media_item ) {
@@ -51,30 +55,5 @@ class Resize_Controller extends Controller {
 		$stats[ Resize_Optimization::get_key() ] = new Media_Item_Optimization_Global_Stats_Persistable( self::$global_stats_option_id );
 
 		return $stats;
-	}
-
-	public function mark_as_outdated_if_resize_turned_on( $old_settings, $settings ) {
-		$old_resize_status = ! empty( $old_settings['resize'] );
-		$new_resize_status = ! empty( $settings['resize'] );
-		if ( $old_resize_status !== $new_resize_status ) {
-			$this->mark_global_stats_as_outdated();
-		}
-	}
-
-	public function mark_as_outdated_if_resize_settings_changed( $old_settings, $settings ) {
-		$old_width  = (int) $this->array_utils->get_array_value( $old_settings, 'width' );
-		$new_width  = (int) $this->array_utils->get_array_value( $settings, 'width' );
-		$old_height = (int) $this->array_utils->get_array_value( $old_settings, 'height' );
-		$new_height = (int) $this->array_utils->get_array_value( $settings, 'height' );
-		if ( $old_width !== $new_width || $old_height !== $new_height ) {
-			$this->mark_global_stats_as_outdated();
-		}
-	}
-
-	/**
-	 * @return void
-	 */
-	public function mark_global_stats_as_outdated() {
-		$this->global_stats->mark_as_outdated();
 	}
 }

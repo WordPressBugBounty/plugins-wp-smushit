@@ -7,97 +7,14 @@
  * @since 2.9.0  Moved from admin.js
  */
 
-import Smush from '../smush/smush';
 import Fetcher from '../utils/fetcher';
-import SmushProcess from '../common/progressbar';
-
+// TODO: Clean this file after we handling ignore all failed items.
 ( function( $ ) {
 	'use strict';
 
 	class WP_Smush_Bulk {
-		#bulkSmushObj;
-
 		constructor() {
-			this.onClickBulkSmushNow();
-			this.onClickIgnoreImage();
 			this.onClickIgnoreAllImages();
-			this.onScanCompleted();
-		}
-
-		onClickBulkSmushNow() {
-			/**
-			 * Handle the Bulk Smush/Bulk re-Smush button click.
-			 */
-			const self = this;
-			$( '.wp-smush-all' ).on( 'click', function( e ) {
-				const bulkSmushButton = $( this );
-				if ( bulkSmushButton.hasClass( 'wp-smush-scan-and-bulk-smush' ) ) {
-					return;
-				}
-				e.preventDefault();
-
-				self.ajaxBulkSmushStart( bulkSmushButton );
-			} );
-		}
-
-		ajaxBulkSmushStart( bulkSmushButton ) {
-			bulkSmushButton = bulkSmushButton || $( '#wp-smush-bulk-content .wp-smush-all' );
-			// Check for IDs, if there is none (unsmushed or lossless), don't call Smush function.
-			/** @param {Array} wp_smushit_data.unsmushed */
-			if (
-				'undefined' === typeof window.wp_smushit_data ||
-				( 0 === window.wp_smushit_data.unsmushed.length &&
-					0 === window.wp_smushit_data.resmush.length )
-			) {
-				return false;
-			}
-			// Disable re-Smush and scan button.
-			// TODO: refine what is disabled.
-			$(
-				'.wp-resmush.wp-smush-action, .wp-smush-scan, .wp-smush-all:not(.sui-progress-close), a.wp-smush-lossy-enable, button.wp-smush-resize-enable, button#save-settings-button'
-			).prop( 'disabled', true );
-
-			this.#bulkSmushObj = new Smush( bulkSmushButton, true );
-			SmushProcess.setOnCancelCallback( () => {
-				this.#bulkSmushObj.cancelAjax();
-			} ).update( 0, this.#bulkSmushObj.ids.length ).show();
-
-			// Show upsell cdn.
-			this.maybeShowCDNUpsellForPreSiteOnStart();
-
-			// Run bulk Smush.
-			this.#bulkSmushObj.run();
-		}
-
-		onClickIgnoreImage() {
-			/**
-			 * Ignore file from bulk Smush.
-			 *
-			 * @since 2.9.0
-			 */
-			$( 'body' ).on( 'click', '.smush-ignore-image', function( e ) {
-				e.preventDefault();
-
-				const self = $( this );
-
-				self.prop( 'disabled', true );
-				self.attr( 'data-tooltip' );
-				self.removeClass( 'sui-tooltip' );
-				$.post( ajaxurl, {
-					action: 'ignore_bulk_image',
-					id: self.attr( 'data-id' ),
-					_ajax_nonce: wp_smush_msgs.nonce,
-				} ).done( ( response ) => {
-					if ( self.is( 'a' ) && response.success && 'undefined' !== typeof response.data.html ) {
-						if ( e.target.closest( '.smush-status-links' ) ) {
-							self.closest( '.smush-status-links' ).parent().html( response.data.html );
-						} else if ( e.target.closest( '.smush-bulk-error-row' ) ) {
-							self.addClass( 'disabled' );
-							e.target.closest( '.smush-bulk-error-row' ).style.opacity = 0.5;
-						}
-					}
-				} );
-			} );
 		}
 
 		onClickIgnoreAllImages() {
@@ -125,45 +42,6 @@ import SmushProcess from '../common/progressbar';
 					} );
 				};
 			}
-		}
-
-		onScanCompleted() {
-			document.addEventListener( 'ajaxBulkSmushOnScanCompleted', ( e ) => {
-				this.ajaxBulkSmushStart();
-			} );
-		}
-
-		maybeShowCDNUpsellForPreSiteOnStart() {
-			// Show upsell cdn.
-			const upsell_cdn = document.querySelector( '.wp-smush-upsell-cdn' );
-			if ( upsell_cdn ) {
-				upsell_cdn.classList.remove( 'sui-hidden' );
-			}
-		}
-
-		isBulkSmushInProgress() {
-			return this.#bulkSmushObj?.ids?.length > 0 && this.#bulkSmushObj.button?.hasClass( 'wp-smush-started' );
-		}
-
-		getTotalEnqueuedImages() {
-			return this.#bulkSmushObj?.total || 0;
-		}
-
-		getCompletionPercentage() {
-			const bulkSmushObj = this.#bulkSmushObj;
-			if ( ! bulkSmushObj ) {
-				return 0;
-			}
-			const totalEnqueuedImages = this.getTotalEnqueuedImages();
-			const smushed = Number( bulkSmushObj.smushed ) || 0;
-			const errors = Array.isArray( bulkSmushObj.errors ) ? bulkSmushObj.errors.length : 0;
-			const processedImages = smushed + errors;
-
-			if ( totalEnqueuedImages > 0 ) {
-				return Math.ceil( ( processedImages * 100 ) / totalEnqueuedImages );
-			}
-
-			return 0;
 		}
 	}
 

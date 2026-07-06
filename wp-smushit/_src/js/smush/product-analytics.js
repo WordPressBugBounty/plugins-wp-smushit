@@ -1,5 +1,5 @@
 import tracker from '../utils/tracker';
-
+// TODO: Clean this file after handling all events.
 class ProductAnalytics {
 	troubleshootClicked = false;
 	resumeBulkSmushCount = 0;
@@ -24,7 +24,7 @@ class ProductAnalytics {
 		this.trackBulkSmushInterruptedEventOnRetryBulkSmushModal();
 
 		// Bulk Smush Interrupted Event when exit ajax bulk smush.
-		this.trackBulkSmushInterruptedEventWhenExitingAjaxBulkSmush();
+		// this.trackBulkSmushInterruptedEventWhenExitingAjaxBulkSmush();
 
 		// Interrupted Event from Inline Notice.
 		this.trackInterruptedEventFromInlineNotice();
@@ -304,19 +304,8 @@ class ProductAnalytics {
 	}
 
 	getBulkSmushProcessStats() {
-		if ( this.canUseBackgroundOptimization() ) {
-			// Handled it via PHP.
+		// Handled it via PHP.
 			return {};
-		}
-		const bulkSmushObject = window.WP_Smush?.bulk;
-		if ( ! bulkSmushObject ) {
-			return {};
-		}
-
-		return {
-			'Total Enqueued Images': bulkSmushObject.getTotalEnqueuedImages(),
-			'Completion Percentage': bulkSmushObject.getCompletionPercentage(),
-		};
 	}
 
 	trackInterruptedEventFromInlineNotice() {

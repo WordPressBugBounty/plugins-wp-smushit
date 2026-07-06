@@ -8,7 +8,7 @@ use Smush\Core\Helper;
 use Smush\Core\Membership\Membership;
 use Smush\Core\Server_Utils;
 use Smush\Core\Settings;
-use Smush\Core\Threads\Thread_Safe_Options;
+use Smush\Core\Threads\JSON_Record;
 use Smush\Core\Time_Utils;
 use Smush\Core\Url_Utils;
 use WPMUDEV_Analytics;
@@ -59,6 +59,11 @@ class Product_Analytics {
 	private $url_utils;
 
 	/**
+	 * @var JSON_Record
+	 */
+	private $event_data;
+
+	/**
 	 * Static instance getter
 	 */
 	public static function get_instance() {
@@ -77,6 +82,7 @@ class Product_Analytics {
 		$this->url_utils    = new Url_Utils();
 		$this->settings     = Settings::get_instance();
 		$this->membership   = Membership::get_instance();
+		$this->event_data   = new JSON_Record( self::$event_data_option_id );
 	}
 
 	/**
@@ -243,12 +249,10 @@ class Product_Analytics {
 	}
 
 	private function track_with_limit( $event, $properties, $limit_per_day ) {
-		$thread_safe_options       = new Thread_Safe_Options();
-		$option_id                 = self::$event_data_option_id;
 		$event_count_key           = $this->get_event_count_key( $event, $properties );
 		$event_count_timestamp_key = $event_count_key . '_timestamp';
-		$event_count               = (int) $thread_safe_options->get_value( $option_id, $event_count_key, 0 );
-		$event_count_timestamp     = (int) $thread_safe_options->get_value( $option_id, $event_count_timestamp_key, 0 );
+		$event_count               = (int) $this->event_data->get_value( $event_count_key, 0 );
+		$event_count_timestamp     = (int) $this->event_data->get_value( $event_count_timestamp_key, 0 );
 		$not_tracked_in_24_hours   = $this->time_utils->get_time() - $event_count_timestamp > DAY_IN_SECONDS;
 
 		if ( $not_tracked_in_24_hours || $event_count < $limit_per_day ) {
@@ -260,15 +264,15 @@ class Product_Analytics {
 
 			if ( $not_tracked_in_24_hours ) {
 				// Reset the count if it has been more than 24 hours
-				$thread_safe_options->set_values( $option_id, array(
+				$this->event_data->set_values( array(
 					$event_count_key           => 1,
 					$event_count_timestamp_key => $this->time_utils->get_time(),
 				) );
 			} else {
-				$thread_safe_options->increment_values( $option_id, [ $event_count_key ] );
+				$this->event_data->increment_values( array( $event_count_key ) );
 			}
 		} else {
-			$thread_safe_options->increment_values( $option_id, [ $event_count_key ] );
+			$this->event_data->increment_values( array( $event_count_key ) );
 		}
 	}
 
