@@ -682,15 +682,25 @@ class Product_Analytics_Controller {
 			return 'deactivate_hub';
 		}
 
-		$is_dashboard_request = wp_doing_ajax() &&
-		                        ! empty( $_REQUEST['action'] ) &&
-		                        'wdp-project-deactivate' === wp_unslash( $_REQUEST['action'] );
-
-		if ( $is_dashboard_request ) {
+		if ( $this->is_dashboard_deactivation() ) {
 			return 'deactivate_dashboard';
 		}
 
 		return 'deactivate_pluginlist';
+	}
+
+	private function is_dashboard_deactivation() {
+		// WPMU DEV Dashboard < 5.0 deactivated plugins via a dedicated AJAX action.
+		$is_ajax_request = wp_doing_ajax() &&
+		                   ! empty( $_REQUEST['action'] ) &&
+		                   'wdp-project-deactivate' === wp_unslash( $_REQUEST['action'] );
+		if ( $is_ajax_request ) {
+			return true;
+		}
+
+		// WPMU DEV Dashboard >= 5.0 uses the standard plugins.php deactivate link,
+		// so it can only be identified by the referring Dashboard page.
+		return 0 === strpos( $this->get_referer_page(), 'wpmudev' );
 	}
 
 	private function get_active_plugins() {

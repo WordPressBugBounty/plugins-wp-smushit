@@ -387,6 +387,12 @@ class Smush_Optimization extends Media_Item_Optimization {
 		$this->set_keep_exif( empty( $data->keep_exif ) ? 0 : $data->keep_exif );
 		$this->set_is_premium( $data->is_premium );
 
+		// Update file size.
+		if ( ! empty( $data->after_size ) ) {
+			$media_item_size = $this->media_item->get_size( $size_key );
+			$media_item_size->set_filesize( $data->after_size );
+		}
+
 		// Update the size stats
 		$size_stats->from_array( $this->size_stats_from_response( $size_stats, $data ) );
 

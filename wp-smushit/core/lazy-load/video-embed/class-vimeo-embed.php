@@ -53,7 +53,14 @@ class Vimeo_Embed implements Video_Embed {
 	}
 
 	private function is_valid_embed_url() {
-		return ! empty( $this->get_video_id() );
+		$host                = wp_parse_url( $this->embed_url, PHP_URL_HOST );
+		$vimeo_embed_hosts   = array(
+			'player.vimeo.com',
+			'www.player.vimeo.com',
+		);
+		$is_vimeo_embed_host = is_string( $host ) && in_array( strtolower( $host ), $vimeo_embed_hosts, true );
+
+		return $is_vimeo_embed_host && ! empty( $this->get_video_id() );
 	}
 
 	public function get_video_id() {
@@ -264,7 +271,7 @@ class Vimeo_Embed implements Video_Embed {
 			array(
 				'width'  => $width,
 				'height' => $height,
-				'url'    => urlencode( $this->embed_url ),
+				'url'    => rawurlencode( $this->embed_url ),
 			),
 			self::$vimeo_oembed_endpoint
 		);

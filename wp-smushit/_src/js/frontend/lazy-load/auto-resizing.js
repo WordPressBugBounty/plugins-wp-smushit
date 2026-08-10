@@ -20,10 +20,11 @@ export class AutoResizing {
 	 * @param {number}  [options.precision=0]         - Allowed width variation (in pixels) for determining if resizing is necessary.
 	 * @param {boolean} [options.skipAutoWidth=false] - Whether to skip auto width resizing.
 	 */
-	constructor( { precision = 0, skipAutoWidth = false } = {} ) {
+	constructor( { precision = 0, skipAutoWidth = false, cdnBaseURL = '' } = {} ) {
 		this.precision = parseInt( precision, 10 );
 		this.precision = isNaN( this.precision ) ? 0 : this.precision;
 		this.skipAutoWidth = skipAutoWidth;
+		this.cdnBaseURL = typeof cdnBaseURL === 'string' ? cdnBaseURL.trim() : '';
 
 		this.initEventListeners();
 	}
@@ -107,16 +108,6 @@ export class AutoResizing {
 		}
 	}
 
-	/**
-	 * Decide whether Smush should apply auto-resize for this image.
-	 *
-	 * Rules:
-	 * 1. If wrapper is inline/inline-block and wrapper/image already equal resizeWidth, skip (prevents Divi shrink).
-	 * 2. Otherwise, allow.
-	 *
-	 * @param  imageElement
-	 * @param  resizeWidth
-	 */
 	/**
 	 * Decide whether Smush should apply auto-resize for this image.
 	 *
@@ -603,7 +594,21 @@ export class AutoResizing {
 	 * @return {boolean} True if the source is from the CDN, false otherwise.
 	 */
 	isFromSmushCDN( src ) {
-		return src && src.includes( SMUSH_CDN_DOMAIN );
+		if ( ! src || ! this.cdnBaseURL ) {
+			return false;
+		}
+
+		if ( src.startsWith( this.cdnBaseURL ) ) {
+			return true;
+		}
+
+		const url = this.parseURL( src );
+		if ( ! url?.hostname ) {
+			return false;
+		}
+
+		// Keep legacy support for old CDN/cache URLs like b1234567.smushcdn.com.
+		return url.hostname === SMUSH_CDN_DOMAIN || url.hostname.endsWith( `.${ SMUSH_CDN_DOMAIN }` );
 	}
 
 	/**

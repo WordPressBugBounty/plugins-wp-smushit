@@ -976,6 +976,10 @@ class Frontend_Controller extends Controller {
 			$classes .= ' smush-onboarding-wizard smush-onboarding-wizard--fullscreen';
 		}
 
+		if ( Settings::get_instance()->get( 'accessible_colors' ) ) {
+			$classes .= ' wpmudev-core-ui__mono';
+		}
+
 		$classes .= Membership::get_instance()->get_guest_value( ' smush-plan-free', ' smush-plan-pro' );
 
 		return $classes;

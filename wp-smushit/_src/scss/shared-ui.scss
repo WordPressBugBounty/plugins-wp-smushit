@@ -23,6 +23,21 @@ $google-fonts-url: 'https://fonts.bunny.net/css?family=Roboto:400,500,700';
 
 // Deactivation survey RTL layout fixes.
 [dir='rtl'] {
+	.sui-modal {
+		left: auto;
+		right: var( --wpmudev-wp-admin-menu-width, 160px );
+	}
+
+	.sui-modal .sui-modal-overlay {
+		left: 20px;
+		right: var( --wpmudev-wp-admin-menu-width, 160px );
+
+
+		@media (max-width: 782px) {
+			left: 0;
+		}
+	}
+
 	.wp-smush-deactivation-survey-modal {
 		.sui-box-header {
 			.sui-actions-right {

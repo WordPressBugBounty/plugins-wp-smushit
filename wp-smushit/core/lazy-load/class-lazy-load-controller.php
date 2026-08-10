@@ -13,6 +13,7 @@ use Smush\Core\Controller;
 use Smush\Core\Parser\Page_Parser;
 use Smush\Core\Server_Utils;
 use Smush\Core\Settings;
+use Smush\Core\CDN\CDN_Helper;
 
 if ( ! defined( 'WPINC' ) ) {
 	die;
@@ -363,7 +364,8 @@ class Lazy_Load_Controller extends Controller {
 
 		$script = WP_SMUSH_URL . 'app/assets/js/smush-lazy-load.min.js';
 
-		$in_footer = isset( $this->options['footer'] ) ? $this->options['footer'] : true;
+		$in_footer  = isset( $this->options['footer'] ) ? $this->options['footer'] : true;
+		$cdn_helper = CDN_Helper::get_instance();
 
 		wp_enqueue_script(
 			'smush-lazy-load',
@@ -380,6 +382,7 @@ class Lazy_Load_Controller extends Controller {
 				'autoResizeOptions'   => array(
 					'precision'     => 5, // 5px.
 					'skipAutoWidth' => true, // Whether to skip the image has 'auto' width.
+					'cdnBaseURL'    => $cdn_helper->is_cdn_active() ? $cdn_helper->get_cdn_base_url() : '',
 				),
 			)
 		);

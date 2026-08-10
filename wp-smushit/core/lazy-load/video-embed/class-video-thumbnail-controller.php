@@ -60,7 +60,11 @@ class Video_Thumbnail_Controller extends Controller {
 			return new WP_Error( 'invalid_params', __( 'Invalid video URL or dimensions.', 'wp-smushit' ) );
 		}
 
-		$embed           = $this->video_helper->create_embed_object( $embed_url );
+		$embed = $this->video_helper->create_embed_object( $embed_url );
+		if ( ! $embed ) {
+			return new WP_Error( 'invalid_embed', __( 'Unable to create video embed object.', 'wp-smushit' ) );
+		}
+
 		$video_thumbnail = $embed->fetch_video_thumbnail( $width, $height );
 		if ( ! $video_thumbnail ) {
 			return new WP_Error( 'not_found', __( 'Video thumbnail not found.', 'wp-smushit' ) );

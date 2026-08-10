@@ -1,13 +1,13 @@
 === Smush – Image Optimization, Compression, Lazy Load, WebP & CDN===
 Plugin Name: Smush – Image Optimization, Compression, Lazy Load, WebP & CDN
-Version: 4.2.0
+Version: 4.3.0
 Author: WPMU DEV
 Author URI: https://wpmudev.com/
 Contributors: WPMUDEV, alexdunae
 Tags: optimize images, convert webp, image optimization, compress images, image optimizer
 Requires at least: 6.4
 Tested up to: 7.0
-Stable tag: 4.2.0
+Stable tag: 4.3.0
 Requires PHP: 7.4
 License: GPL v2 - http://www.gnu.org/licenses/old-licenses/gpl-2.0.html
 
@@ -192,6 +192,28 @@ We take plugin security incredibly seriously; if you have a bug or vulnerability
 5. Serve images at lightning speed via our global CDN.
 
 == Changelog ==
+
+= 4.3.0 ( 2026-08-10 ) =
+- New: CDN 2.0 with multiple performance improvements and bug fixes
+- New: CDN domain migrated from smushcdn.com to assetcdn.net
+- New: Failed images list now displayed on the Directory Smush page
+- Improvement: Implemented missing notices throughout the Smush interface
+- Improvement: Added notice for API update status
+- Improvement: Added Elementor Image Optimizer to the conflict notice
+- Improvement: "Download all" and "Delete all" options now only shown when multiple Configs are selected
+- Improvement: Security improvements
+- Improvement: Minor UI/UX improvements
+- Improvement: Optimization toast now shown on all pages after optimization completes
+- Fix: Image size not updated after editing an image in the media library
+- Fix: Individual Ignore button not working for skipped images in Bulk Smush
+- Fix: Image optimization not applied to large PNG images above 2560px with Super or Ultra Smush settings
+- Fix: Prevented saving corrupted images to avoid broken image issues
+- Fix: Images with URL parameters not served correctly when URL is changed
+- Fix: Images now correctly convert to AVIF when re-enabling WebP after a downgrade and upgrade
+- Fix: Activity Log now records all post types when "All Post Types" toggle is used
+- Fix: Background overlay for RTL deactivation survey
+- Fix: Layout shift when closing popup
+- Fix: Lazy load auto-resizing for new CDN base URL format
 
 = 4.2.0 ( 2026-07-06 ) =
 - New: Full RTL language support across all Smush pages, modals, and UI components

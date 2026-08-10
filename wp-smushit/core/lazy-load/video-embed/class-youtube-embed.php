@@ -74,9 +74,16 @@ class Youtube_Embed implements Video_Embed {
 	}
 
 	private function is_valid_embed_url() {
-		$video_id = $this->get_video_id();
+		$host                  = wp_parse_url( $this->embed_url, PHP_URL_HOST );
+		$youtube_embed_hosts   = array(
+			'youtube.com',
+			'www.youtube.com',
+			'youtube-nocookie.com',
+			'www.youtube-nocookie.com',
+		);
+		$is_youtube_embed_host = is_string( $host ) && in_array( strtolower( $host ), $youtube_embed_hosts, true );
 
-		return ! empty( $video_id );
+		return $is_youtube_embed_host && ! empty( $this->get_video_id() );
 	}
 
 	public function get_video_id() {

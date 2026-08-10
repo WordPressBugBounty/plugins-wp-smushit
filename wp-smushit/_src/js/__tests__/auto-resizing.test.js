@@ -5,6 +5,8 @@ jest.mock( '../frontend/lazy-load/helper/lazysizes', () => ( {
 	isSmushLazySizesInstance: jest.fn(),
 } ) );
 
+const CDN_BASE_URL = 'https://b123456.assetcdn.net/2.0/123456/';
+
 describe( 'AutoResizing', () => {
 	let instance;
 	let originalDevicePixelRatio;
@@ -13,7 +15,7 @@ describe( 'AutoResizing', () => {
 		document.body.innerHTML = ''; // Clear DOM
 		originalDevicePixelRatio = window.devicePixelRatio;
 		isSmushLazySizesInstance.mockReset();
-		instance = new AutoResizing( { precision: 5, skipAutoWidth: true } );
+		instance = new AutoResizing( { precision: 5, skipAutoWidth: true, cdnBaseURL: CDN_BASE_URL } );
 	} );
 
 	afterEach( () => {
@@ -22,9 +24,45 @@ describe( 'AutoResizing', () => {
 	} );
 
 	test( 'initializes with default values', () => {
-		const auto = new AutoResizing();
+		const auto = new AutoResizing( {
+			cdnBaseURL: CDN_BASE_URL,
+		} );
 		expect( auto.precision ).toBe( 0 );
 		expect( auto.skipAutoWidth ).toBe( false );
+	} );
+
+	test( 'stores cdnBaseURL from options', () => {
+		const auto = new AutoResizing( {
+			cdnBaseURL: CDN_BASE_URL,
+		} );
+
+		expect( auto.cdnBaseURL ).toBe( CDN_BASE_URL );
+	} );
+
+	test.each( [
+		[
+			'matches new asset CDN base URL format',
+			{ cdnBaseURL: CDN_BASE_URL },
+			`${ CDN_BASE_URL }wp-content/uploads/2026/07/music-2.jpg?lossy=1&strip=1&webp=0`,
+			true,
+		],
+		[
+			'matches legacy smush CDN subdomain format',
+			{
+				cdnBaseURL: 'https://b3184567.assetcdn.net/2.0/3184567/',
+			},
+			'https://b3184567.smushcdn.com/3184567/wp-content/uploads/2025/03/WNL-343A40-256x96-1.png?lossy=2&strip=1&avif=1',
+			true,
+		],
+		[
+			'does not match non-CDN host',
+			{ cdnBaseURL: 'https://b123456.assetcdn.net/2.0/123456/' },
+			'https://example.com/wp-content/uploads/2026/07/music-2.jpg',
+			false,
+		],
+	] )( 'isFromSmushCDN: %s', ( description, options, src, expected ) => {
+		const auto = new AutoResizing( options );
+		expect( auto.isFromSmushCDN( src ) ).toBe( expected );
 	} );
 
 	test.each([
