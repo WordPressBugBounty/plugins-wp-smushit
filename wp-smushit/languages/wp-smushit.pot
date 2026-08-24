@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Smush Pro 4.3.0\n"
+"Project-Id-Version: Smush Pro 4.3.2\n"
 "Report-Msgid-Bugs-To: https://wpmudev.com\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-03T13:59:01+00:00\n"
+"POT-Creation-Date: 2026-08-19T12:24:41+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wp-smushit\n"
@@ -162,7 +162,7 @@ msgstr ""
 #: app/class-admin.php:530
 #: app/class-admin.php:573
 #: app/class-admin.php:606
-#: core/frontend/class-frontend-controller.php:1470
+#: core/frontend/class-frontend-controller.php:1488
 #: _src/smush-ui/pages/dashboard/components/RatingNotification/RatingNotification.jsx:106
 msgid "Rate Smush"
 msgstr ""
@@ -329,27 +329,28 @@ msgstr ""
 #: core/backups/class-backups-controller.php:147
 #: core/backups/class-backups-controller.php:187
 #: core/bulk/class-background-bulk-smush-controller.php:185
+#: core/bulk/class-bulk-smush-session-savings.php:50
 #: core/cache/class-cache-controller.php:45
 #: core/class-hub-connector.php:655
 #: core/class-hub-connector.php:692
 #: core/class-settings.php:837
 #: core/frontend/class-frontend-controller.php:111
 #: core/frontend/class-frontend-controller.php:124
-#: core/frontend/class-frontend-controller.php:1275
-#: core/frontend/class-frontend-controller.php:1512
-#: core/frontend/class-frontend-controller.php:1538
+#: core/frontend/class-frontend-controller.php:1293
+#: core/frontend/class-frontend-controller.php:1530
+#: core/frontend/class-frontend-controller.php:1556
 #: core/membership/class-membership-controller.php:23
 #: core/modules/class-dir.php:201
 #: core/modules/class-dir.php:218
 #: core/modules/class-dir.php:243
 #: core/modules/class-dir.php:274
-#: core/modules/class-dir.php:546
-#: core/modules/class-dir.php:557
-#: core/modules/class-dir.php:566
-#: core/modules/class-dir.php:573
-#: core/modules/class-dir.php:829
-#: core/modules/class-dir.php:946
-#: core/modules/class-dir.php:1385
+#: core/modules/class-dir.php:550
+#: core/modules/class-dir.php:561
+#: core/modules/class-dir.php:570
+#: core/modules/class-dir.php:577
+#: core/modules/class-dir.php:833
+#: core/modules/class-dir.php:950
+#: core/modules/class-dir.php:1389
 #: core/rating-notification/class-rating-notification-controller.php:28
 #: core/rating-notification/class-rating-notification-controller.php:48
 #: core/rating-notification/class-rating-notification-controller.php:67
@@ -389,14 +390,13 @@ msgstr ""
 #: app/views/deactivation-survey.php:33
 #: core/bulk/class-mail.php:64
 #: core/class-configs.php:128
-#: core/class-installer.php:341
+#: core/class-installer.php:345
 #: core/frontend/class-frontend-controller.php:311
 #: core/frontend/class-frontend-controller.php:315
 #: core/frontend/class-frontend-controller.php:318
 #: core/frontend/class-frontend-controller.php:589
 #: core/media-library/class-media-library-row.php:725
 #: core/smush/class-smush-optimization.php:102
-#: wp-smush.php:518
 #: _src/smush-ui/layout/PageHeader.jsx:49
 #: _src/smush-ui/pages/settings/components/general/SmushInfoCard.jsx:8
 msgid "Smush"
@@ -522,7 +522,7 @@ msgid "Includes better GIF performance"
 msgstr ""
 
 #: app/views/email/upsell-cdn.php:60
-#: core/frontend/class-frontend-controller.php:1423
+#: core/frontend/class-frontend-controller.php:1441
 msgid "Get Smush Pro"
 msgstr ""
 
@@ -576,7 +576,7 @@ msgid "Image not restored, nonce verification failed."
 msgstr ""
 
 #: core/backups/class-backups-controller.php:65
-#: core/class-optimization-controller.php:86
+#: core/class-optimization-controller.php:96
 #: core/media/class-media-item-controller.php:29
 #: core/media/class-media-item-controller.php:56
 msgid "You don't have permission to work with uploaded files."
@@ -603,7 +603,7 @@ msgid "You don't have permission to do this."
 msgstr ""
 
 #: core/bulk/class-background-bulk-smush-controller.php:105
-#: core/class-optimization-controller.php:92
+#: core/class-optimization-controller.php:102
 msgid "A WPMU DEV Hub connection is required to optimize images."
 msgstr ""
 
@@ -811,7 +811,7 @@ msgstr ""
 #: core/class-activity-log-controller.php:155
 #: core/frontend/class-frontend-controller.php:260
 #: core/frontend/class-frontend-controller.php:271
-#: core/frontend/class-frontend-controller.php:1192
+#: core/frontend/class-frontend-controller.php:1210
 msgid "Insufficient permissions"
 msgstr ""
 
@@ -1565,11 +1565,11 @@ msgstr ""
 msgid "Authentication required. Please log in."
 msgstr ""
 
-#: core/class-optimization-controller.php:74
+#: core/class-optimization-controller.php:84
 msgid "No attachment ID was provided."
 msgstr ""
 
-#: core/class-optimization-controller.php:80
+#: core/class-optimization-controller.php:90
 #: core/webp/class-webp-controller.php:164
 msgid "Nonce verification failed"
 msgstr ""
@@ -1996,7 +1996,7 @@ msgid "Settings saved successfully"
 msgstr ""
 
 #: core/frontend/class-frontend-controller.php:316
-#: core/frontend/class-frontend-controller.php:1564
+#: core/frontend/class-frontend-controller.php:1582
 #: _src/smush-ui/core-ui/components/MemberStatusBadge/MemberStatusBadge.jsx:26
 #: _src/smush-ui/core-ui/components/SelectorToggleCard/SelectorToggleCard.jsx:137
 #: _src/smush-ui/layout/PageHeader.jsx:72
@@ -2019,11 +2019,12 @@ msgid "Image size"
 msgstr ""
 
 #: core/frontend/class-frontend-controller.php:598
+#: _src/smush-ui/layout/GlobalNotices/UltraUpsellPopup/UltraUpsellPopup.jsx:28
 msgid "Savings"
 msgstr ""
 
 #: core/frontend/class-frontend-controller.php:790
-#: core/frontend/class-frontend-controller.php:1445
+#: core/frontend/class-frontend-controller.php:1463
 msgid "Dashboard"
 msgstr ""
 
@@ -2083,61 +2084,62 @@ msgstr ""
 msgid "Accessibility"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:952
+#: core/frontend/class-frontend-controller.php:954
 #: _src/smush-ui/pages/cdn/components/Settings.jsx:24
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:250
 #: _src/smush-ui/pages/settings/components/configs/ConfigsContext.jsx:279
 msgid "Settings"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1422
-#: core/frontend/class-frontend-controller.php:1560
+#: core/frontend/class-frontend-controller.php:1440
+#: core/frontend/class-frontend-controller.php:1578
 msgid "Upgrade to Smush Pro"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1425
-#: core/frontend/class-frontend-controller.php:1426
+#: core/frontend/class-frontend-controller.php:1443
+#: core/frontend/class-frontend-controller.php:1444
 msgid "Renew Membership"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1440
+#: core/frontend/class-frontend-controller.php:1458
 msgid "View Smush Documentation"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1440
+#: core/frontend/class-frontend-controller.php:1458
 msgid "Docs"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1445
+#: core/frontend/class-frontend-controller.php:1463
 msgid "Go to Smush Dashboard"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1471
+#: core/frontend/class-frontend-controller.php:1489
 #: _src/smush-ui/layout/PageFooter.jsx:69
 #: _src/smush-ui/layout/PageHeader.jsx:226
 msgid "Support"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1476
+#: core/frontend/class-frontend-controller.php:1494
 msgid "View details"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1480
+#: core/frontend/class-frontend-controller.php:1498
 msgid "Premium Support"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1494
+#: core/frontend/class-frontend-controller.php:1512
 #: _src/smush-ui/layout/PageFooter.jsx:58
 msgid "Roadmap"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1495
+#: core/frontend/class-frontend-controller.php:1513
 msgid "Rate our plugin"
 msgstr ""
 
-#: core/frontend/class-frontend-controller.php:1563
+#: core/frontend/class-frontend-controller.php:1581
 #: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraCompressionUpsellModal.jsx:80
 #: _src/smush-ui/core-ui/components/SelectorToggleCard/SelectorToggleCard.jsx:136
+#: _src/smush-ui/layout/GlobalNotices/UltraUpsellPopup/UltraUpsellPopup.jsx:98
 #: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:113
 #: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:87
 #: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:100
@@ -2430,19 +2432,19 @@ msgstr ""
 msgid "Image couldn't be optimized"
 msgstr ""
 
-#: core/modules/class-dir.php:753
+#: core/modules/class-dir.php:757
 msgid "There was a problem getting the selected directories"
 msgstr ""
 
-#: core/modules/class-dir.php:954
+#: core/modules/class-dir.php:958
 msgid "Empty Directory Path"
 msgstr ""
 
-#: core/modules/class-dir.php:969
+#: core/modules/class-dir.php:973
 msgid "We could not find any images in the selected directory."
 msgstr ""
 
-#: core/modules/class-dir.php:1310
+#: core/modules/class-dir.php:1314
 msgid "Directory smushing requires custom tables and it seems there was an error creating tables. For help, please contact our team on the support forums."
 msgstr ""
 
@@ -2796,7 +2798,7 @@ msgstr ""
 #: _src/smush-ui/layout/GlobalNotices/BulkSmushCompletedModal/BulkSmushCompletedModal.jsx:92
 #: _src/smush-ui/pages/dashboard/components/NextgenCard.jsx:71
 #: _src/smush-ui/pages/dashboard/components/RequiredFunctionNotification/RequiredFunctionNotification.jsx:51
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:215
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:225
 msgid "OK"
 msgstr ""
 
@@ -2814,6 +2816,7 @@ msgstr ""
 #: _src/smush-ui/core-ui/components/SlideInModal/SlideInModal.jsx:92
 #: _src/smush-ui/core-ui/components/SlideInModal/SlideInModal.jsx:96
 #: _src/smush-ui/layout/GlobalNotices/HubConnectionFlow/HubConnectionFlow.jsx:59
+#: _src/smush-ui/layout/GlobalNotices/UltraUpsellPopup/UltraUpsellPopup.jsx:43
 #: _src/smush-ui/pages/shared/components/SlideModal.jsx:296
 msgid "Close"
 msgstr ""
@@ -3040,6 +3043,7 @@ msgid "The total amount of space saved by optimizing your images."
 msgstr ""
 
 #: _src/smush-ui/core-ui/components/StatsCard/StatsCard.jsx:155
+#: _src/smush-ui/layout/GlobalNotices/UltraUpsellPopup/UltraUpsellPopup.jsx:27
 msgid "Images optimized"
 msgstr ""
 
@@ -3094,10 +3098,12 @@ msgid "Rescan site"
 msgstr ""
 
 #: _src/smush-ui/hooks/useSmushScanAndBulk.js:51
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:176
 msgid "Nothing to Optimize"
 msgstr ""
 
 #: _src/smush-ui/hooks/useSmushScanAndBulk.js:52
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:179
 msgid "Everything looks good—no images to optimize."
 msgstr ""
 
@@ -3192,12 +3198,12 @@ msgid_plural "<count>%d images</count> failed to be optimized."
 msgstr[0] ""
 msgstr[1] ""
 
-#: _src/smush-ui/layout/GlobalNotices/BulkSmushCompletedModal/BulkSmushCompletedModal.jsx:106
+#: _src/smush-ui/layout/GlobalNotices/BulkSmushCompletedModal/BulkSmushCompletedModal.jsx:103
 msgid "Check failed images"
 msgstr ""
 
-#: _src/smush-ui/layout/GlobalNotices/BulkSmushCompletedModal/BulkSmushCompletedModal.jsx:114
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:170
+#: _src/smush-ui/layout/GlobalNotices/BulkSmushCompletedModal/BulkSmushCompletedModal.jsx:110
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:177
 msgid "Optimization complete!"
 msgstr ""
 
@@ -3259,6 +3265,18 @@ msgstr ""
 
 #: _src/smush-ui/layout/GlobalNotices/SmushDeactivatedNotification.jsx:22
 msgid "Smush Free was deactivated. You have Smush Pro active!"
+msgstr ""
+
+#: _src/smush-ui/layout/GlobalNotices/UltraUpsellPopup/UltraUpsellPopup.jsx:51
+msgid "Optimization Complete"
+msgstr ""
+
+#: _src/smush-ui/layout/GlobalNotices/UltraUpsellPopup/UltraUpsellPopup.jsx:85
+msgid "Upgrade to Pro. <highlight>Save up to 60% more with Ultra 5X compression</highlight>"
+msgstr ""
+
+#: _src/smush-ui/layout/GlobalNotices/UltraUpsellPopup/UltraUpsellPopup.jsx:108
+msgid "30-days money back guarantee"
 msgstr ""
 
 #: _src/smush-ui/layout/GlobalNotices/WhatsNewModal/WhatsNewModal.jsx:10
@@ -3945,28 +3963,28 @@ msgstr ""
 msgid "We couldn't find any images in the selected directory."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:120
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:124
 msgid "Directory Optimization started."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:120
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:124
 msgid "Directory Smush started."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:132
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:136
 msgid "Smush limit exceeded. Please upgrade to Pro for unlimited smushing."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:154
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:158
 msgid "Directory Optimization completed."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:154
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:158
 msgid "Directory Smush completed."
 msgstr ""
 
 #. translators: 1: number of optimized images, 2: bytes saved e.g. "5.9 MB"
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:176
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:185
 #, js-format
 msgid "You've optimized <strong>%1$s image</strong> and saved <strong>%2$s</strong>."
 msgid_plural "You've optimized <strong>%1$s images</strong> and saved <strong>%2$s</strong>."
@@ -3974,22 +3992,22 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %s: number of images that failed to be optimized
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:191
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:201
 #, js-format
 msgid "<strong>%s image</strong> failed to be optimized."
 msgid_plural "<strong>%s images</strong> failed to be optimized."
 msgstr[0] ""
 msgstr[1] ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:223
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:233
 msgid "An error occurred during smushing."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:239
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:249
 msgid "Directory Optimization cancelled."
 msgstr ""
 
-#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:239
+#: _src/smush-ui/pages/directory-smush/lib/hooks/useDirectorySmush.js:249
 msgid "Directory Smush cancelled."
 msgstr ""
 
@@ -4455,7 +4473,7 @@ msgid "Replace WordPress default fetchpriority=high with smarter LCP detection f
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/preload/PreloadCard.jsx:40
-msgid "Resize image files to fit their container and speed up loading. <moreLink>Learn more</moreLink>"
+msgid "Automatically prioritize the largest visible image to improve LCP. <moreLink>Learn more</moreLink>"
 msgstr ""
 
 #: _src/smush-ui/pages/lazy-preload/components/preload/PreloadSettings.jsx:18
@@ -5010,6 +5028,14 @@ msgstr ""
 
 #: _src/smush-ui/pages/settings/components/data-settings/DataSettings.jsx:66
 msgid "Reset Settings"
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/general/Accessibility.jsx:13
+msgid "High Contrast mode is on."
+msgstr ""
+
+#: _src/smush-ui/pages/settings/components/general/Accessibility.jsx:13
+msgid "High Contrast mode is off."
 msgstr ""
 
 #: _src/smush-ui/pages/settings/components/general/Accessibility.jsx:21

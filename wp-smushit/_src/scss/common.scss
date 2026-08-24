@@ -612,7 +612,7 @@ div.wp-smush-info.notice {
 }
 
 #adminmenu #toplevel_page_smush .wp-submenu a[href*="smush_new-submenu_upsell"] {
-	background: #571EE7 !important;
+	background: var(--wpmudev-accent-pro, #571EE7) !important;
 	color: #fff !important;
 	display: flex !important;
 	align-items: center;

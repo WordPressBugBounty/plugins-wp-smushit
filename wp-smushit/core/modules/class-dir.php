@@ -364,6 +364,10 @@ class Dir extends Abstract_Module {
 				$id
 			)
 		); // Db call ok; no-cache ok.
+
+		// Image size changed; drop cached totals so the next get_dir_smush_stats()
+		// recomputes (stale on persistent object caches, e.g. WPMU DEV hosting).
+		wp_cache_delete( 'wp-smush-dir_total_stats', 'wp-smush' );
 	}
 
 	/**

@@ -45,6 +45,18 @@ class Server_Utils {
 		return '';
 	}
 
+	public function has_memory_available( $required_memory ) {
+		$memory_limit = $this->get_memory_limit();
+		if ( ! $memory_limit ) {
+			return false;
+		}
+
+		$memory_usage       = $this->get_memory_usage();
+		$is_memory_exceeded = ( $memory_usage + $required_memory > $memory_limit );
+
+		return ! $is_memory_exceeded;
+	}
+
 	public function get_memory_limit() {
 		if ( function_exists( 'ini_get' ) ) {
 			$memory_limit = ini_get( 'memory_limit' );

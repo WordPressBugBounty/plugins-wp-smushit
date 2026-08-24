@@ -101,6 +101,8 @@ class Modules {
 
 		$this->bg_optimization = Bulk\Background_Bulk_Smush_Controller::get_instance();
 
+		Bulk\Bulk_Smush_Session_Savings::get_instance()->init();
+
 		$smush_controller = Smush_Controller::get_instance();
 		$smush_controller->init();
 

@@ -102,6 +102,13 @@ function SmushFetcher() {
 				return request( 'bulk_smush_get_status' );
 			},
 
+			/**
+			 * Get session savings stats after bulk smush completes.
+			 */
+			getStats: () => {
+				return request( 'bulk_smush_get_stats' );
+			},
+
 			backgroundHealthyCheck: () => {
 				return request( 'smush_start_background_pre_flight_check' );
 			},

@@ -225,7 +225,7 @@ class Parser {
 	public function get_element_attributes( $element, $base_url ) {
 		$image_attributes = array();
 
-		$pattern = '#\b(?<name>(?:data-(?:[a-z0-9_-]+-)?)?(?:[a-z0-9_-]+))\s*=\s*(["\'])(?<value>[^\'"]+)\2#is';
+		$pattern = '#(?<!\.)\b(?<name>(?:data-(?:[a-z0-9_-]+-)?)?(?:[a-z0-9_-]+))\s*=\s*(["\'])(?<value>[^\'"]+)\2#is';
 		$pattern = apply_filters( 'wp_smush_image_attributes_regex', $pattern );
 
 		if ( ! preg_match_all( $pattern, $element, $matches, PREG_SET_ORDER ) ) {
@@ -275,7 +275,7 @@ class Parser {
 		 */
 
 		// Regex rule to get all inline style after background(-image) property.
-		$pattern = '#(?<!-)\b(?<property>background(?:-image)?):(?<value>[^;:]*?url\s*\([^>]+\)[^=:;]*);{0,1}#is';
+		$pattern = '#(?<!-)\b(?<property>background(?:-image)?):(?<value>[^;:]*?(?:url|image-set)\s*\([^>]+\)[^=:;]*);{0,1}#is';
 		$pattern = apply_filters( 'wp_smush_background_images_regex', $pattern );
 
 		if ( ! preg_match_all( $pattern, $style, $matches, PREG_SET_ORDER ) ) {
