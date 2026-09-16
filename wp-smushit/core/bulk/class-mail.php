@@ -10,6 +10,7 @@ namespace Smush\Core\Bulk;
 use Smush\Core\Membership\Membership;
 use Smush\Core\Modules\Helpers;
 use Smush\Core\Settings;
+use Smush\Core\Bulk\Bulk_Smush_Session_Savings;
 use WP_Smush;
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -58,7 +59,7 @@ class Mail extends Helpers\Mail {
 		if ( $this->membership->is_pro() && $this->whitelabel->enabled() ) {
 			$plugin_label = $this->whitelabel->get_plugin_name();
 			if ( empty( $plugin_label ) ) {
-				$plugin_label = __( 'Bulk Compression', 'wp-smushit' );
+				$plugin_label = __( 'Bulk Optimization', 'wp-smushit' );
 			}
 		} else {
 			$plugin_label = $this->membership->is_pro() ? __( 'Smush Pro', 'wp-smushit' ) : __( 'Smush', 'wp-smushit' );
@@ -75,13 +76,10 @@ class Mail extends Helpers\Mail {
 	protected function get_mail_subject() {
 		$site_url = get_site_url();
 		$site_url = preg_replace( '#http(s)?://(www.)?#', '', $site_url );
-		if ( $this->whitelabel->enabled() ) {
-			/* translators: %s: Site URL */
-			return sprintf( __( 'Bulk compression completed for %s', 'wp-smushit' ), esc_html( $site_url ) );
-		}
 		/* translators: %s: Site URL */
-		return sprintf( __( 'Bulk Smush completed for %s', 'wp-smushit' ), esc_html( $site_url ) );
+		return sprintf( __( 'Image optimization completed for %s', 'wp-smushit' ), esc_html( $site_url ) );
 	}
+
 	/**
 	 * Get email message.
 	 *
@@ -89,7 +87,7 @@ class Mail extends Helpers\Mail {
 	 */
 	protected function get_mail_message() {
 		if ( $this->whitelabel->enabled() ) {
-			$title          = __( 'Bulk Compression', 'wp-smushit' );
+			$title          = __( 'Bulk Optimization', 'wp-smushit' );
 			$temp_file_name = 'email/index-whitelabel';
 		} else {
 			$title          = __( 'Bulk Smush', 'wp-smushit' );
@@ -111,6 +109,9 @@ class Mail extends Helpers\Mail {
 	 * @return string
 	 */
 	private function get_summary_content() {
+		$bulk_session_savings  = Bulk_Smush_Session_Savings::get_instance();
+		$session_savings_bytes = $bulk_session_savings->get_savings();
+
 		$bg_optimization = WP_Smush::get_instance()->core()->mod->bg_optimization;
 		$site_url        = get_site_url();
 		$total_items     = $bg_optimization->get_total_items();
@@ -124,12 +125,16 @@ class Mail extends Helpers\Mail {
 			'email/bulk-smush',
 			array_merge(
 				array(
-					'site_url'      => $site_url,
-					'name'          => $this->get_recipient_name(),
-					'total_items'   => $total_items,
-					'failed_items'  => $failed_items,
-					'smushed_items' => $total_items - $failed_items,
-					'redirect_url'  => $redirect_url,
+					'site_url'        => $site_url,
+					'name'            => $this->get_recipient_name(),
+					'total_items'     => $total_items,
+					'failed_items'    => $failed_items,
+					'smushed_items'   => $total_items - $failed_items,
+					'redirect_url'    => $redirect_url,
+					'session_savings' => $session_savings_bytes,
+					'cta_label'       => $failed_items > 0
+						? __( 'Check failed images', 'wp-smushit' )
+						: __( 'Go to Dashboard', 'wp-smushit' ),
 				),
 				$this->get_summary_template_args()
 			)
@@ -152,23 +157,23 @@ class Mail extends Helpers\Mail {
 		if ( $this->whitelabel->enabled() ) {
 			return array(
 				/* translators: %s: Site URL */
-				'mail_title'    => __( 'Bulk compression completed for %s', 'wp-smushit' ),
-				'mail_desc'     => __( 'The bulk compress you actioned has successfully completed. Here’s a quick summary of the results:', 'wp-smushit' ),
-				'total_title'   => __( 'Total image attachments', 'wp-smushit' ),
-				'total_desc'    => __( 'The number of images analyzed during the bulk compress.', 'wp-smushit' ),
-				'smushed_title' => __( 'Images compressed successfully', 'wp-smushit' ),
+				'mail_title'    => __( 'Image optimization completed for %s', 'wp-smushit' ),
+				'mail_desc'     => __( 'Image optimization has successfully completed on your site. Here’s a quick summary of the results:', 'wp-smushit' ),
+				'total_title'   => __( 'Optimization savings', 'wp-smushit' ),
+				'total_desc'    => __( 'Total file size reduced across all optimized images.', 'wp-smushit' ),
+				'smushed_title' => __( 'Images optimized successfully', 'wp-smushit' ),
 				'smushed_desc'  => __( 'The number of images successfully compressed.', 'wp-smushit' ),
-				'failed_title'  => __( 'Images failed to compress', 'wp-smushit' ),
+				'failed_title'  => __( 'Images failed to optimize', 'wp-smushit' ),
 				'failed_desc'   => $failed_msg,
 			);
 		}
 
 		return array(
 			/* translators: %s: Site URL */
-			'mail_title'    => __( 'Bulk Smush completed for %s', 'wp-smushit' ),
-			'mail_desc'     => __( 'The bulk smush you actioned has successfully completed. Here’s a quick summary of the results:', 'wp-smushit' ),
-			'total_title'   => __( 'Total image attachments', 'wp-smushit' ),
-			'total_desc'    => __( 'The number of images analyzed during the bulk smush.', 'wp-smushit' ),
+			'mail_title'    => __( 'Image optimization completed for %s', 'wp-smushit' ),
+			'mail_desc'     => __( 'Image optimization has successfully completed on your site. Here’s a quick summary of the results:', 'wp-smushit' ),
+			'total_title'   => __( 'Smush Savings', 'wp-smushit' ),
+			'total_desc'    => __( 'Total file size reduced across all optimized images.', 'wp-smushit' ),
 			'smushed_title' => __( 'Images smushed successfully', 'wp-smushit' ),
 			'smushed_desc'  => __( 'The number of images successfully compressed.', 'wp-smushit' ),
 			'failed_title'  => __( 'Images failed to smush', 'wp-smushit' ),
@@ -177,7 +182,7 @@ class Mail extends Helpers\Mail {
 	}
 
 	/**
-	 * Get upsell CDN content.
+	 * Get upsell content.
 	 */
 	private function get_upsell_content() {
 		if ( $this->membership->is_pro() ) {
@@ -186,13 +191,13 @@ class Mail extends Helpers\Mail {
 		$upsell_url = add_query_arg(
 			array(
 				'utm_source'   => 'smush',
-				'utm_medium'   => 'plugin',
-				'utm_campaign' => 'smush_bulksmush_bo_email',
+				'utm_medium'   => 'email',
+				'utm_campaign' => 'smush-completed-email_ultra5x',
 			),
 			'https://wpmudev.com/project/wp-smush-pro/'
 		);
 		return $this->view->get_template_content(
-			'email/upsell-cdn',
+			'email/ultra-upsell',
 			array(
 				'upsell_url' => $upsell_url,
 			)

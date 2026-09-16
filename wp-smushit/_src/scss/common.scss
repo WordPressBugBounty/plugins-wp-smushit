@@ -616,9 +616,17 @@ div.wp-smush-info.notice {
 	color: #fff !important;
 	display: flex !important;
 	align-items: center;
+	flex-wrap: wrap;
 	gap: 5px;
 	font-size: 14px;
 	font-weight: 400;
+	padding-top: 7px !important;
+	padding-bottom: 5px !important;
+
+	.smush-admin-menu-upgrade-title {
+		font-size: 14px;
+		line-height: 1.3;
+	}
 
 	.smush-admin-menu-upgrade-pro-tag {
 		display: inline-flex;
@@ -650,6 +658,14 @@ div.wp-smush-info.notice {
 			background-repeat: no-repeat;
 			vertical-align: middle;
 		}
+	}
+
+	.smush-admin-menu-upgrade-subtitle {
+		display: block;
+		flex-basis: 100%;
+		font-size: 11px;
+		line-height: 1.3;
+		white-space: nowrap;
 	}
 }
 

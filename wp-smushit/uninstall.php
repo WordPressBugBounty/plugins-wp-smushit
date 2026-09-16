@@ -175,6 +175,9 @@ delete_option( 'wp_smush_scan' );
 delete_option( 'wp_smush_api_auth' );
 delete_site_option( 'wp_smush_api_auth' );
 
+// Delete user meta.
+delete_metadata( 'user', null, 'wp-smush-dismissed-notices', '', true );
+
 // Delete Post meta.
 $meta_type  = 'post';
 $meta_key   = 'wp-smpro-smush-data';

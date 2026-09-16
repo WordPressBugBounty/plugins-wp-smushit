@@ -92,7 +92,7 @@ class Settings {
 			'background_images'      => true,
 			'rest_api_support'       => false,   // CDN option.
 			'webp_mod'               => false,   // WebP module.
-			'background_email'       => false,
+			'background_email'       => true,
 			'webp_direct_conversion' => false,
 			'webp_fallback'          => false,
 			'disable_streams'        => false,

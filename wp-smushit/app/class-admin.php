@@ -368,9 +368,19 @@ class Admin {
 	}
 
 	public function is_notice_dismissed( $notice ) {
-		$dismissed_notices = get_option( 'wp-smush-dismissed-notices', array() );
+		$dismiss_key = 'wp-smush-dismissed-notices';
+		$user_id     = get_current_user_id();
+		if ( $user_id ) {
+			$dismissed_notices = get_user_meta( $user_id, $dismiss_key, true );
 
-		return ! empty( $dismissed_notices[ $notice ] );
+			if ( is_array( $dismissed_notices ) && ! empty( $dismissed_notices[ $notice ] ) ) {
+				return true;
+			}
+		}
+
+		$dismissed_notices = get_option( $dismiss_key, array() );
+
+		return is_array( $dismissed_notices ) && ! empty( $dismissed_notices[ $notice ] );
 	}
 
 	public function show_parallel_unavailability_notice() {

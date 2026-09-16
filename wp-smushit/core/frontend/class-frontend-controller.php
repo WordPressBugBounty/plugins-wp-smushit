@@ -483,7 +483,7 @@ class Frontend_Controller extends Controller {
 			'canManageNetwork'    => $is_multisite && Multisite_Utils::can_manage_network(),
 			'isWpmudevHost'       => isset( $_SERVER['WPMUDEV_HOSTED'] ),
 			'showUpgradeModal'    => $this->should_show_upgrade_modal(),
-			'dismissedNotices'    => array_keys( array_filter( get_option( 'wp-smush-dismissed-notices', array() ) ) ),
+			'dismissedNotices'    => $this->get_dismissed_notices(),
 			'profileData'         => array(
 				// The initials are not "Personally Identifiable Information" (PII).
 				'initials'               => $this->get_user_initials(),
@@ -513,6 +513,20 @@ class Frontend_Controller extends Controller {
 			's3NoticeData'        => $this->get_s3_notice_data(),
 			'pluginConflictData'  => $this->get_plugin_conflict_data(),
 		);
+	}
+
+	private function get_dismissed_notices() {
+		$dismiss_key = 'wp-smush-dismissed-notices';
+
+		$fallback_dismissed_notices = get_option( $dismiss_key, array() );
+		$fallback_dismissed_notices = is_array( $fallback_dismissed_notices ) ? $fallback_dismissed_notices : array();
+
+		$user_dismissed_notices = get_user_meta( get_current_user_id(), $dismiss_key, true );
+		$user_dismissed_notices = is_array( $user_dismissed_notices ) ? $user_dismissed_notices : array();
+
+		$dismissed_notices = array_merge( $fallback_dismissed_notices, $user_dismissed_notices );
+
+		return array_keys( array_filter( $dismissed_notices ) );
 	}
 
 	private function get_plugin_conflict_data() {
@@ -1438,7 +1452,7 @@ class Frontend_Controller extends Controller {
 			$using_free_version = 'wp-smush-pro/wp-smush.php' !== WP_SMUSH_BASENAME;
 			if ( $using_free_version ) {
 				$label = __( 'Upgrade to Smush Pro', 'wp-smushit' );
-				$text  = __( 'Get Smush Pro', 'wp-smushit' );
+				$text  = __( 'Get Smush Pro · Unlimited sites · $4.99/m', 'wp-smushit' );
 			} else {
 				$label = __( 'Renew Membership', 'wp-smushit' );
 				$text  = __( 'Renew Membership', 'wp-smushit' );
@@ -1534,15 +1548,26 @@ class Frontend_Controller extends Controller {
 			wp_send_json_error();
 		}
 
-		$this->set_notice_dismissed( sanitize_key( $_REQUEST['key'] ) );
+		$use_user_meta = isset( $_REQUEST['user_meta'] ) && wp_validate_boolean( wp_unslash( $_REQUEST['user_meta'] ) );
+		$this->set_notice_dismissed( sanitize_key( $_REQUEST['key'] ), $use_user_meta );
+
 		wp_send_json_success();
 	}
 
-	private function set_notice_dismissed( $notice ) {
-		$option_id                    = 'wp-smush-dismissed-notices';
-		$dismissed_notices            = get_option( $option_id, array() );
+	private function set_notice_dismissed( $notice, $use_user_meta = false ) {
+		$storage_key       = 'wp-smush-dismissed-notices';
+		$dismissed_notices = $use_user_meta
+			? get_user_meta( get_current_user_id(), $storage_key, true )
+			: get_option( $storage_key, array() );
+		$dismissed_notices = is_array( $dismissed_notices ) ? $dismissed_notices : array();
 		$dismissed_notices[ $notice ] = true;
-		update_option( $option_id, $dismissed_notices );
+
+		if ( $use_user_meta ) {
+			update_user_meta( get_current_user_id(), $storage_key, $dismissed_notices );
+			return;
+		}
+
+		update_option( $storage_key, $dismissed_notices );
 	}
 
 	/**
@@ -1577,13 +1602,13 @@ class Frontend_Controller extends Controller {
 			self::PAGE_DASHBOARD,
 			__( 'Upgrade to Smush Pro', 'wp-smushit' ),
 			sprintf(
-				'%1$s<span class="smush-admin-menu-upgrade-pro-tag">%2$s</span><span class="smush-admin-menu-upgrade-icon" aria-hidden="true"></span>',
+				'<span class="smush-admin-menu-upgrade-title">%1$s</span><span class="smush-admin-menu-upgrade-pro-tag">%2$s</span><span class="smush-admin-menu-upgrade-icon" aria-hidden="true"></span><span class="smush-admin-menu-upgrade-subtitle">%3$s</span>',
 				__( 'Upgrade', 'wp-smushit' ),
-				__( 'Pro', 'wp-smushit' )
+				__( 'Pro', 'wp-smushit' ),
+				__( 'Unlimited sites · $4.99/m', 'wp-smushit' )
 			),
 			$this->get_permission_level_for_menus(),
 			esc_url( 'https://wpmudev.com/project/wp-smush-pro/?utm_source=smush&utm_medium=plugin&utm_campaign=smush_new-submenu_upsell#dev-pricing' )
 		);
 	}
 }
-

@@ -124,9 +124,9 @@ class Smush_Background_Task implements \Serializable, \JsonSerializable {
 	/**
 	 * @smush-keep-signature
 	 *
-	 * @return mixed
+	 * @return array
 	 */
-	public function jsonSerialize(): mixed {
+	public function jsonSerialize(): array {
 		return $this->__serialize();
 	}
 

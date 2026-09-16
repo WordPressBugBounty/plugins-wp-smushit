@@ -138,7 +138,7 @@ class Configs {
 						'original'          => true,
 						'backup'            => true,
 						'png_to_jpg'        => true,
-						'background_email'  => false,
+						'background_email'  => true,
 						's3'                => false,
 						'gutenberg'         => false,
 						'js_builder'        => false,

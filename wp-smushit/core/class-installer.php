@@ -216,6 +216,10 @@ class Installer {
 				self::upgrade_4_3_2();
 			}
 
+			if ( version_compare( $version, '4.0', '>=' ) && version_compare( $version, '4.3.3', '<' ) ) {
+				self::dismiss_autosave_intro_for_existing_v4_users();
+			}
+
 			if ( version_compare( $version, '4.0', '<' ) ) {
 				$hide_new_feature_highlight_modal = apply_filters( 'wpmudev_branding_hide_doc_link', false );
 				if ( ! $hide_new_feature_highlight_modal ) {
@@ -604,7 +608,7 @@ class Installer {
 
 		$configs_handler = Configs::get_instance();
 		$new_settings    = array(
-			'background_email' => false,
+			'background_email' => true,
 		);
 		foreach ( $stored_configs as $key => $preset_config ) {
 			if ( empty( $preset_config['config']['configs']['settings'] ) ) {
@@ -692,6 +696,44 @@ class Installer {
 		self::for_each_public_site( function() {
 			add_option( 'wp-smush-show-new-feature-hotspot', true );
 		} );
+	}
+
+	/**
+	 * Dismiss autosave intro for users already on v4 before this feature lands.
+	 *
+	 * @return void
+	 */
+	private static function dismiss_autosave_intro_for_existing_v4_users() {
+		if ( is_multisite() ) {
+			self::for_each_public_site(
+				function () {
+					self::set_dismissed_notice( 'autosave_intro_v4' );
+				}
+			);
+			return;
+		}
+
+		self::set_dismissed_notice( 'autosave_intro_v4' );
+	}
+
+	/**
+	 * Mark a notice as dismissed in the existing dismissed notices option.
+	 *
+	 * @param string $notice_key Notice key.
+	 *
+	 * @return void
+	 */
+	private static function set_dismissed_notice( $notice_key ) {
+		$option_id         = 'wp-smush-dismissed-notices';
+		$dismissed_notices = get_option( $option_id, array() );
+		$dismissed_notices = is_array( $dismissed_notices ) ? $dismissed_notices : array();
+
+		if ( ! empty( $dismissed_notices[ $notice_key ] ) ) {
+			return;
+		}
+
+		$dismissed_notices[ $notice_key ] = true;
+		update_option( $option_id, $dismissed_notices );
 	}
 
 	private static function for_each_public_site( $callback ) {
