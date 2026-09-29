@@ -197,7 +197,10 @@ class Dir extends Abstract_Module {
 	public function directory_smush_start() {
 		check_ajax_referer( 'wp-smush-ajax' );
 		// Check for permission.
-		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
+		if (
+			! Helper::is_user_allowed( 'manage_options' )
+			|| ! $this->settings->is_directory_smush_active()
+		) {
 			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
 		}
 		$this->scanner->init_scan();
@@ -214,7 +217,10 @@ class Dir extends Abstract_Module {
 		check_ajax_referer( 'wp-smush-ajax' );
 
 		// Check for permission.
-		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
+		if (
+			! Helper::is_user_allowed( 'manage_options' )
+			|| ! $this->settings->is_directory_smush_active()
+		) {
 			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
 		}
 
@@ -239,7 +245,10 @@ class Dir extends Abstract_Module {
 		check_ajax_referer( 'wp-smush-ajax' );
 
 		// Check for permission.
-		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
+		if (
+			! Helper::is_user_allowed( 'manage_options' )
+			|| ! $this->settings->is_directory_smush_active()
+		) {
 			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
 		}
 
@@ -270,7 +279,10 @@ class Dir extends Abstract_Module {
 	public function directory_smush_cancel() {
 		check_ajax_referer( 'wp-smush-ajax' );
 		// Check for permission.
-		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
+		if (
+			! Helper::is_user_allowed( 'manage_options' )
+			|| ! $this->settings->is_directory_smush_active()
+		) {
 			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
 		}
 		$this->scanner->reset_scan();
@@ -545,7 +557,10 @@ class Dir extends Abstract_Module {
 	 */
 	public function directory_list() {
 		// Check For permission.
-		if ( ! Helper::is_user_allowed( 'manage_options' ) || ! is_user_logged_in() ) {
+		if (
+			! Helper::is_user_allowed( 'manage_options' )
+			|| ! $this->settings->is_directory_smush_active()
+		 ) {
 			Helper::logger()->dir()->error( 'Unauthorized - Permission access.' );
 			wp_send_json_error( __( 'Unauthorized', 'wp-smushit' ) );
 		}
@@ -946,7 +961,10 @@ class Dir extends Abstract_Module {
 	 */
 	public function image_list() {
 		// Check For permission.
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if (
+			! current_user_can( 'manage_options' )
+			|| ! $this->settings->is_directory_smush_active()
+		) {
 			$this->send_error( __( 'Unauthorized', 'wp-smushit' ) );
 		}
 
@@ -1384,8 +1402,10 @@ class Dir extends Abstract_Module {
 		check_ajax_referer( 'wp-smush-ajax' );
 
 		// Check capability.
-		$capability = is_multisite() ? 'manage_network' : 'manage_options';
-		if ( ! Helper::is_user_allowed( $capability ) ) {
+		if (
+			! Helper::is_user_allowed( 'manage_options' )
+			|| ! $this->settings->is_directory_smush_active()
+		) {
 			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
 		}
 

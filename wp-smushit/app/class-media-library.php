@@ -760,8 +760,9 @@ class Media_Library extends Abstract_Module {
 	public function ajax_skip_media_hub_connect() {
 		check_ajax_referer( 'wp-smush-ajax' );
 
+		$capability = is_multisite() ? 'manage_network' : 'manage_options';
 		// Check capability.
-		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
+		if ( ! Helper::is_user_allowed( $capability ) ) {
 			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
 		}
 

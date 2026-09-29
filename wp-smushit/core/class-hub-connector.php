@@ -651,7 +651,8 @@ class Hub_Connector extends Controller {
 	public function ajax_check_hub_sync_status() {
 		check_ajax_referer( 'auth_nonce', 'nonce' );
 
-		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
+		$capability = is_multisite() ? 'manage_network' : 'manage_options';
+		if ( ! Helper::is_user_allowed( $capability ) ) {
 			wp_send_json_error( array( 'message' => __( 'Unauthorized', 'wp-smushit' ) ), 403 );
 		}
 
@@ -687,8 +688,9 @@ class Hub_Connector extends Controller {
 	public function ajax_disconnect_site() {
 		check_ajax_referer( 'wp-smush-ajax' );
 
+		$capability = is_multisite() ? 'manage_network' : 'manage_options';
 		// Check capability.
-		if ( ! Helper::is_user_allowed( 'manage_options' ) ) {
+		if ( ! Helper::is_user_allowed( $capability ) ) {
 			wp_die( esc_html__( 'Unauthorized', 'wp-smushit' ), 403 );
 		}
 

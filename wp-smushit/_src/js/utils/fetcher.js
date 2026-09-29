@@ -257,9 +257,6 @@ function SmushFetcher() {
 		},
 
 		webp: {
-			switchMethod: ( method ) => {
-				return request( 'webp_switch_method', { method } );
-			},
 			recheckStatus: () => {
 				return request( 'smush_webp_get_status' );
 			},

@@ -178,11 +178,24 @@ class Multisite_Frontend_Controller extends Frontend_Controller {
 			return true;
 		}
 
+		if ( $this->is_override_disabled() ) {
+			return false;
+		}
+
+		$network_contexts = array(
+			'permissions',
+		);
+
+		if ( in_array( $context, $network_contexts, true ) ) {
+			return false;
+		}
+
 		$contexts_to_module = array(
-			'lazyload' => 'lazy_load',
-			'preload'  => 'preload',
-			'cdn'      => 'cdn',
-			'nextgen'  => 'nextgen',
+			'lazyload'  => 'lazy_load',
+			'preload'   => 'preload',
+			'cdn'       => 'cdn',
+			'nextgen'   => 'nextgen',
+			'directory' => 'directory_smush',
 		);
 
 		if ( isset( $contexts_to_module[ $context ] ) ) {
@@ -190,7 +203,7 @@ class Multisite_Frontend_Controller extends Frontend_Controller {
 		}
 
 		// The only other context is 'site', we will filter out specific settings from it.
-		return true;
+		return 'site' === $context;
 	}
 
 	public function filter_settings_before_sync( $settings ) {

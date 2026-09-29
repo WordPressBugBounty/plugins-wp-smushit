@@ -66,7 +66,6 @@ class Global_Stats_Controller extends Controller {
 			$this->global_stats,
 			'mark_as_outdated',
 		), 10, 2 );
-		$this->register_action( 'wp_ajax_wp_smush_get_global_stats', array( $this, 'ajax_get_global_stats' ) );
 		$this->register_filter( 'wp_smush_frontend_poll_data', array( $this, 'add_global_stats_to_poll' ) );
 		$this->register_filter( 'wp_smush_localize_ui_script_data', array( $this, 'localize_global_stats' ), 10, 2 );
 	}
@@ -357,16 +356,6 @@ class Global_Stats_Controller extends Controller {
 			array( $this, 'accumulate_attachment_ids' ),
 			array( $this, 'save_optimization_lists' )
 		);
-	}
-
-	public function ajax_get_global_stats() {
-		// TODO: check ajax referrer
-
-		if ( ! Helper::is_user_allowed() ) {
-			wp_send_json_error();
-		}
-
-		wp_send_json( $this->global_stats->to_array() );
 	}
 
 	/**
