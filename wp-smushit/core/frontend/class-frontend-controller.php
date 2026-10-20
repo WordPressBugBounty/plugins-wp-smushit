@@ -1608,7 +1608,7 @@ class Frontend_Controller extends Controller {
 				__( 'Unlimited sites · $4.99/m', 'wp-smushit' )
 			),
 			$this->get_permission_level_for_menus(),
-			esc_url( 'https://wpmudev.com/project/wp-smush-pro/?utm_source=smush&utm_medium=plugin&utm_campaign=smush_new-submenu_upsell#dev-pricing' )
+			esc_url( 'https://wpmudev.com/project/wp-smush-pro/?utm_source=smush&utm_medium=plugin&utm_campaign=smush_new-submenu_upsell#dev-hero' )
 		);
 	}
 }

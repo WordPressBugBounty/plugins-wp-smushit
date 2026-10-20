@@ -183,7 +183,7 @@ class Media_Item_Query {
 		$results = array();
 		foreach ( $chunks as $chunk ) {
 			$in           = join( ',', $chunk );
-			$sql          = "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '_wp_attached_file' AND meta_value IN ({$in})";
+			$sql          = "SELECT post_id, meta_value FROM $wpdb->postmeta WHERE meta_key = '_wp_attached_file' AND BINARY meta_value IN ({$in})";
 			$chunk_result = $wpdb->get_results( $sql, ARRAY_A );
 			if ( ! empty( $chunk_result ) ) {
 				$results = array_merge( $results, $chunk_result );
@@ -196,9 +196,11 @@ class Media_Item_Query {
 
 		$ids = array();
 		foreach ( $results as $result ) {
-			$meta_value            = $result['meta_value'];
-			$original_absolute_url = $relative_key_absolute_value[ $meta_value ];
-
+			$meta_value = $result['meta_value'];
+			if ( ! isset( $relative_key_absolute_value[ $meta_value ] ) ) {
+				continue;
+			}
+			$original_absolute_url         = $relative_key_absolute_value[ $meta_value ];
 			$ids[ $original_absolute_url ] = $result['post_id'];
 		}
 		return $ids;
