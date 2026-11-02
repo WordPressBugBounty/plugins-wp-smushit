@@ -601,6 +601,18 @@ class Helper {
 		return current_user_can( apply_filters( 'wp_smush_admin_cap', $capability ) );
 	}
 
+	/**
+	 * Checks if the current user is allowed to edit the given attachment.
+	 *
+	 * @since 4.4.0
+	 *
+	 * @param int $attachment_id Attachment ID.
+	 * @return boolean
+	 */
+	public static function is_user_allowed_to_edit_attachment( $attachment_id ) {
+		return current_user_can( 'edit_post', (int) $attachment_id );
+	}
+
 	/*------ S3 Compatible Methods ------*/
 
 	/**

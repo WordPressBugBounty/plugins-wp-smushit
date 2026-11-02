@@ -35,19 +35,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 								<!-- Center: Unlimited sites badge + Ultra 5X copy -->
 								<td class="smush-ultra-upsell-content-col" style="vertical-align:middle;text-align:left;padding:0 10px 0 15px;" valign="middle">
-									<!-- Pill Badge: Unlimited sites · $4.99/m -->
-									<table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;border-spacing:0;margin:0 0 5px 0;">
-										<tbody>
-											<tr>
-												<td class="smush-ultra-upsell-badge">
-													<span style="box-sizing: border-box;white-space:nowrap;font-family:Roboto, Arial, sans-serif;border-radius:100px;padding: 0 9px;font-size:12px;font-weight:400;height:18px;line-height:17px;display:block;color:#FFFFFF;letter-spacing:0.1px;display:inline-block;letter-spacing:0.1px;text-align:center;border: 1px solid rgba(87, 30, 231, 0.20);background-color:#571EE7;background: radial-gradient(50% 50%, rgb(87, 30, 231) 0%, rgba(87, 30, 231, 0.6) 100%);">
-														<?php esc_html_e( 'Unlimited sites · $4.99/m', 'wp-smushit' ); ?>
-													</span>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-
 									<!-- Main Copy -->
 									<p class="smush-ultra-upsell-text" style="box-sizing: border-box;font-family:Roboto, Arial, sans-serif;font-size:16px;line-height:24px;letter-spacing:-0.25px;margin:0;padding:0;text-align:left;">
 										<span class="smush-ultra-upsell-dark-text" style="font-weight:400;color:#1A1A1A;"><?php esc_html_e( 'Upgrade to Pro.', 'wp-smushit' ); ?></span>

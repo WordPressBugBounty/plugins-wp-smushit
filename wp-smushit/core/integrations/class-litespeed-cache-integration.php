@@ -7,7 +7,7 @@ use Smush\Core\Controller;
 class Litespeed_Cache_Integration extends Controller {
 	public function __construct() {
 		$this->register_action( 'wp_smush_post_cache_flush_required', array( $this, 'clear_post_cache' ) );
-		$this->register_action( 'wp_smush_home_cache_flush_required', array( $this, 'clear_url_cache' ) );
+		$this->register_action( 'wp_smush_url_cache_flush_required', array( $this, 'clear_url_cache' ) );
 	}
 
 	public function should_run() {

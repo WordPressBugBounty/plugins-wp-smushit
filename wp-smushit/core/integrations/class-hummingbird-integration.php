@@ -18,8 +18,7 @@ class Hummingbird_Integration extends Controller {
 		$this->register_filter( 'wphb_tracking_active_features', array( $this, 'get_smush_active_features' ) );
 
 		$this->register_action( 'wp_smush_post_cache_flush_required', array( $this, 'clear_post_cache' ) );
-
-		$this->register_action( 'wp_smush_home_cache_flush_required', array( $this, 'clear_url_cache' ) );
+		$this->register_action( 'wp_smush_url_cache_flush_required', array( $this, 'clear_url_cache' ) );
 	}
 
 	public function clear_post_cache( $post_id ) {

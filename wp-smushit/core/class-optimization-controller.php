@@ -91,7 +91,12 @@ class Optimization_Controller extends Controller {
 			);
 		}
 
-		if ( ! Helper::is_user_allowed( 'upload_files' ) ) {
+		$attachment_id = (int) $_REQUEST['attachment_id'];
+
+		if (
+			! Helper::is_user_allowed( 'upload_files' )
+			|| ! Helper::is_user_allowed_to_edit_attachment( $attachment_id )
+		) {
 			wp_send_json_error(
 				array( 'error_msg' => esc_html__( "You don't have permission to work with uploaded files.", 'wp-smushit' ) )
 			);
@@ -103,7 +108,6 @@ class Optimization_Controller extends Controller {
 			);
 		}
 
-		$attachment_id  = (int) $_REQUEST['attachment_id'];
 		$optimizer      = $this->optimizer;
 		$is_optimized   = $optimizer->optimize( $attachment_id );
 		$media_lib_item = Media_Library_Row::get_instance( $attachment_id );

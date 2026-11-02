@@ -1452,7 +1452,7 @@ class Frontend_Controller extends Controller {
 			$using_free_version = 'wp-smush-pro/wp-smush.php' !== WP_SMUSH_BASENAME;
 			if ( $using_free_version ) {
 				$label = __( 'Upgrade to Smush Pro', 'wp-smushit' );
-				$text  = __( 'Get Smush Pro · Unlimited sites · $4.99/m', 'wp-smushit' );
+				$text  = __( 'Get Smush Pro', 'wp-smushit' );
 			} else {
 				$label = __( 'Renew Membership', 'wp-smushit' );
 				$text  = __( 'Renew Membership', 'wp-smushit' );
@@ -1602,10 +1602,9 @@ class Frontend_Controller extends Controller {
 			self::PAGE_DASHBOARD,
 			__( 'Upgrade to Smush Pro', 'wp-smushit' ),
 			sprintf(
-				'<span class="smush-admin-menu-upgrade-title">%1$s</span><span class="smush-admin-menu-upgrade-pro-tag">%2$s</span><span class="smush-admin-menu-upgrade-icon" aria-hidden="true"></span><span class="smush-admin-menu-upgrade-subtitle">%3$s</span>',
+				'<span class="smush-admin-menu-upgrade-title">%1$s</span><span class="smush-admin-menu-upgrade-pro-tag">%2$s</span><span class="smush-admin-menu-upgrade-icon" aria-hidden="true"></span>',
 				__( 'Upgrade', 'wp-smushit' ),
-				__( 'Pro', 'wp-smushit' ),
-				__( 'Unlimited sites · $4.99/m', 'wp-smushit' )
+				__( 'Pro', 'wp-smushit' )
 			),
 			$this->get_permission_level_for_menus(),
 			esc_url( 'https://wpmudev.com/project/wp-smush-pro/?utm_source=smush&utm_medium=plugin&utm_campaign=smush_new-submenu_upsell#dev-hero' )

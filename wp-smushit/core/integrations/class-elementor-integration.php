@@ -108,9 +108,24 @@ class Elementor_Integration extends Controller {
 		$content_url = $this->prepare_url( content_url() );
 		// Replace URLs in the data.
 		return preg_replace_callback(
-			"#(?:https?:)?{$content_url}[^'|,;\"]*\.(?:jpe?g|png|gif|webp)#m",
+			"#(?:https?:)?{$content_url}(?:(?:\\\\/)|(?:\\\\u[0-9a-fA-F]{4})|[^\\s<>=\\\\'\"|,;])*\.(?:jpe?g|png|gif|webp)#m",
 			function ( $matches ) {
-				return addcslashes( $this->transform_url( $this->sanitize_json_url( $matches[0] ) ), '/' );
+				$matched_url = isset( $matches[0] ) ? $matches[0] : '';
+				if ( ! is_string( $matched_url ) || '' === $matched_url ) {
+					return $matched_url;
+				}
+
+				$sanitized_url = $this->sanitize_json_url( $matched_url );
+				if ( '' === $sanitized_url ) {
+					return $matched_url;
+				}
+
+				$transformed_url = $this->transform_url( $sanitized_url );
+				if ( ! $this->is_safe_transformed_url( $transformed_url ) ) {
+					return $matched_url;
+				}
+
+				return addcslashes( $transformed_url, '/' );
 			},
 			$element_data
 		);
@@ -145,25 +160,57 @@ class Elementor_Integration extends Controller {
 	}
 
 	/**
-	 * Cleans JSON-encoded URLs by removing extra slashes.
-	 * Returns original string if decoding fails.
+	 * Cleans escaped URLs by decoding JSON escapes and validating safety.
 	 *
-	 * @param string $url The JSON-encoded URL string to process
-	 * @return string The decoded URL with slashes normalized, or original string on failure
+	 * @param string $url The escaped URL string to process.
+	 * @return string The cleaned URL, or an empty string if invalid.
 	 * @since 3.8.0
 	 */
 	private function sanitize_json_url( $url ) {
-		try {
-			$decoded = json_decode( '"' . str_replace( '"', '\"', $url ) . '"' );
-
-			if ( json_last_error() !== JSON_ERROR_NONE ) {
-				throw new \Exception( 'Invalid JSON' );
-			}
-
-			return str_replace( '\/', '/', $decoded );
-		} catch ( \Exception $e ) {
-			return $url;
+		if ( empty( $url ) || ! is_string( $url ) ) {
+			return '';
 		}
+
+		$decoded_url = json_decode( '"' . str_replace( '"', '\\"', $url ) . '"' );
+		if ( JSON_ERROR_NONE !== json_last_error() || ! is_string( $decoded_url ) ) {
+			return '';
+		}
+
+		$clean_url = str_replace( '\\/', '/', $decoded_url );
+		if ( preg_match( '/[<>"\'=\\s]/', $clean_url ) ) {
+			return '';
+		}
+
+		if ( ! $this->is_safe_transformed_url( $clean_url ) ) {
+			return '';
+		}
+
+		return $clean_url;
+	}
+
+	/**
+	 * Validates that a transformed URL is safe to inject into rendered HTML.
+	 *
+	 * @param string $url URL to validate.
+	 * @return bool
+	 */
+	private function is_safe_transformed_url( $url ) {
+		if ( empty( $url ) || ! is_string( $url ) ) {
+			return false;
+		}
+
+		if ( preg_match( '/[<>"\'\\s]/', $url ) ) {
+			return false;
+		}
+
+		$normalized_url = 0 === strpos( $url, '//' ) ? 'https:' . $url : $url;
+		if ( ! preg_match( '#^https?://#i', $normalized_url ) ) {
+			return false;
+		}
+
+		$validated_url = esc_url_raw( $normalized_url, array( 'http', 'https' ) );
+
+		return ! empty( $validated_url );
 	}
 
 	/**

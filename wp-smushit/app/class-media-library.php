@@ -128,6 +128,17 @@ class Media_Library extends Abstract_Module {
 			return $sendback;
 		}
 
+		// Restore only the attachments the current user is allowed to edit.
+		$attachment_ids = array_filter(
+			$attachment_ids,
+			function ( $attachment_id ) {
+				return Helper::is_user_allowed_to_edit_attachment( $attachment_id );
+			}
+		);
+		if ( empty( $attachment_ids ) ) {
+			return $sendback;
+		}
+
 		$bulk_restore = new Bulk_Restore( $attachment_ids );
 		$bulk_restore->bulk_restore();
 		$restored_count       = $bulk_restore->get_restored_count();

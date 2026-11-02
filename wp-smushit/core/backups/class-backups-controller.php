@@ -60,7 +60,10 @@ class Backups_Controller extends Controller {
 
 		// Check capability.
 		// TODO: change Helper::is_user_allowed to a non static method
-		if ( ! Helper::is_user_allowed( 'upload_files' ) ) {
+		if (
+			! Helper::is_user_allowed( 'upload_files' )
+			|| ! Helper::is_user_allowed_to_edit_attachment( (int) $attachment_id )
+		) {
 			wp_send_json_error( array(
 				'error_msg' => esc_html__( "You don't have permission to work with uploaded files.", 'wp-smushit' ),
 			) );

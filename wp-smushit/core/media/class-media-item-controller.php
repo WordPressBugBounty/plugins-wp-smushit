@@ -36,6 +36,12 @@ class Media_Item_Controller extends Controller {
 
 		$attachment_id = absint( $_POST['id'] );
 
+		if ( ! Helper::is_user_allowed_to_edit_attachment( $attachment_id ) ) {
+			wp_send_json_error( array(
+				'error_message' => esc_html__( "You don't have permission to work with this attachment.", 'wp-smushit' ),
+			), 403 );
+		}
+
 		$changed = $this->change_attachment_ignored_status( $attachment_id, false );
 		if ( ! $changed ) {
 			wp_send_json_error();
@@ -62,7 +68,14 @@ class Media_Item_Controller extends Controller {
 		}
 
 		$attachment_id = absint( $_POST['id'] );
-		$changed       = $this->change_attachment_ignored_status( $attachment_id, true );
+
+		if ( ! Helper::is_user_allowed_to_edit_attachment( $attachment_id ) ) {
+			wp_send_json_error( array(
+				'error_msg' => esc_html__( "You don't have permission to work with this attachment.", 'wp-smushit' ),
+			), 403 );
+		}
+
+		$changed = $this->change_attachment_ignored_status( $attachment_id, true );
 		if ( ! $changed ) {
 			wp_send_json_error();
 		}

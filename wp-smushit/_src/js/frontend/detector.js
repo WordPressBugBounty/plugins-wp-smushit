@@ -2,15 +2,27 @@ import unique from 'unique-selector';
 import getXPath from 'get-xpath';
 
 export class SmushLCPDetector {
+	constructor(cdnBaseUrl) {
+		this.cdnBaseUrl = typeof cdnBaseUrl === 'string' ? cdnBaseUrl : '';
+		this.useRelativeImageURL = false;
+	}
 	onLCP(data) {
 		const element = data?.entries[0]?.element;
-		const imageUrl = data?.attribution?.url;
+		let imageUrl = data?.attribution?.url;
 		if (!element || !imageUrl) {
 			return;
 		}
 
 		const selector = unique(element);
 		const xpath = getXPath(element, {ignoreId: true});
+		if (
+			this.cdnBaseUrl && imageUrl.startsWith( this.cdnBaseUrl ) &&
+			element.nodeName === 'IMG' &&
+			element.src &&
+			/(?:\?|&)size=\d+x0\b/.test( imageUrl )
+		) {
+			imageUrl = element.src;
+		}
 		this.useRelativeImageURL = this.shouldUseRelativeImageURL( element, imageUrl );
 		const body = {
 			url: window.location.href,
@@ -80,18 +92,54 @@ export class SmushLCPDetector {
 		if (backgroundProps.length === 0) {
 			return null;
 		}
+
 		return this.getBackgroundDataForPropertyValue(backgroundProps[0]);
 	}
 
-	getBackgroundDataForPropertyValue(fullBackgroundProp) {
-		let type = "background-image";
-		if (fullBackgroundProp.includes("image-set(")) {
-			type = "background-image-set";
-		}
-		if (!fullBackgroundProp || fullBackgroundProp === "" || fullBackgroundProp.includes("data:image")) {
+	getBackgroundDataForPropertyValue( fullBackgroundProp ) {
+		if ( ! fullBackgroundProp || fullBackgroundProp === '' || fullBackgroundProp.includes( 'data:image' ) ) {
 			return null;
 		}
-		// IMPORTANT: the following regex is a copy of the one in the PHP function Parser::get_image_urls. Remember to keep them synced.
+
+		if ( fullBackgroundProp.includes( 'image-set(' ) ) {
+			return this.parseImageSet( fullBackgroundProp );
+		}
+		return this.parseBackgroundUrl( fullBackgroundProp );
+	}
+
+	parseImageSet( fullBackgroundProp ) {
+		const type = 'background-image-set';
+		// Matches image-set candidates like:
+		// url("https://...") 1x, "..." 2x, url('/...') 1.5x, url('./...') 2dppx, ... type("image/avif")
+		const imageSetRegex = /(?:url\(\s*)?['"]?((?:https?:\/\/|\/\/|\/|\.\.?\/)[^\s'",)]+\.(?:jpe?g|png|gif|webp|svg|avif)(?:\?[^\s'",)]+)?)[\s'")]*\)?\s*((?:\d*\.?\d+(?:x|dppx))?)\s*(?:type\(\s*['"]?([^)]+?)['"]?\s*\))?/ig;
+		const matches = [];
+		let match;
+		while ( ( match = imageSetRegex.exec( fullBackgroundProp ) ) !== null ) {
+			let resolution = match[ 2 ] || '';
+			// Convert dppx to x.
+			if ( resolution && resolution.endsWith( 'dppx' ) ) {
+				resolution = resolution.replace( 'dppx', 'x' );
+			}
+			matches.push( {
+				url: match[ 1 ],
+				resolution,
+				type: match[ 3 ] || ''
+			} );
+		}
+
+		if ( matches.length > 0 ) {
+			return {
+				type,
+				image_urls: matches
+			};
+		}
+
+		return null;
+	}
+
+	parseBackgroundUrl( fullBackgroundProp ) {
+		const type = 'background-image';
+		// IMPORTANT: keep this regex in sync with the PHP Parser::get_image_urls
 		const cssBackgroundUrlRegex = /((?:https?:\/|\.+)?\/[^'",\s()]+\.(jpe?g|png|gif|webp|svg|avif)(?:\?[^\s'",?)]+)?)\b/ig;
 		const matches = [ ...fullBackgroundProp.matchAll( cssBackgroundUrlRegex ) ];
 		const backgroundSet = matches.map( ( match ) => {
@@ -107,8 +155,8 @@ export class SmushLCPDetector {
 		}
 
 		return {
-			type: type,
-			urls: backgroundSet,
+			type,
+			image_urls: backgroundSet.map( ( url ) => ( { url, resolution: '', type: '' } ) ),
 		};
 	}
 }
@@ -144,7 +192,7 @@ export class SmushLCPDetector {
 		finalized = true;
 
 		if (lcpEntry) {
-			const detector = new SmushLCPDetector();
+			const detector = new SmushLCPDetector( smush_detector?.cdn_base_url ?? '' );
 			detector.onLCP({
 				entries: [lcpEntry],
 				attribution: {

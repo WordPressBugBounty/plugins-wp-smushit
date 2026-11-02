@@ -32,6 +32,10 @@ class Cache_Helper {
 		do_action( 'wp_smush_home_cache_flush_required', $url );
 	}
 
+	public function clear_url_cache( $url ) {
+		do_action( 'wp_smush_url_cache_flush_required', $url );
+	}
+
 	public function clear_full_cache( $notice_key = 'generic' ) {
 		if ( ! has_action( self::$clear_cache_action ) && ! empty( $notice_key ) ) {
 			// If no one is handling the cache clearing then show a notice

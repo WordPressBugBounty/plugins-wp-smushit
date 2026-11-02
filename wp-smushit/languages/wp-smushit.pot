@@ -2,14 +2,14 @@
 # This file is distributed under the GPLv2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Smush Pro 4.3.5\n"
+"Project-Id-Version: Smush Pro 4.3.6\n"
 "Report-Msgid-Bugs-To: https://wpmudev.com\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-19T10:05:42+00:00\n"
+"POT-Creation-Date: 2026-11-02T11:34:41+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wp-smushit\n"
@@ -204,7 +204,7 @@ msgid "Smush restore"
 msgstr ""
 
 #. translators: 1: opening strong tag, 2: restored count, 3: total count, 4: closing strong tag
-#: app/class-media-library.php:218
+#: app/class-media-library.php:229
 #, php-format
 msgid "%1$s%2$d/%3$d image was restored successfully%4$s."
 msgid_plural "%1$s%2$d/%3$d images were restored successfully%4$s."
@@ -212,19 +212,19 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %1$d: restored count, %2$d: total count
-#: app/class-media-library.php:234
+#: app/class-media-library.php:245
 #, php-format
 msgid "All selected images were restored successfully (%1$d/%2$d)."
 msgstr ""
 
 #. translators: 1: link start tag, 2: link end tag
-#: app/class-media-library.php:242
+#: app/class-media-library.php:253
 #, php-format
 msgid "Ensure %1$sBackup original images%2$s is enabled to keep copies of your originals."
 msgstr ""
 
 #. translators: %d: number of images
-#: app/class-media-library.php:252
+#: app/class-media-library.php:263
 #, php-format
 msgid "%d image couldn't be restored as no backup exists"
 msgid_plural "%d images couldn't be restored as no backup exists"
@@ -232,7 +232,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: %d: number of images
-#: app/class-media-library.php:267
+#: app/class-media-library.php:278
 #, php-format
 msgid "%d image couldn't be restored due to a backup copy error"
 msgid_plural "%d images couldn't be restored due to a backup copy error"
@@ -240,58 +240,58 @@ msgstr[0] ""
 msgstr[1] ""
 
 #. translators: 1: first failure clause, 2: second failure clause
-#: app/class-media-library.php:281
+#: app/class-media-library.php:292
 #, php-format
 msgid "%1$s, and %2$s."
 msgstr ""
 
-#: app/class-media-library.php:527
+#: app/class-media-library.php:538
 msgid "Filter by Smush status"
 msgstr ""
 
-#: app/class-media-library.php:530
+#: app/class-media-library.php:541
 #: core/frontend/class-frontend-controller.php:604
 msgid "Smush: All images"
 msgstr ""
 
-#: app/class-media-library.php:531
+#: app/class-media-library.php:542
 #: core/frontend/class-frontend-controller.php:605
 msgid "Smush: Not processed"
 msgstr ""
 
-#: app/class-media-library.php:532
+#: app/class-media-library.php:543
 #: core/frontend/class-frontend-controller.php:606
 msgid "Smush: Bulk ignored"
 msgstr ""
 
-#: app/class-media-library.php:533
+#: app/class-media-library.php:544
 #: core/frontend/class-frontend-controller.php:607
 msgid "Smush: Failed Processing"
 msgstr ""
 
-#: app/class-media-library.php:589
-#: app/class-media-library.php:591
+#: app/class-media-library.php:600
+#: app/class-media-library.php:602
 #: core/class-core.php:277
 msgid "Smushing..."
 msgstr ""
 
-#: app/class-media-library.php:589
-#: app/class-media-library.php:591
+#: app/class-media-library.php:600
+#: app/class-media-library.php:602
 msgid "Optimizing..."
 msgstr ""
 
-#: app/class-media-library.php:590
+#: app/class-media-library.php:601
 #: core/class-core.php:276
 msgid "Restoring image..."
 msgstr ""
 
-#: app/class-media-library.php:592
+#: app/class-media-library.php:603
 #: core/class-core.php:286
 msgid "Ignored"
 msgstr ""
 
-#: app/class-media-library.php:593
-#: app/class-media-library.php:835
+#: app/class-media-library.php:604
+#: app/class-media-library.php:846
 #: core/class-core.php:287
 #: core/class-error-handler.php:264
 #: core/class-rest.php:82
@@ -300,35 +300,35 @@ msgstr ""
 msgid "Not processed"
 msgstr ""
 
-#: app/class-media-library.php:657
+#: app/class-media-library.php:668
 msgid "Smushing in progress..."
 msgstr ""
 
-#: app/class-media-library.php:658
+#: app/class-media-library.php:669
 msgid "Smush Now!"
 msgstr ""
 
-#: app/class-media-library.php:689
+#: app/class-media-library.php:700
 msgid "Unlock 2X Smush instantly!"
 msgstr ""
 
 #. translators: %s - strong tags
-#: app/class-media-library.php:694
+#: app/class-media-library.php:705
 #, php-format
 msgid "Connect your site to WPMU DEV for %1$sfree%2$s and start Smushing with Super 2X—takes just a few seconds, no credit card or API key needed."
 msgstr ""
 
-#: app/class-media-library.php:702
+#: app/class-media-library.php:713
 msgid "Connect my site"
 msgstr ""
 
-#: app/class-media-library.php:704
+#: app/class-media-library.php:715
 msgid "I'm happy with 1X Smush"
 msgstr ""
 
-#: app/class-media-library.php:766
-#: core/backups/class-backups-controller.php:147
-#: core/backups/class-backups-controller.php:187
+#: app/class-media-library.php:777
+#: core/backups/class-backups-controller.php:150
+#: core/backups/class-backups-controller.php:190
 #: core/bulk/class-background-bulk-smush-controller.php:185
 #: core/bulk/class-bulk-smush-session-savings.php:50
 #: core/cache/class-cache-controller.php:45
@@ -341,7 +341,7 @@ msgstr ""
 #: core/frontend/class-frontend-controller.php:1307
 #: core/frontend/class-frontend-controller.php:1544
 #: core/frontend/class-frontend-controller.php:1581
-#: core/lcp/class-lcp-admin-controller.php:131
+#: core/lcp/class-lcp-admin-controller.php:132
 #: core/membership/class-membership-controller.php:23
 #: core/modules/class-dir.php:204
 #: core/modules/class-dir.php:224
@@ -363,28 +363,28 @@ msgid "Unauthorized"
 msgstr ""
 
 #. translators: %s: number of thumbnails
-#: app/class-media-library.php:788
+#: app/class-media-library.php:799
 #, php-format
 msgid "When you upload an image to WordPress it automatically creates %s thumbnail sizes that are commonly used in your pages. WordPress also stores the original full-size image, but because these are not usually embedded on your site we don’t Smush them. Pro users can override this."
 msgstr ""
 
-#: app/class-media-library.php:794
+#: app/class-media-library.php:805
 msgid "Image couldn't be smushed as it exceeded the 5Mb size limit, Pro users can smush images without any size restriction."
 msgstr ""
 
-#: app/class-media-library.php:801
+#: app/class-media-library.php:812
 msgid "PRO"
 msgstr ""
 
-#: app/class-media-library.php:835
+#: app/class-media-library.php:846
 msgid "Image not found!"
 msgstr ""
 
-#: app/class-media-library.php:851
+#: app/class-media-library.php:862
 msgid "Show in bulk optimization"
 msgstr ""
 
-#: app/class-media-library.php:853
+#: app/class-media-library.php:864
 #: core/class-core.php:278
 #: core/media-library/class-media-library-row.php:217
 msgid "Ignore"
@@ -507,39 +507,30 @@ msgstr ""
 msgid "The WPMU DEV Team."
 msgstr ""
 
-#: app/views/email/ultra-upsell.php:44
-#: core/frontend/class-frontend-controller.php:1608
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraTryNowPopup.jsx:407
-#: _src/smush-ui/layout/GlobalNotices/UltraUpsellPopup/UltraUpsellPopup.jsx:100
-#: _src/smush-ui/pages/dashboard/components/CdnHowItWorkPopup/CdnHowItWorkPopup.jsx:152
-#: _src/smush-ui/pages/dashboard/components/NextGenTryNowPopup/NextGenTryNowPopup.jsx:402
-msgid "Unlimited sites · $4.99/m"
-msgstr ""
-
-#: app/views/email/ultra-upsell.php:53
+#: app/views/email/ultra-upsell.php:40
 msgid "Upgrade to Pro."
 msgstr ""
 
-#: app/views/email/ultra-upsell.php:55
+#: app/views/email/ultra-upsell.php:42
 msgid "Save up to 60% more with Ultra 5X compression."
 msgstr ""
 
-#: app/views/email/ultra-upsell.php:67
+#: app/views/email/ultra-upsell.php:54
 #: core/frontend/class-frontend-controller.php:1606
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraTryNowPopup.jsx:412
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraTryNowPopup.jsx:399
 #: _src/smush-ui/core-ui/components/SelectorToggleCard/SelectorToggleCard.jsx:154
 #: _src/smush-ui/core-ui/components/StatsCard/StatsCard.jsx:255
-#: _src/smush-ui/layout/GlobalNotices/UltraUpsellPopup/UltraUpsellPopup.jsx:110
+#: _src/smush-ui/layout/GlobalNotices/UltraUpsellPopup/UltraUpsellPopup.jsx:97
 #: _src/smush-ui/pages/cdn/components/FeatureModal.jsx:114
-#: _src/smush-ui/pages/dashboard/components/CdnHowItWorkPopup/CdnHowItWorkPopup.jsx:157
-#: _src/smush-ui/pages/dashboard/components/NextGenTryNowPopup/NextGenTryNowPopup.jsx:407
+#: _src/smush-ui/pages/dashboard/components/CdnHowItWorkPopup/CdnHowItWorkPopup.jsx:144
+#: _src/smush-ui/pages/dashboard/components/NextGenTryNowPopup/NextGenTryNowPopup.jsx:394
 #: _src/smush-ui/pages/lazy-preload/components/preload/FeatureModal.jsx:87
 #: _src/smush-ui/pages/settings/components/next-gen-formats/FeatureModal.jsx:100
 #: _src/smush-ui/pages/settings/components/tools/AutoResizeUpsellModal.jsx:82
 msgid "Upgrade"
 msgstr ""
 
-#: app/views/email/ultra-upsell.php:69
+#: app/views/email/ultra-upsell.php:56
 #: core/frontend/class-frontend-controller.php:316
 #: core/frontend/class-frontend-controller.php:1607
 #: _src/smush-ui/core-ui/components/MemberStatusBadge/MemberStatusBadge.jsx:26
@@ -596,29 +587,29 @@ msgstr ""
 msgid "Image not restored, nonce verification failed."
 msgstr ""
 
-#: core/backups/class-backups-controller.php:65
-#: core/class-optimization-controller.php:96
+#: core/backups/class-backups-controller.php:68
+#: core/class-optimization-controller.php:101
 #: core/media/class-media-item-controller.php:29
-#: core/media/class-media-item-controller.php:56
+#: core/media/class-media-item-controller.php:62
 msgid "You don't have permission to work with uploaded files."
 msgstr ""
 
-#: core/backups/class-backups-controller.php:84
+#: core/backups/class-backups-controller.php:87
 msgid "Unable to restore image"
 msgstr ""
 
 #. translators: %s: Error message
-#: core/backups/class-backups-controller.php:157
+#: core/backups/class-backups-controller.php:160
 #, php-format
 msgid "Image not restored. %s"
 msgstr ""
 
-#: core/backups/class-backups-controller.php:170
+#: core/backups/class-backups-controller.php:173
 msgid "Error getting file name"
 msgstr ""
 
 #: core/bulk/class-background-bulk-smush-controller.php:105
-#: core/class-optimization-controller.php:102
+#: core/class-optimization-controller.php:107
 msgid "A WPMU DEV Hub connection is required to optimize images."
 msgstr ""
 
@@ -2101,7 +2092,7 @@ msgid "Upgrade to Smush Pro"
 msgstr ""
 
 #: core/frontend/class-frontend-controller.php:1455
-msgid "Get Smush Pro · Unlimited sites · $4.99/m"
+msgid "Get Smush Pro"
 msgstr ""
 
 #: core/frontend/class-frontend-controller.php:1457
@@ -2180,23 +2171,23 @@ msgstr ""
 msgid "Thumbnail URL not found."
 msgstr ""
 
-#: core/lcp/class-lcp-admin-controller.php:125
+#: core/lcp/class-lcp-admin-controller.php:126
 msgid "Nonce verification failed."
 msgstr ""
 
-#: core/lcp/class-lcp-controller.php:84
+#: core/lcp/class-lcp-controller.php:88
 msgid "Error in processing LCP data, nonce verification failed."
 msgstr ""
 
-#: core/lcp/class-lcp-controller.php:109
+#: core/lcp/class-lcp-controller.php:114
 msgid "LCP element is not an image."
 msgstr ""
 
-#: core/lcp/class-lcp-controller.php:113
+#: core/lcp/class-lcp-controller.php:118
 msgid "Error in processing LCP data, fields empty."
 msgstr ""
 
-#: core/lcp/class-lcp-controller.php:119
+#: core/lcp/class-lcp-controller.php:124
 msgid "LCP data is already up to date"
 msgstr ""
 
@@ -2388,11 +2379,16 @@ msgstr ""
 msgid "Detailed stats for all the image sizes"
 msgstr ""
 
-#: core/media/class-media-item-controller.php:80
+#: core/media/class-media-item-controller.php:41
+#: core/media/class-media-item-controller.php:74
+msgid "You don't have permission to work with this attachment."
+msgstr ""
+
+#: core/media/class-media-item-controller.php:93
 msgid "You don't have permission to do this."
 msgstr ""
 
-#: core/media/class-media-item-controller.php:86
+#: core/media/class-media-item-controller.php:99
 msgid "Not found any failed items."
 msgstr ""
 
@@ -3040,10 +3036,10 @@ msgstr ""
 msgid "Compress images up to 5X while maintaining sharp quality."
 msgstr ""
 
-#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraTryNowPopup.jsx:420
-#: _src/smush-ui/layout/GlobalNotices/UltraUpsellPopup/UltraUpsellPopup.jsx:119
-#: _src/smush-ui/pages/dashboard/components/CdnHowItWorkPopup/CdnHowItWorkPopup.jsx:162
-#: _src/smush-ui/pages/dashboard/components/NextGenTryNowPopup/NextGenTryNowPopup.jsx:415
+#: _src/smush-ui/core-ui/components/MediaLibraryDashboard/UltraTryNowPopup.jsx:406
+#: _src/smush-ui/layout/GlobalNotices/UltraUpsellPopup/UltraUpsellPopup.jsx:105
+#: _src/smush-ui/pages/dashboard/components/CdnHowItWorkPopup/CdnHowItWorkPopup.jsx:148
+#: _src/smush-ui/pages/dashboard/components/NextGenTryNowPopup/NextGenTryNowPopup.jsx:401
 msgid "30-day money back guarantee"
 msgstr ""
 
