@@ -1,6 +1,6 @@
 === Smush – Image Optimization, Compression, Lazy Load, WebP & CDN===
 Plugin Name: Smush – Image Optimization, Compression, Lazy Load, WebP & CDN
-Version: 4.3.6
+Version: 4.3.7
 Author: WPMU DEV
 Author URI: https://wpmudev.com/
 Contributors: WPMUDEV, alexdunae
@@ -192,6 +192,9 @@ We take plugin security incredibly seriously; if you have a bug or vulnerability
 5. Serve images at lightning speed via our global CDN.
 
 == Changelog ==
+
+= 4.3.7 ( 2026-11-16 ) =
+- Improvement: Miscellaneous code improvements and bug fixes
 
 = 4.3.6 ( 2026-11-02 ) =
 - Improvement: Improved LCP support for image-set and Retina sizes

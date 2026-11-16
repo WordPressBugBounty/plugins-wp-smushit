@@ -447,18 +447,50 @@ class Parser {
 	}
 
 	public function get_element_attribute_value( $element_markup, $attribute_name ) {
-		if ( strpos( $element_markup, $attribute_name ) === false ) {
+		if ( false === stripos( $element_markup, $attribute_name ) ) {
 			return '';
 		}
 
-		$pattern = '#' . $attribute_name . '\s*=\s*([\'|"])(?<value>(?:(?!\1).)*)\1#is';
+		$pattern = '#' . preg_quote( $attribute_name, '#' ) . '\s*=\s*([\'"])(?<value>(?:(?!\1).)*)\1#is';
 		if ( ! preg_match_all( $pattern, $element_markup, $matches, PREG_SET_ORDER ) ) {
 			return '';
 		}
 
-		return empty( $matches[0]['value'] )
-			? ''
-			: $matches[0]['value'];
+		$value = $matches[0]['value'];
+		if ( '' === $value ) {
+			return '';
+		}
+
+		if ( ! $this->is_valid_element_attribute_value( $element_markup, $attribute_name, $value ) ) {
+			return '';
+		}
+
+		// Preserve the original entity encoding used by existing callers/replacements.
+		return $value;
+	}
+
+	/**
+	 * Validate a regex-extracted value against the actual HTML attribute.
+	 *
+	 * @param string $element_markup Element markup.
+	 * @param string $attribute_name Attribute name.
+	 * @param string $value          Regex-extracted attribute value.
+	 * @return bool
+	 */
+	private function is_valid_element_attribute_value( $element_markup, $attribute_name, $value ) {
+		if ( ! class_exists( '\WP_HTML_Tag_Processor' ) ) {
+			return false;
+		}
+
+		$processor = new \WP_HTML_Tag_Processor( $element_markup );
+		if ( ! $processor->next_tag() ) {
+			return false;
+		}
+
+		$actual_value  = $processor->get_attribute( $attribute_name );
+		$decoded_value = html_entity_decode( $value, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+
+		return is_string( $actual_value ) && $decoded_value === $actual_value;
 	}
 
 	public function markup_contains_noscript( $markup ) {
